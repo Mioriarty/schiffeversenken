@@ -17,7 +17,7 @@ class Fish(Component):
         self.verticalAnimation.setHook(self.transform.setRelYPos)
         self.verticalAnimation.play()
 
-        self.flipAnimation = Animator.const(1.0, 4.5) + Animator.lerp(1.0, -1.0, 0.5) + Animator.const(-1.0, 4.5) + Animator.lerp(-1.0, 1.0, 0.5)
+        self.flipAnimation = Animator.const(1.0, 4) + Animator.smoothLerp(1.0, -1.0, 1) + Animator.const(-1.0, 4) + Animator.smoothLerp(-1.0, 1.0, 1.0)
         self.flipAnimation.setRepeatMode(Animator.RESTART)
         self.flipAnimation.setHook(self.transform.setRelXScale)
         self.flipAnimation.play()

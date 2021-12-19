@@ -17,8 +17,3 @@ class Component(metaclass = utils.InstanceRegistryMetaClass):
     def updateAll(dt : float) -> None:
         for c in Component._instances:
             c.update(dt)
-
-    @staticmethod
-    def drawAll(screen : pygame.Surface) -> None:
-        for c in Component._instances:
-            c.draw(screen)

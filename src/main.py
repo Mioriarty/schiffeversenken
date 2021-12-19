@@ -29,7 +29,7 @@ def main():
         Component.updateAll(dt)
 
         # draw
-        Component.drawAll(screen)
+        SceneManager.drawAll(screen)
 
         # catch events
         for event in pygame.event.get():
