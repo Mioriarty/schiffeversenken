@@ -3,6 +3,7 @@ from components.Component import Component
 from scenes.Scene import SceneManager
 from scenes.TestScene import TestScene
 from utils.Animator import Animator
+from utils.Images import Images
 
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768
@@ -18,7 +19,11 @@ def main():
 
     shouldRun = True
 
+    Images.loadAll()
+
     SceneManager.loadScene(TestScene())
+
+    
 
     while shouldRun:
         dt = clock.tick(FRAME_RATE) / 1000

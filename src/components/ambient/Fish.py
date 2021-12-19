@@ -1,5 +1,5 @@
 from components.Component import Component
-from utils import Transform, Animator
+from utils import Transform, Animator, Sprite
 import pygame
 
 class Fish(Component):
@@ -22,8 +22,12 @@ class Fish(Component):
         self.flipAnimation.setHook(self.transform.setRelXScale)
         self.flipAnimation.play()
 
+        self.sprite = Sprite("ambient.fish", Transform(scale=(0.5, 0.5), parent=self.transform))
+
+
     
     def draw(self, screen : pygame.Surface) -> None:
         pos = self.transform.getPosition()
         scale = self.transform.getScale() * 30.0
-        pygame.draw.ellipse(screen, (255, 255, 0), [pos[0], pos[1], scale[0], scale[1]])
+        # pygame.draw.ellipse(screen, (255, 255, 0), [pos[0], pos[1], scale[0], scale[1]])
+        self.sprite.draw(screen)
