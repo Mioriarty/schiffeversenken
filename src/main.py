@@ -4,6 +4,7 @@ from scenes.Scene import SceneManager
 from scenes.TestScene import TestScene
 from utils.Animator import Animator
 from utils.Images import Images
+from utils.Sounds import Sounds
 
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768
@@ -12,6 +13,7 @@ CLEAR_COLOR = (202, 100, 0)
 FRAME_RATE = 75
 
 def main():
+    pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.DOUBLEBUF)
     pygame.display.set_caption(WINDOW_TITLE)
 
@@ -20,9 +22,11 @@ def main():
     shouldRun = True
 
     Images.loadAll()
+    Sounds.loadAll()
 
     SceneManager.loadScene(TestScene())
 
+    Sounds.playSoundEffect("intro")
     
 
     while shouldRun:

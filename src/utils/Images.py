@@ -16,11 +16,9 @@ class Images:
         for root, _, files in os.walk(Images.ROOT_FOLDER):
             for file in files:
                 [ filename, extention ] = os.path.splitext(file)
-                print(filename, extention)
                 if extention in Images.EXTENTIONS:
                     key = root[len(Images.ROOT_FOLDER):].replace("\\", ".").replace("/", ".") + "." + filename
                     Images.__images[key] = pygame.image.load(os.path.join(root, file))
-                    print(key)
     
     @staticmethod
     def get(imageKey : str) -> pygame.Surface:
