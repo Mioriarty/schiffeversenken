@@ -15,7 +15,7 @@ FRAME_RATE = 120
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.DOUBLEBUF)
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.DOUBLEBUF, 16)
     pygame.display.set_caption(WINDOW_TITLE)
     pygame.event.set_allowed([ pygame.QUIT ])
 
