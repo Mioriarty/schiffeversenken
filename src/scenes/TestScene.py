@@ -22,7 +22,10 @@ class TestScene(Scene):
         SceneManager.putInDrawLayer(self.r, SceneManager.GAME_BG_LAYER)
 
         self.paper = Sprite("bg.paper", Transform.screenCenter(scale=(1.1, 1.1)))
-        SceneManager.putInDrawLayer(self.paper, SceneManager.BG_MAIN_LAYER)
+        SceneManager.putInDrawLayer(self.paper, SceneManager.BG_OVERLAY_LAYER)
+
+        self.wood = Sprite("bg.wood", Transform.screenCenter())
+        SceneManager.putInDrawLayer(self.wood, SceneManager.BG_MAIN_LAYER)
 
     
     def start(self) -> None:
