@@ -1,6 +1,7 @@
 from weakref import WeakSet
 from components.Component import Component
 import pygame
+import gc
 
 class Scene:
 
@@ -15,6 +16,7 @@ class Scene:
 class SceneManager:
 
     __currentScene : Scene = None
+    __requestedScene : type[Scene] = None
 
     __drawables : list[WeakSet] = [ WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet() ]
 
@@ -29,12 +31,23 @@ class SceneManager:
     BG_OVERLAY_LAYER = 1
 
     @staticmethod
-    def loadScene(scene : Scene) -> None:
-        if SceneManager.__currentScene != None:
-            SceneManager.__currentScene.destroy()
-        
-        SceneManager.__currentScene = scene
-        SceneManager.__currentScene.start()
+    def tryLoadRequestedScene() -> None:
+        if SceneManager.__requestedScene != None:
+            if SceneManager.__currentScene != None:
+                SceneManager.__currentScene.destroy()
+            
+            
+            SceneManager.__currentScene = SceneManager.__requestedScene()
+            SceneManager.__currentScene.start()
+
+            SceneManager.__requestedScene = None
+
+            # garbage collect all unnecessary instances in regestries
+            gc.collect()
+    
+    @staticmethod
+    def requestloadScene(scene : type[Scene]) -> None:
+        SceneManager.__requestedScene = scene
 
     
     @staticmethod

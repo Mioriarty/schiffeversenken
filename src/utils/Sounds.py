@@ -14,7 +14,6 @@ class Sounds:
         for root, _, files in os.walk(Sounds.SOUND_EFFECT_FOLDER):
             for file in files:
                 [ filename, extention ] = os.path.splitext(file)
-                print(filename, extention)
                 if extention in Sounds.EXTENTIONS:
                     key = filename
                     Sounds.__soundEffects[key] = pygame.mixer.Sound(os.path.join(root, file))

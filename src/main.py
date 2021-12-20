@@ -25,12 +25,16 @@ def main():
     Images.loadAll()
     Sounds.loadAll()
 
-    SceneManager.loadScene(LogoScene())
+    SceneManager.requestloadScene(LogoScene)
     
 
     while shouldRun:
         dt = clock.tick(FRAME_RATE) / 1000
         screen.fill(CLEAR_COLOR)
+
+        # load new scene if it was requested
+        SceneManager.tryLoadRequestedScene()
+        print(Animator.getInstances())
 
         # updates
         Animator.updateAll(dt)
