@@ -28,13 +28,13 @@ class Images:
 class Sprite:
 
     def __init__(self, image : str | pygame.Surface, transform : Transform):
-        self.__image = Images.get(image) if isinstance(image, str) else image
+        self.image = Images.get(image) if isinstance(image, str) else image
         self.transform = transform
 
     def draw(self, screen : pygame.Surface) -> None:
         scale = self.transform.getScale()
-        img = pygame.transform.flip(self.__image, scale[0] < 0, scale[1] < 0)
-        img = pygame.transform.scale(img, np.absolute(scale) * np.array(self.__image.get_size()))
+        img = pygame.transform.flip(self.image, scale[0] < 0, scale[1] < 0)
+        img = pygame.transform.scale(img, np.absolute(scale) * np.array(self.image.get_size()))
         img = pygame.transform.rotate(img, np.degrees(self.transform.getAngle()))
         rect = img.get_rect(center=self.transform.getPosition())
         screen.blit(img, rect)

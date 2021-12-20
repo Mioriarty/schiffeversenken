@@ -1,5 +1,6 @@
 import pygame
 from components.Component import Component
+from scenes.LogoScene import LogoScene
 from scenes.Scene import SceneManager
 from scenes.TestScene import TestScene
 from utils.Animator import Animator
@@ -9,7 +10,7 @@ from utils.Sounds import Sounds
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768
 WINDOW_TITLE = "Schiffe versenken"
-CLEAR_COLOR = (202, 100, 0)
+CLEAR_COLOR = (0, 0, 0)
 FRAME_RATE = 75
 
 def main():
@@ -24,9 +25,7 @@ def main():
     Images.loadAll()
     Sounds.loadAll()
 
-    SceneManager.loadScene(TestScene())
-
-    Sounds.playSoundEffect("intro")
+    SceneManager.loadScene(LogoScene())
     
 
     while shouldRun:

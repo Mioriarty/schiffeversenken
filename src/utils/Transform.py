@@ -8,7 +8,7 @@ class Transform:
         s = np.sin(angle)
         return np.array([ [ c, -s ], [ s, c ] ])
 
-    def __init__(self, position : tuple | list | np.ndarray = (0.0, 0.0), angle : float = 0.0, scale : tuple | list | np.ndarray = (1.0, 1.0), parent : 'Transform' = None):
+    def __init__(self, position : tuple | list | np.ndarray = (0., 0.), angle : float = 0., scale : tuple | list | np.ndarray = (1., 1.), parent : 'Transform' = None):
         self.__position : np.ndarray = np.array(position)
         self.__angle : float         = angle
         self.__scale  : np.ndarray   = np.array(scale)
@@ -82,3 +82,7 @@ class Transform:
     
     def applyInvMultiple(self, vectors : tuple | list) -> list[np.ndarray]:
         return [ self.applyInv(v) for v in vectors ]
+    
+    @classmethod
+    def screenCenter(cls, angle : float = 0.0, scale : tuple | list | np.ndarray = (1.0, 1.0), parent : 'Transform' = None):
+        return cls((512., 384.), angle, scale, parent)
