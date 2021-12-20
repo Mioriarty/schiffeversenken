@@ -1,7 +1,7 @@
 from components.ambient.Fish import Fish
 from scenes.Scene import Scene, SceneManager
 from components.Rectangle import Rectangle
-from utils import Animator, Transform, Sprite
+from utils import Animator, Transform, Sprite, Sounds
 import numpy as np
 
 class TestScene(Scene):
@@ -21,13 +21,17 @@ class TestScene(Scene):
 
         SceneManager.putInDrawLayer(self.r, SceneManager.GAME_BG_LAYER)
 
-        self.paper = Sprite("bg.paper", Transform.screenCenter(scale=(1.1, 1.1)))
+        self.paper = Sprite("bg.paper3", Transform.screenCenter(scale=(1.1, 1.1), angle=0.15))
+        self.paper.bakeTransform()
         SceneManager.putInDrawLayer(self.paper, SceneManager.BG_OVERLAY_LAYER)
 
         self.wood = Sprite("bg.wood", Transform.screenCenter())
+        self.wood.bakeTransform()
         SceneManager.putInDrawLayer(self.wood, SceneManager.BG_MAIN_LAYER)
 
     
     def start(self) -> None:
-        self.a.play()
-        self.a2.play()
+        # self.a.play()
+        # self.a2.play()
+
+        Sounds.playMusic("aqua")

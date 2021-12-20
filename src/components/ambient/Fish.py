@@ -23,6 +23,8 @@ class Fish(Component):
         self.flipAnimation.play()
 
         self.sprite = Sprite("ambient.fish", Transform(scale=(0.5, 0.5), parent=self.transform))
+        self.sprite.bakeTransform(includeScale=False)
+        self.sprite.enableScaling = True
 
 
     
