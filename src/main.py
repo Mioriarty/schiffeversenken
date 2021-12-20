@@ -34,7 +34,6 @@ def main():
 
         # load new scene if it was requested
         SceneManager.tryLoadRequestedScene()
-        print(Animator.getInstances())
 
         # updates
         Animator.updateAll(dt)
