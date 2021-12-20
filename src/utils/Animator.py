@@ -17,6 +17,7 @@ class Animator(metaclass = InstanceRegistryMetaClass):
         self.__isRunning : bool                  = False
         self.__repeatMode : int                  = Animator.STOP
         self.__hook : Callable[[any], None]      = None
+        self.__endCallback : Callable[[], None ] = None
 
     def play(self) -> None:
         self.__isRunning = True
@@ -36,6 +37,9 @@ class Animator(metaclass = InstanceRegistryMetaClass):
                     self.__elapsedTime = 0
                 elif self.__repeatMode == Animator.REVERSE:
                     self.__timeScale *= -1
+                
+                if self.__endCallback != None:
+                    self.__endCallback()
             
             elif self.__elapsedTime < 0:
                 self.__elapsedTime = 0
@@ -48,6 +52,9 @@ class Animator(metaclass = InstanceRegistryMetaClass):
                     self.__elapsedTime = self.__duration
                 elif self.__repeatMode == Animator.REVERSE:
                     self.__timeScale *= -1
+                
+                if self.__endCallback != None:
+                    self.__endCallback()
             
             if self.__hook != None:
                 self.__hook(self.get())
@@ -86,6 +93,9 @@ class Animator(metaclass = InstanceRegistryMetaClass):
 
     def detachHook(self) -> None:
         self.__hook = None
+    
+    def setEndCallback(self, callback : Callable[[], None]) -> None:
+        self.__endCallback = callback
 
     def isRunning(self) -> bool:
         return self.__isRunning
