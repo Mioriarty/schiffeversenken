@@ -31,7 +31,7 @@ class SceneManager:
     BG_OVERLAY_LAYER = 1
 
     @staticmethod
-    def tryLoadRequestedScene() -> None:
+    def loadNewSceneIfRequested() -> None:
         if SceneManager.__requestedScene != None:
             if SceneManager.__currentScene != None:
                 SceneManager.__currentScene.destroy()

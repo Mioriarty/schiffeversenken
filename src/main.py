@@ -33,7 +33,7 @@ def main():
         screen.fill(CLEAR_COLOR)
 
         # load new scene if it was requested
-        SceneManager.tryLoadRequestedScene()
+        SceneManager.loadNewSceneIfRequested()
 
         # updates
         Animator.updateAll(dt)
