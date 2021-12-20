@@ -1,4 +1,3 @@
-from components.Component import Component
 from scenes.Scene import Scene, SceneManager
 from scenes.TestScene import TestScene
 from utils import *
@@ -6,7 +5,6 @@ from utils import *
 class LogoScene(Scene):
 
     def __init__(self) -> None:
-        self.c = Component(Transform())
         self.logo = Sprite("logos.mo", Transform.screenCenter())
         self.logo.transform.translate((0., -50.0))
         SceneManager.putInDrawLayer(self.logo, SceneManager.GAME_MAIN_LAYER)

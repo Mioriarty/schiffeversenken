@@ -1,7 +1,7 @@
 from components.ambient.Fish import Fish
 from scenes.Scene import Scene, SceneManager
 from components.Rectangle import Rectangle
-from utils import Animator, Transform
+from utils import Animator, Transform, Sprite
 import numpy as np
 
 class TestScene(Scene):
@@ -20,6 +20,10 @@ class TestScene(Scene):
         self.a2.setHook(self.r.transform.setRelPosition)
 
         SceneManager.putInDrawLayer(self.r, SceneManager.GAME_BG_LAYER)
+
+        self.paper = Sprite("bg.paper", Transform.screenCenter(scale=(1.1, 1.1)))
+        SceneManager.putInDrawLayer(self.paper, SceneManager.BG_MAIN_LAYER)
+
     
     def start(self) -> None:
         self.a.play()
