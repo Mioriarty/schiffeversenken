@@ -17,6 +17,7 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.DOUBLEBUF)
     pygame.display.set_caption(WINDOW_TITLE)
+    pygame.event.set_allowed([ pygame.QUIT ])
 
     clock = pygame.time.Clock()
 
@@ -31,7 +32,6 @@ def main():
     while shouldRun:
         dt = clock.tick(FRAME_RATE) / 1000
         screen.fill(CLEAR_COLOR)
-        print(1/dt)
 
         # load new scene if it was requested
         SceneManager.loadNewSceneIfRequested()

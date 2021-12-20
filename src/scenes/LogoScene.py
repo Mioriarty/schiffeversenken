@@ -7,6 +7,7 @@ class LogoScene(Scene):
     def __init__(self) -> None:
         self.logo = Sprite("logos.mo", Transform.screenCenter())
         self.logo.transform.translate((0., -50.0))
+        self.logo.enableScaling = True
         SceneManager.putInDrawLayer(self.logo, SceneManager.GAME_MAIN_LAYER)
 
         self.logoAnimation = Animator.smoothLerp(0.6, 1., 5)

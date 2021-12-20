@@ -27,11 +27,12 @@ class TestScene(Scene):
 
         self.wood = Sprite("bg.wood", Transform.screenCenter())
         self.wood.bakeTransform()
+        self.wood.image = self.wood.image.convert_alpha()
         SceneManager.putInDrawLayer(self.wood, SceneManager.BG_MAIN_LAYER)
 
     
     def start(self) -> None:
-        # self.a.play()
-        # self.a2.play()
+        self.a.play()
+        self.a2.play()
 
         Sounds.playMusic("aqua")
