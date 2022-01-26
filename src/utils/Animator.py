@@ -15,12 +15,16 @@ class Animator(metaclass = InstanceRegistryMetaClass):
         self.__elapsedTime : float               = 0
         self.__timeScale : float                 = 1
         self.__isRunning : bool                  = False
-        self.__repeatMode : int                  = Animator.STOP
+        self.__repeatMode : int                  = Animator.PAUSE
         self.__hook : Callable[[any], None]      = None
         self.__endCallback : Callable[[], None ] = None
 
     def play(self) -> None:
         self.__isRunning = True
+    
+    def replay(self) -> None:
+        self.stop()
+        self.play()
 
     def update(self, dt : float) -> None:
         if self.__isRunning:
@@ -71,6 +75,10 @@ class Animator(metaclass = InstanceRegistryMetaClass):
         self.__isRunning = False
         self.__elapsedTime = 0
         self.__timeScale = abs(self.__timeScale)
+    
+    def skipToEnd(self) -> None:
+        self.__elapsedTime = self.__duration
+        self.update(0)
     
     def concat(self, other : 'Animator') -> 'Animator':
         equation = lambda t : self.__equation(t) if t < self.__duration else other.__equation(t - self.__duration)

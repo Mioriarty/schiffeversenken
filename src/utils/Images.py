@@ -28,12 +28,15 @@ class Images:
 
 class Sprite:
 
-    def __init__(self, image : str | pygame.Surface, transform : Transform = None, enableScaling : bool = False, enableRotation : bool = False):
+    def __init__(self, image : str | pygame.Surface, transform : Transform = None, enableScaling : bool = False, enableRotation : bool = False, bakeNow : bool = False):
         self.image : pygame.Surface = Images.get(image) if isinstance(image, str) else image
         self.untransformedImage = self.image.copy()
         self.transform : Transform  = Transform.fromTransform(transform)
         self.enableScaling : bool   = enableScaling
         self.enableRoation : bool   = enableRotation
+
+        if bakeNow:
+            self.bakeTransform()
 
     def bakeTransform(self, includeScale : bool = True, includeRotation : bool = True):
         self.image = self.untransformedImage.copy()

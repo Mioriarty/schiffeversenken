@@ -1,4 +1,4 @@
-from scenes.MenuScene import MenuScene
+from scenes.menu.MenuScene import MenuScene
 from scenes.Scene import Scene, SceneManager
 from scenes.TestScene import TestScene
 from utils import *

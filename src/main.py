@@ -3,6 +3,7 @@ from components.Component import Component
 from scenes.LogoScene import LogoScene
 from scenes.Scene import SceneManager
 from scenes.TestScene import TestScene
+from scenes.menu.MenuScene import MenuScene
 from utils.Animator import Animator
 from utils.Images import Images
 from utils.Sounds import Sounds
@@ -26,7 +27,7 @@ def main():
     Images.loadAll()
     Sounds.loadAll()
 
-    SceneManager.requestloadScene(LogoScene)
+    SceneManager.requestloadScene(MenuScene)
 
     while shouldRun:
         # load new scene if it was requested

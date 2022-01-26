@@ -89,7 +89,7 @@ class Transform:
         return [ self.apply(v) for v in vectors ]
     
     def applyInv(self, vector : tuple | list | np.ndarray) -> np.ndarray :
-        return np.matmul(Transform.calcRotationMatrix(-self.getAngle()), np.array(vector) - self.__position) / self.getScale()
+        return np.matmul(Transform.calcRotationMatrix(-self.getAngle()), np.array(vector) - self.getPosition()) / self.getScale()
     
     def applyInvMultiple(self, vectors : tuple | list) -> list[np.ndarray]:
         return [ self.applyInv(v) for v in vectors ]
