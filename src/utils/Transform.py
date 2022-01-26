@@ -1,3 +1,4 @@
+from doctest import ELLIPSIS_MARKER
 import numpy as np
 
 class Transform:
@@ -13,6 +14,13 @@ class Transform:
         self.__angle : float         = angle
         self.__scale  : np.ndarray   = np.array(scale)
         self.__parent : 'Transform'  = parent
+    
+    @classmethod
+    def fromTransform(self, other : 'Transform') -> 'Transform':
+        if other is None:
+            return Transform()
+        else:
+            return Transform(other.__position, other.__angle, other.__scale, other.__parent)
     
 
     def getPosition(self) -> np.ndarray:
@@ -70,6 +78,9 @@ class Transform:
     
     def setRelYScale(self, yScale : float) -> None:
         self.__scale[1] = yScale
+    
+    def setParent(self, parent : 'Transform') -> None:
+        self.__parent = parent
 
     def apply(self, vector : tuple | list | np.ndarray) -> np.ndarray:
         return np.matmul(Transform.calcRotationMatrix(self.getAngle()), np.array(vector) * self.getScale()) + self.getPosition()

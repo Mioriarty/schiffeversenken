@@ -5,11 +5,17 @@ import gc
 
 class Scene:
 
+    def __init__(self, clearColor : tuple[int] = (0, 0, 0)):
+        self.__clearColor = clearColor
+
     def start(self) -> None:
         pass
 
     def destroy(self) -> None:
         pass
+
+    def getClearColor(self) -> tuple[int]:
+        return self.__clearColor
 
 
 
@@ -29,6 +35,7 @@ class SceneManager:
 
     BG_MAIN_LAYER = 0
     BG_OVERLAY_LAYER = 1
+
 
     @staticmethod
     def loadNewSceneIfRequested() -> None:
@@ -63,4 +70,7 @@ class SceneManager:
         for layerSet in SceneManager.__drawables:
             for c in layerSet:
                 c.draw(screen)
-
+    
+    @staticmethod
+    def getClearColor() -> tuple[int]:
+        return SceneManager.__currentScene.getClearColor()

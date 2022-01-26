@@ -1,12 +1,13 @@
+from typing import Callable
 from components.Component import Component
-from utils import Transform
+from utils import Sounds, Transform
 import pygame
 import numpy as np
 
 
 class AbstractButton(Component):
 
-    def __init__(self, width : float, height : float, transform: Transform = Transform()):
+    def __init__(self, width : float, height : float, transform: Transform = None):
         super().__init__(transform)
         self.width = width
         self.height = height
@@ -14,6 +15,8 @@ class AbstractButton(Component):
         self.__hovering = False
         self.__pressed = False
         self.__hoverCursor = pygame.SYSTEM_CURSOR_HAND
+
+        self.__onClickEvent : Callable[[], None] = None
 
     def update(self, dt : float) -> None:
         relativeMousePos = np.absolute(self.transform.applyInv(pygame.mouse.get_pos()))
@@ -38,11 +41,16 @@ class AbstractButton(Component):
                 self.onMouseDown()
             elif not pressed and self.__pressed:
                 self.onMouseUp()
-                self.onClick()
+                # actually call the onclick event
+                if self.__onClickEvent is not None:
+                    Sounds.playSoundEffect("click")
+                    self.__onClickEvent()
             
             self.__pressed = pressed
                 
-        
+    
+    def setOnClickEvent(self, clickEvent : Callable[[], None]):
+        self.__onClickEvent = clickEvent
 
 
     def onMouseEnter(self) -> None:
@@ -58,7 +66,4 @@ class AbstractButton(Component):
         pass
 
     def onPressCancel(self) -> None:
-        pass
-
-    def onClick(self) -> None:
         pass

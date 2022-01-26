@@ -10,8 +10,8 @@ from utils.Sounds import Sounds
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768
 WINDOW_TITLE = "Schiffe versenken"
-CLEAR_COLOR = (0, 0, 0)
 FRAME_RATE = 120
+
 
 def main():
     pygame.init()
@@ -27,15 +27,15 @@ def main():
     Sounds.loadAll()
 
     SceneManager.requestloadScene(LogoScene)
-    
 
     while shouldRun:
-        dt = clock.tick(FRAME_RATE) / 1000
-        screen.fill(CLEAR_COLOR)
-
         # load new scene if it was requested
         SceneManager.loadNewSceneIfRequested()
 
+        dt = clock.tick(FRAME_RATE) / 1000
+        screen.fill(SceneManager.getClearColor())
+
+        
         # updates
         Animator.updateAll(dt)
         Component.updateAll(dt)

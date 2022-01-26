@@ -23,18 +23,20 @@ class Images:
     
     @staticmethod
     def get(imageKey : str) -> pygame.Surface:
-        return Images.__images[imageKey]
+        return Images.__images[imageKey].copy()
     
 
 class Sprite:
 
-    def __init__(self, image : str | pygame.Surface, transform : Transform, enableScaling : bool = False, enableRotation : bool = False):
-        self.image = Images.get(image) if isinstance(image, str) else image
-        self.transform = transform
-        self.enableScaling = enableScaling
-        self.enableRoation = enableRotation
+    def __init__(self, image : str | pygame.Surface, transform : Transform = None, enableScaling : bool = False, enableRotation : bool = False):
+        self.image : pygame.Surface = Images.get(image) if isinstance(image, str) else image
+        self.untransformedImage = self.image.copy()
+        self.transform : Transform  = Transform.fromTransform(transform)
+        self.enableScaling : bool   = enableScaling
+        self.enableRoation : bool   = enableRotation
 
     def bakeTransform(self, includeScale : bool = True, includeRotation : bool = True):
+        self.image = self.untransformedImage.copy()
         if includeScale:
             scale = self.transform.getScale()
             self.image = pygame.transform.flip(self.image, scale[0] < 0, scale[1] < 0)

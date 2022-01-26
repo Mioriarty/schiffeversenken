@@ -5,7 +5,7 @@ import pygame
 class Component(metaclass = utils.InstanceRegistryMetaClass):
 
     def __init__(self, transform : utils.Transform):
-        self.transform = transform
+        self.transform : utils.Transform = utils.Transform.fromTransform(transform)
 
     def update(self, dt : float) -> None:
         pass
