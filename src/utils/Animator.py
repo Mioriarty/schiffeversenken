@@ -147,7 +147,7 @@ class Animator(metaclass = InstanceRegistryMetaClass):
     
     @classmethod
     def step(cls, values : list[any], duration : float) -> 'Animator':
-        equation = lambda t : values[(t + len(values)) // duration]
+        equation = lambda t : values[min(int(t / duration * len(values)), len(values)-1)]
         return cls(equation, duration)
 
     @classmethod
