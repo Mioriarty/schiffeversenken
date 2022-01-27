@@ -44,13 +44,13 @@ class DifficultySelect(Component):
         self.rightButton = ImageButton(Sprite("buttons.right"), transform = Transform((300, 0), scale=(0.2, 0.2), parent=self.transform))
         self.rightButton.setOnClickEvent(self.rightPress)
 
-    def leftPress(self):
+    def rightPress(self):
         self.skipAnimations()
 
         self.disappearLeftMove.setHook(self.options[self.selectedIndex][0].transform.setRelPosition)
         self.disappearAlpha.setHook(self.options[self.selectedIndex][0].image.set_alpha)
 
-        self.selectedIndex = (self.selectedIndex - 1 + len(self.options)) % len(self.options)
+        self.selectedIndex = (self.selectedIndex + 1) % len(self.options)
 
         self.appearRightMove.setHook(self.options[self.selectedIndex][0].transform.setRelPosition)
         self.appearAlpha.setHook(self.options[self.selectedIndex][0].image.set_alpha)
@@ -61,13 +61,13 @@ class DifficultySelect(Component):
         self.appearAlpha.replay()
         
 
-    def rightPress(self):
+    def leftPress(self):
         self.skipAnimations()
 
         self.disappearRightMove.setHook(self.options[self.selectedIndex][0].transform.setRelPosition)
         self.disappearAlpha.setHook(self.options[self.selectedIndex][0].image.set_alpha)
 
-        self.selectedIndex = (self.selectedIndex + 1) % len(self.options)
+        self.selectedIndex = (self.selectedIndex - 1 + len(self.options)) % len(self.options)
 
         self.appearLeftMove.setHook(self.options[self.selectedIndex][0].transform.setRelPosition)
         self.appearAlpha.setHook(self.options[self.selectedIndex][0].image.set_alpha)
