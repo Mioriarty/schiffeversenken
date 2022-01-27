@@ -7,6 +7,7 @@ import numpy as np
 class TestScene(Scene):
 
     def __init__(self):
+        super().__init__()
         self.fish = Fish([200, 200])
         SceneManager.putInDrawLayer(self.fish, SceneManager.GAME_MAIN_LAYER)
 
