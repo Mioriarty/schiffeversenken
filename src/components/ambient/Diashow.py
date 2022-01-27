@@ -9,7 +9,7 @@ class Diashow(Component):
 
     def __init__(self, images : list[str | pygame.Surface], duration : float, transform : Transform = None):
         super().__init__(transform)
-        self.sprites = [ Sprite(image, Transform.fromTransform(self.transform), bakeNow=True) for image in images ]
+        self.sprites = [ Sprite(image, Transform(parent=self.transform), bakeNow=True) for image in images ]
 
         self.animation = Animator.step(list(range(len(self.sprites))), duration * len(self.sprites))
         self.animation.setRepeatMode(Animator.RESTART)

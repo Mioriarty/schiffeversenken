@@ -1,3 +1,4 @@
+from components.ambient.Bird import Bird
 from components.ambient.Diashow import Diashow
 from components.ui.ImageButton import ImageButton
 from scenes.LogoScene import LogoScene
@@ -34,6 +35,12 @@ class MenuScene(Scene):
 
         self.playBtn = ImageButton(Sprite("buttons.spielen"), transform = Transform.screenCenter(y=500., scale=(0.3, 0.3), parent=self.parentTransform))
         self.playBtn.setOnClickEvent(self.gameStartAnimation.play)
+
+        self.birds = [
+            Bird(velocity = 60., transform=Transform(scale=(0.25, 0.25), parent=self.parentTransform)),
+            Bird(velocity = 45., transform=Transform(scale=(0.36, 0.36), parent=self.parentTransform))
+        ]
+        SceneManager.putInDrawLayer(self.birds, SceneManager.UI_MAIN_LAYER)
 
     
     def startGame(self):
