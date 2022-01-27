@@ -24,7 +24,7 @@ class SceneManager:
     __currentScene : Scene = None
     __requestedScene : type[Scene] = None
 
-    __drawables : list[WeakSet] = [ WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet() ]
+    __drawables : list[WeakSet[Component]] = [ WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet() ]
 
     UI_BG_LAYER = 5
     UI_MAIN_LAYER = 6
