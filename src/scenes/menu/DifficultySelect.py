@@ -30,13 +30,13 @@ class DifficultySelect(Component):
             SceneManager.putInDrawLayer(self.options[i][0], SceneManager.UI_MAIN_LAYER)
             self.options[i][0].image.set_alpha(0)
         
-        self.appearLeftMove = Animator.lerp(np.array((-200, 0)), np.zeros(2 ), DifficultySelect.MOVE_DURATION)
-        self.appearRightMove = Animator.lerp(np.array((200, 0)), np.zeros(2), DifficultySelect.MOVE_DURATION)
-        self.appearAlpha = Animator.lerp(0., 255., DifficultySelect.MOVE_DURATION)
+        self.appearLeftMove = Animator.easeOut(np.array((-250, 0)), np.zeros(2 ), DifficultySelect.MOVE_DURATION)
+        self.appearRightMove = Animator.easeOut(np.array((250, 0)), np.zeros(2), DifficultySelect.MOVE_DURATION)
+        self.appearAlpha = Animator.easeOut(0., 255., DifficultySelect.MOVE_DURATION)
 
-        self.disappearLeftMove = Animator.lerp(np.zeros(2), np.array((-200, 0)), DifficultySelect.MOVE_DURATION)
-        self.disappearRightMove = Animator.lerp(np.zeros(2), np.array((200, 0)), DifficultySelect.MOVE_DURATION)
-        self.disappearAlpha = Animator.lerp(255., 0., DifficultySelect.MOVE_DURATION)
+        self.disappearLeftMove = Animator.easeIn(np.zeros(2), np.array((-250, 0)), DifficultySelect.MOVE_DURATION)
+        self.disappearRightMove = Animator.easeIn(np.zeros(2), np.array((250, 0)), DifficultySelect.MOVE_DURATION)
+        self.disappearAlpha = Animator.easeIn(255., 0., DifficultySelect.MOVE_DURATION)
         
         self.leftButton = ImageButton(Sprite("buttons.left"), transform = Transform((-300, 0), scale=(0.2, 0.2), parent=self.transform))
         self.leftButton.setOnClickEvent(self.leftPress)
