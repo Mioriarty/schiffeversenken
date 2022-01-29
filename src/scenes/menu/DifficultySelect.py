@@ -32,11 +32,11 @@ class DifficultySelect(Component):
         
         self.appearLeftMove = Animator.easeOut(np.array((-250, 0)), np.zeros(2 ), DifficultySelect.MOVE_DURATION)
         self.appearRightMove = Animator.easeOut(np.array((250, 0)), np.zeros(2), DifficultySelect.MOVE_DURATION)
-        self.appearAlpha = Animator.easeOut(0., 255., DifficultySelect.MOVE_DURATION)
+        self.appearAlpha = Animator.lerp(0., 255., DifficultySelect.MOVE_DURATION)
 
         self.disappearLeftMove = Animator.easeIn(np.zeros(2), np.array((-250, 0)), DifficultySelect.MOVE_DURATION)
         self.disappearRightMove = Animator.easeIn(np.zeros(2), np.array((250, 0)), DifficultySelect.MOVE_DURATION)
-        self.disappearAlpha = Animator.easeIn(255., 0., DifficultySelect.MOVE_DURATION)
+        self.disappearAlpha = Animator.lerp(255., 0., DifficultySelect.MOVE_DURATION)
         
         self.leftButton = ImageButton(Sprite("buttons.left"), transform = Transform((-300, 0), scale=(0.2, 0.2), parent=self.transform))
         self.leftButton.setOnClickEvent(self.leftPress)
