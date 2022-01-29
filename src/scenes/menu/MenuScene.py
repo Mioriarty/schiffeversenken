@@ -1,5 +1,7 @@
+import pygame
 from components.ambient.Bird import Bird
 from components.ambient.Diashow import Diashow
+from components.ambient.RandomAmbientEvent import Shark
 from components.ui.ImageButton import ImageButton
 from scenes.LogoScene import LogoScene
 from scenes.Scene import Scene, SceneManager
@@ -41,6 +43,9 @@ class MenuScene(Scene):
             Bird(velocity = 45., transform=Transform(scale=(0.36, 0.36), parent=self.parentTransform))
         ]
         SceneManager.putInDrawLayer(self.birds, SceneManager.UI_MAIN_LAYER)
+
+        self.shark = Shark(0.3, pygame.Rect(50, 350, 100, 300), (7., 15.), transform=Transform(scale=(0.3, 0.3), parent=self.parentTransform))
+        SceneManager.putInDrawLayer(self.shark, SceneManager.UI_MAIN_LAYER)
 
     
     def startGame(self):
