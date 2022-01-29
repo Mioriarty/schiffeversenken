@@ -5,6 +5,7 @@ from scenes.Scene import SceneManager
 from scenes.TestScene import TestScene
 from scenes.menu.MenuScene import MenuScene
 from utils.Animator import Animator
+from utils.Timer import Timer
 from utils.Images import Images
 from utils.Sounds import Sounds
 
@@ -38,6 +39,7 @@ def main():
 
         
         # updates
+        Timer.updateAll(dt)
         Animator.updateAll(dt)
         Component.updateAll(dt)
 
