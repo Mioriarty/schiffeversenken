@@ -19,7 +19,6 @@ class RandomAmbientEvent(Diashow):
         self.startNextCycle()
     
     def startNextCycle(self) -> None:
-        print("Hi")
         self.__timer.setDuration(random.random() * (self.__waitSpan[1] - self.__waitSpan[0]) + self.__waitSpan[0])
         self.__timer.start()
         self.transform.setRelPosition((
