@@ -1,4 +1,5 @@
 
+from ai.Difficulties import Difficulties
 from components.Component import Component
 from components.ui.ImageButton import ImageButton
 from scenes.Scene import SceneManager
@@ -17,18 +18,12 @@ class DifficultySelect(Component):
     def __init__(self, transform : Transform = None):
         super().__init__(transform)
 
-        self.options = [
-            ( Sprite('texts.kaptnBlaubar', Transform(scale=DifficultySelect.TEXT_SCALE, parent=self.transform), bakeNow=True), 0.8 ),
-            ( Sprite('texts.captainHook',  Transform(scale=DifficultySelect.TEXT_SCALE, parent=self.transform), bakeNow=True), 0.5 ),
-            ( Sprite('texts.dieWilde13',   Transform(scale=DifficultySelect.TEXT_SCALE, parent=self.transform), bakeNow=True), 0.2 ),
-            ( Sprite('texts.jackSparrow',  Transform(scale=DifficultySelect.TEXT_SCALE, parent=self.transform), bakeNow=True), 0.0 )
-        ]
-
         self.selectedIndex = 0
-        SceneManager.putInDrawLayer(self.options[0][0], SceneManager.UI_MAIN_LAYER)
-        for i in range(1, len(self.options)):
-            SceneManager.putInDrawLayer(self.options[i][0], SceneManager.UI_MAIN_LAYER)
-            self.options[i][0].image.set_alpha(0)
+
+        self.nameImages = [ Sprite(img, Transform(scale=DifficultySelect.TEXT_SCALE, parent=self.transform), bakeNow=True) for img in Difficulties.allNameImages() ]
+        for i in range(1, len(self.nameImages)):
+            self.nameImages[i].image.set_alpha(0)
+        SceneManager.putInDrawLayer(self.nameImages, SceneManager.UI_MAIN_LAYER)
         
         self.appearLeftMove = Animator.easeOut(np.array((-250, 0)), np.zeros(2 ), DifficultySelect.MOVE_DURATION)
         self.appearRightMove = Animator.easeOut(np.array((250, 0)), np.zeros(2), DifficultySelect.MOVE_DURATION)
@@ -47,35 +42,39 @@ class DifficultySelect(Component):
     def rightPress(self):
         self.skipAnimations()
 
-        self.disappearLeftMove.setHook(self.options[self.selectedIndex][0].transform.setRelPosition)
-        self.disappearAlpha.setHook(self.options[self.selectedIndex][0].image.set_alpha)
+        self.disappearLeftMove.setHook(self.nameImages[self.selectedIndex].transform.setRelPosition)
+        self.disappearAlpha.setHook(self.nameImages[self.selectedIndex].image.set_alpha)
 
-        self.selectedIndex = (self.selectedIndex + 1) % len(self.options)
+        self.selectedIndex = (self.selectedIndex + 1) % len(self.nameImages)
 
-        self.appearRightMove.setHook(self.options[self.selectedIndex][0].transform.setRelPosition)
-        self.appearAlpha.setHook(self.options[self.selectedIndex][0].image.set_alpha)
+        self.appearRightMove.setHook(self.nameImages[self.selectedIndex].transform.setRelPosition)
+        self.appearAlpha.setHook(self.nameImages[self.selectedIndex].image.set_alpha)
 
         self.disappearLeftMove.replay()
         self.disappearAlpha.replay()
         self.appearRightMove.replay()
         self.appearAlpha.replay()
+
+        Difficulties.setSelectedIndex(self.selectedIndex)
         
 
     def leftPress(self):
         self.skipAnimations()
 
-        self.disappearRightMove.setHook(self.options[self.selectedIndex][0].transform.setRelPosition)
-        self.disappearAlpha.setHook(self.options[self.selectedIndex][0].image.set_alpha)
+        self.disappearRightMove.setHook(self.nameImages[self.selectedIndex].transform.setRelPosition)
+        self.disappearAlpha.setHook(self.nameImages[self.selectedIndex].image.set_alpha)
 
-        self.selectedIndex = (self.selectedIndex - 1 + len(self.options)) % len(self.options)
+        self.selectedIndex = (self.selectedIndex - 1 + len(self.nameImages)) % len(self.nameImages)
 
-        self.appearLeftMove.setHook(self.options[self.selectedIndex][0].transform.setRelPosition)
-        self.appearAlpha.setHook(self.options[self.selectedIndex][0].image.set_alpha)
+        self.appearLeftMove.setHook(self.nameImages[self.selectedIndex].transform.setRelPosition)
+        self.appearAlpha.setHook(self.nameImages[self.selectedIndex].image.set_alpha)
 
         self.disappearRightMove.replay()
         self.disappearAlpha.replay()
         self.appearLeftMove.replay()
         self.appearAlpha.replay()
+
+        Difficulties.setSelectedIndex(self.selectedIndex)
     
     def skipAnimations(self):
         if self.disappearLeftMove.isRunning():
