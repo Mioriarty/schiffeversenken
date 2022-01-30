@@ -50,6 +50,9 @@ class Sprite:
             self.image = pygame.transform.rotate(self.image, np.degrees(self.transform.getAngle()))
 
     def draw(self, screen : pygame.Surface) -> None:
+        if self.image.get_alpha == 0:
+            return
+
         img = self.image
 
         if self.enableScaling:
