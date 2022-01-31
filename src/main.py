@@ -29,7 +29,7 @@ def main():
     Images.loadAll()
     Sounds.loadAll()
 
-    SceneManager.requestloadScene(GameScene)
+    SceneManager.requestloadScene(MenuScene)
 
     while shouldRun:
         # load new scene if it was requested
