@@ -3,7 +3,7 @@ from components.ambient.Bird import Bird
 from components.ambient.Diashow import Diashow
 from components.ambient.RandomAmbientEvent import Shark
 from components.ui.ImageButton import ImageButton
-from scenes.LogoScene import LogoScene
+from scenes.GameScene import GameScene
 from scenes.Scene import Scene, SceneManager
 from scenes.menu.DifficultySelect import DifficultySelect
 from utils.Animator import Animator
@@ -49,6 +49,5 @@ class MenuScene(Scene):
 
     
     def startGame(self):
-        print("start game")
-        SceneManager.requestloadScene(LogoScene)
+        SceneManager.requestloadScene(GameScene)
     

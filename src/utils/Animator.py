@@ -98,6 +98,16 @@ class Animator(metaclass = InstanceRegistryMetaClass):
     
     def setHook(self, hook : Callable[[any], None]) -> None:
         self.__hook = hook
+    
+    def addHook(self, hook : Callable[[any], None]) -> None:
+        if self.__hook is None:
+            self.__hook = hook
+        else:
+            oldHook = self.__hook
+            def newHook(p):
+                oldHook(p)
+                hook(p)
+            self.__hook = newHook
 
     def detachHook(self) -> None:
         self.__hook = None

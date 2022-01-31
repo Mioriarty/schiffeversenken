@@ -1,5 +1,6 @@
 import pygame
 from components.Component import Component
+from scenes.GameScene import GameScene
 from scenes.LogoScene import LogoScene
 from scenes.Scene import SceneManager
 from scenes.TestScene import TestScene
@@ -28,7 +29,7 @@ def main():
     Images.loadAll()
     Sounds.loadAll()
 
-    SceneManager.requestloadScene(MenuScene)
+    SceneManager.requestloadScene(GameScene)
 
     while shouldRun:
         # load new scene if it was requested
