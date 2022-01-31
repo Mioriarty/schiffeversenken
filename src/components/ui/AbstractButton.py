@@ -12,6 +12,7 @@ class AbstractButton(Component):
         self.width = width
         self.height = height
 
+        self.__enabled = True
         self.__hovering = False
         self.__pressed = False
         self.__hoverCursor = pygame.SYSTEM_CURSOR_HAND
@@ -19,38 +20,51 @@ class AbstractButton(Component):
         self.__onClickEvent : Callable[[], None] = None
 
     def update(self, dt : float) -> None:
-        relativeMousePos = np.absolute(self.transform.applyInv(pygame.mouse.get_pos()))
-        hovering = 2 * relativeMousePos[0] <= self.width and 2 * relativeMousePos[1] <= self.height
-        
-        if hovering and not self.__hovering:
-            pygame.mouse.set_cursor(self.__hoverCursor)
-            self.onMouseEnter()
-        elif not hovering and self.__hovering:
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-            if self.__pressed:
-                self.onPressCancel()
-                self.__pressed = False
-            self.onMouseExit()
-
-        self.__hovering = hovering
-        
-        if hovering:
-            pressed = pygame.mouse.get_pressed()[0]
-
-            if pressed and not self.__pressed:
-                self.onMouseDown()
-            elif not pressed and self.__pressed:
-                self.onMouseUp()
-                # actually call the onclick event
-                if self.__onClickEvent is not None:
-                    Sounds.playSoundEffect("click")
-                    self.__onClickEvent()
+        if self.__enabled:
+            relativeMousePos = np.absolute(self.transform.applyInv(pygame.mouse.get_pos()))
+            hovering = 2 * relativeMousePos[0] <= self.width and 2 * relativeMousePos[1] <= self.height
             
-            self.__pressed = pressed
+            if hovering and not self.__hovering:
+                pygame.mouse.set_cursor(self.__hoverCursor)
+                self.onMouseEnter()
+            elif not hovering and self.__hovering:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                if self.__pressed:
+                    self.onPressCancel()
+                    self.__pressed = False
+                self.onMouseExit()
+
+            self.__hovering = hovering
+            
+            if hovering:
+                pressed = pygame.mouse.get_pressed()[0]
+
+                if pressed and not self.__pressed:
+                    self.onMouseDown()
+                elif not pressed and self.__pressed:
+                    self.onMouseUp()
+                    # actually call the onclick event
+                    if self.__onClickEvent is not None:
+                        Sounds.playSoundEffect("click")
+                        self.__onClickEvent()
+                
+                self.__pressed = pressed
                 
     
     def setOnClickEvent(self, clickEvent : Callable[[], None]):
         self.__onClickEvent = clickEvent
+    
+    def enable(self) -> None:
+        self.__enabled = True
+    
+    def disable(self) -> None:
+        if self.__hovering:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        
+        self.__enabled = False
+        self.__pressed = False
+        self.__hovering = False
+        
 
 
     def onMouseEnter(self) -> None:
