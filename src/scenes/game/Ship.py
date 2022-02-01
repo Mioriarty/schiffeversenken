@@ -90,6 +90,7 @@ class ShipManager(Component):
     def __removeShip(self, index : int) -> None:
         length = self.placedShips[index][0].length
         self.placedShips[index][0] = ShipShape(length, (-1, -1), -1)
+        self.placedShips[index][1].disable()
         self.ships[index].enable()
 
     
@@ -153,6 +154,7 @@ class ShipManager(Component):
 
         self.placedShips[self.selectedIndex][0] = shape
         self.placedShips[self.selectedIndex][1].moveToFitShape(shape, self.boardRect, self.boardSize)
+        self.placedShips[self.selectedIndex][1].enable()
 
         self.ships[self.selectedIndex].disable()
         self.selectedIndex = -1
