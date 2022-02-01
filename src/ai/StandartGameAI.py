@@ -2,45 +2,41 @@ import random
 from typing import Generator
 import numpy as np
 
-class Ship:
+class ShipShape:
 
     HORIZONTAL = 0
     VERTICAL = 1
 
-    def __init__(self, length : int, pos : tuple[int], orientation : int):
+    def __init__(self, length : int, cell : tuple[int], orientation : int):
         self.length = length
-        self.pos = pos
+        self.cell = cell
         self.orientation = orientation
 
     def occupiedTiles(self) -> list[tuple[int]]:
         tiles = []
-        if self.orientation == Ship.HORIZONTAL:
+        if self.orientation == ShipShape.HORIZONTAL:
             for i in range(self.length):
-                tiles.append((self.pos[0] + i, self.pos[1]))
-        elif self.orientation == Ship.VERTICAL:
+                tiles.append((self.cell[0] + i, self.cell[1]))
+        elif self.orientation == ShipShape.VERTICAL:
             for i in range(self.length):
-                tiles.append((self.pos[0], self.pos[1] + i))
-        else:
-            raise ValueError("Ships orientation neither horizontal nor vertical")
+                tiles.append((self.cell[0], self.cell[1] + i))
         return tiles
     
     def blockedTiles(self) -> list[tuple[int]]:
         tiles = []
-        if self.orientation == Ship.HORIZONTAL:
+        if self.orientation == ShipShape.HORIZONTAL:
             for i in range(-1, self.length + 1):
-                tiles.append((self.pos[0] + i, self.pos[1]))
-                tiles.append((self.pos[0] + i, self.pos[1] - 1))
-                tiles.append((self.pos[0] + i, self.pos[1] + 1))
-        elif self.orientation == Ship.VERTICAL:
+                tiles.append((self.cell[0] + i, self.cell[1]))
+                tiles.append((self.cell[0] + i, self.cell[1] - 1))
+                tiles.append((self.cell[0] + i, self.cell[1] + 1))
+        elif self.orientation == ShipShape.VERTICAL:
             for i in range(-1, self.length + 1):
-                tiles.append((self.pos[0], self.pos[1] + i))
-                tiles.append((self.pos[0] - 1, self.pos[1] + i))
-                tiles.append((self.pos[0] + 1, self.pos[1] + i))
-        else:
-            raise ValueError("Ships orientation neither horizontal nor vertical")
+                tiles.append((self.cell[0], self.cell[1] + i))
+                tiles.append((self.cell[0] - 1, self.cell[1] + i))
+                tiles.append((self.cell[0] + 1, self.cell[1] + i))
         return tiles
     
-    def interferesWith(self, other : 'Ship') -> bool:
+    def interferesWith(self, other : 'ShipShape') -> bool:
         blockedTiles = self.blockedTiles()
         for otherTile in other.occupiedTiles():
             if otherTile in blockedTiles:
@@ -48,17 +44,17 @@ class Ship:
         return False
     
     def isInBoardBounds(self, boardWidth : int, boardHeight : int) -> bool:
-        if self.pos[0] < 0 or self.pos[1] < 0:
+        if self.cell[0] < 0 or self.cell[1] < 0:
             return False
 
-        if self.orientation == Ship.HORIZONTAL:
+        if self.orientation == ShipShape.HORIZONTAL:
             boardWidth -= self.length
-        elif self.orientation == Ship.VERTICAL:
+        elif self.orientation == ShipShape.VERTICAL:
             boardHeight -= self.length
         
-        return self.pos[0] <= boardWidth and self.pos[1] <= boardHeight
+        return self.cell[0] <= boardWidth and self.cell[1] <= boardHeight
     
-    def fitsInShipPlacement(self, shipPlacement : list['Ship']) -> bool:
+    def fitsInShipPlacement(self, shipPlacement : list['ShipShape']) -> bool:
         return all(not self.interferesWith(ship) for ship in shipPlacement)
 
 class StandartGameAI:
@@ -78,7 +74,7 @@ class StandartGameAI:
         self.numShips = numShips
         self.parity = random.randint(0, 1)
     
-    def getShipPlacement(self) -> list[Ship]:
+    def getShipPlacement(self) -> list[ShipShape]:
         # construct ships to do
         shipsToDo : list[int] = []
         for length, count in sorted(self.numShips.items(), reverse=True):
@@ -86,16 +82,16 @@ class StandartGameAI:
 
         return self.getShipPlacementInner(shipsToDo, [])
 
-    def getShipPlacementInner(self, shipsToDo : list[int], crntPlacement : list[Ship]) -> list[Ship] | None:
+    def getShipPlacementInner(self, shipsToDo : list[int], crntPlacement : list[ShipShape]) -> list[ShipShape] | None:
         if len(shipsToDo) == 0:
             return crntPlacement
 
         crntLength = shipsToDo.pop(0)
         
         for pos in self.shuffledIndex():
-            orientations = random.sample([ Ship.VERTICAL, Ship.HORIZONTAL ], 2)
+            orientations = random.sample([ ShipShape.VERTICAL, ShipShape.HORIZONTAL ], 2)
             for orientation in orientations:
-                tempShip = Ship(crntLength, pos, orientation)
+                tempShip = ShipShape(crntLength, pos, orientation)
                 if tempShip.isInBoardBounds(self.width, self.height) and tempShip.fitsInShipPlacement(crntPlacement):
                     finalPlacement = self.getShipPlacementInner(shipsToDo, crntPlacement + [ tempShip ])
                     if finalPlacement != None:
@@ -284,7 +280,7 @@ class StandartGameAI:
         return self.isInBounds(pos) and (self.board[pos[0]][pos[1]] == StandartGameAI.NO_INFO or self.board[pos[0]][pos[1]] == StandartGameAI.SHIP_LIKELY or self.board[pos[0]][pos[1]] == StandartGameAI.SHIP)
 
 
-def printShipPlacement(shipPlacement : list[Ship], width, height):
+def printShipPlacement(shipPlacement : list[ShipShape], width, height):
     board : list[list[int]] = [[StandartGameAI.NO_INFO for _ in range(height)] for _ in range(width)]
     for ship in shipPlacement:
         for p in ship.occupiedTiles():

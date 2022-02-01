@@ -56,6 +56,8 @@ class AbstractButton(Component):
     
     def enable(self) -> None:
         self.__enabled = True
+
+        self.onEnable()
     
     def disable(self) -> None:
         if self.__hovering:
@@ -64,6 +66,8 @@ class AbstractButton(Component):
         self.__enabled = False
         self.__pressed = False
         self.__hovering = False
+
+        self.onDisable()
         
 
 
@@ -80,4 +84,10 @@ class AbstractButton(Component):
         pass
 
     def onPressCancel(self) -> None:
+        pass
+
+    def onEnable(self) -> None:
+        pass
+
+    def onDisable(self) -> None:
         pass
