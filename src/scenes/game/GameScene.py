@@ -2,6 +2,7 @@ from turtle import update
 from components.ui.ImageButton import ImageButton
 from scenes.Scene import Scene, SceneManager
 from scenes.game.Ship import Ship, ShipPlacer
+from scenes.game.TargetSelector import TargetSelector
 from utils.Animator import Animator
 from utils.Images import Sprite
 from utils.Transform import Transform
@@ -58,9 +59,18 @@ class GameScene(Scene):
         ]
         SceneManager.putInDrawLayer(self.oppositeShips, SceneManager.GAME_MAIN_LAYER)
 
-
         Ship.shipTotal = 10
         Ship.travelDoneCallback = self.__startGame
+
+        self.targetSelector = TargetSelector(
+            11,
+            self.board1.image.get_rect(center=self.board1.transform.getPosition()),
+            self.board2.image.get_rect(center=self.board2.transform.getPosition()),
+            (100, 100),
+            (600, 100)
+        )
+        SceneManager.putInDrawLayer(self.targetSelector, SceneManager.GAME_MAIN_LAYER)
+
 
     
     def __placementDoneCallback(self):
@@ -69,4 +79,5 @@ class GameScene(Scene):
     
 
     def __startGame(self):
-        print("Start Game")
+        self.targetSelector.setOwnShipPlacement(self.shipManager.getCurrentShipPlacement())
+        self.targetSelector.start()

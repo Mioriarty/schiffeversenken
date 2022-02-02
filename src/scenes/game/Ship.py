@@ -323,5 +323,8 @@ class ShipPlacer(Component):
             outsideShip.deselect()
 
             outsideShip.travelTo(shipShape, self.boardRect, self.boardSize)
+    
+    def getCurrentShipPlacement(self):
+        return [ s[0] for s in self.placedShips ]
 
         
