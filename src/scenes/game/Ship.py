@@ -79,6 +79,9 @@ class Ship(ImageButton):
 
         rotationSpeed = Ship.ROTATION_SPEEDS[self.__length]
         movementSpeed = Ship.MOVEMENT_SPEEDS[self.__length]
+
+        # make ships that have to travel far quicker
+        movementSpeed += 15 * ((pos[1] - boardRect.y) / float(boardRect.height))
         
         # Delay
         delay = random.random() * 3.
