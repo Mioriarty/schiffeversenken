@@ -1,5 +1,7 @@
+from turtle import update
+from components.ui.ImageButton import ImageButton
 from scenes.Scene import Scene, SceneManager
-from scenes.game.Ship import Ship, ShipManager
+from scenes.game.Ship import Ship, ShipPlacer
 from utils.Animator import Animator
 from utils.Images import Sprite
 from utils.Transform import Transform
@@ -29,7 +31,7 @@ class GameScene(Scene):
         self.boardAppearAnim.addHook(self.board2.image.set_alpha)
         self.boardAppearAnim.play()
 
-        self.shipManager = ShipManager([
+        self.shipManager = ShipPlacer([
             Ship(2, transform=Transform((310, 140), angle=-math.pi/2,  parent=self.landParent)),
             Ship(2, transform=Transform((375, 95), angle=-math.pi/2,  parent=self.landParent)),
             Ship(2, transform=Transform((110, 80), angle=-2.5,  parent=self.landParent)),
@@ -43,8 +45,10 @@ class GameScene(Scene):
             Ship(4, transform=Transform((340, 120), angle=-math.pi/2, parent=self.landParent)),
 
             Ship(5, transform=Transform((170, 120), angle=-math.pi/2, parent=self.landParent))
-        ], self.board1.image.get_rect(center=self.board1.transform.getPosition()), 11)
+        ], ImageButton(Sprite("buttons.spielen"), transform = Transform.screenCenter(y=200., scale=(0.2, 0.2))), self.board1.image.get_rect(center=self.board1.transform.getPosition()), 11)
         
         SceneManager.putInDrawLayer(self.shipManager, SceneManager.GAME_MAIN_LAYER)
+
+        Ship.shipTotal = 10
 
         

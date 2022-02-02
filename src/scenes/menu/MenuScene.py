@@ -37,6 +37,8 @@ class MenuScene(Scene):
 
         self.playBtn = ImageButton(Sprite("buttons.spielen"), transform = Transform.screenCenter(y=600., scale=(0.3, 0.3), parent=self.parentTransform))
         self.playBtn.setOnClickEvent(self.gameStartAnimation.play)
+        SceneManager.putInDrawLayer(self.playBtn, SceneManager.UI_MAIN_LAYER)
+
 
         self.birds = [
             Bird(velocity = 60., transform=Transform(scale=(0.25, 0.25), parent=self.parentTransform)),

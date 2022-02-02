@@ -66,3 +66,6 @@ class Sprite:
 
         rect = img.get_rect(center=self.transform.getPosition())
         screen.blit(img, rect)
+    
+    def unbake(self) -> None:
+        self.image = self.untransformedImage.copy()

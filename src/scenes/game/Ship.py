@@ -1,21 +1,27 @@
-from numpy import angle
+import random
 from ai.StandartGameAI import ShipShape
 from components.Component import Component
 from components.ui.ImageButton import ImageButton
+from utils.Animator import Animator
 from utils.Images import Sprite
 from utils.Transform import Transform
 import pygame
 import functools
-import math
+import numpy as np
 
 
 class Ship(ImageButton):
 
     SCALE = (0.38, 0.3)
+    arrivedShips = 0
+    shipTotal = 0
+
     def __init__(self, length : int, scaleFactor: float = 0.8, transform: Transform = None):
         transform.setRelScale(Ship.SCALE)
         super().__init__(Sprite(f"game.ships.s{length}"), scaleFactor, transform)
         self.__length = length
+
+        self.animators = []
     
     def select(self) -> None:
         self._sprite.image.set_alpha(100)
@@ -48,25 +54,96 @@ class Ship(ImageButton):
             x = (shape.cell[0] + 1/2) / boardSize * boardRect.width  + boardRect.x
             y = (shape.cell[1] + shape.length / 2) / boardSize * boardRect.height  + boardRect.y
         
-        angle = 0 if shape.orientation == ShipShape.HORIZONTAL else -1/2 * math.pi
+        angle = 0 if shape.orientation == ShipShape.HORIZONTAL else -1/2 * np.pi
 
         return (x, y), angle
+    
+    def travelTo(self, shape : ShipShape,  boardRect : pygame.Rect, boardSize : int):
+        pos, _ = Ship.getPositionAndRotationFromShape(shape, boardRect, boardSize)
+
+        rotationSpeed = 2.
+        movementSpeed = 30.
+        
+        # Delay
+        delay = random.random() * 3.
+        posAnim = Animator.const(self.transform.getRelPosition(), delay)
+        angleAnim = Animator.const(self.transform.getRelAngle(), delay)
+
+        # align vertically
+        verticalAngle =  - 1/2 * np.pi
+
+        duration = max(abs(self.transform.getRelAngle() - verticalAngle), 0.01) / rotationSpeed
+        posAnim += Animator.const(self.transform.getRelPosition(), duration)
+        angleAnim += Animator.smoothLerp(self.transform.getRelAngle(), verticalAngle, duration)
+
+        # vertical movement
+        verticalEndPos = np.array([self.transform.getRelPosition()[0], pos[1]])
+
+        duration = max(abs(self.transform.getRelPosition()[1] - pos[1]), 0.01) / movementSpeed
+        posAnim += Animator.smoothLerp(self.transform.getRelPosition(), verticalEndPos, duration)
+        angleAnim += Animator.const(verticalAngle, duration)
+
+        # align horizontally
+        horizontalAngle = 0 if verticalEndPos[0] < pos[0] else - np.pi
+
+        duration = max(abs(verticalAngle - horizontalAngle), 0.01) / rotationSpeed
+        posAnim += Animator.const(verticalEndPos, duration)
+        angleAnim += Animator.smoothLerp(verticalAngle, horizontalAngle, duration)
+
+        # horizontal movement
+        duration = max(abs(verticalEndPos[0] - pos[0]), 0.01) / movementSpeed
+        posAnim += Animator.smoothLerp(verticalEndPos, np.array(pos), duration)
+        angleAnim += Animator.const(horizontalAngle, duration)
+
+        # rotate to match oprientation in necessary
+        if shape.orientation == ShipShape.VERTICAL:
+            finalAngle = - 1/2 * np.pi
+
+            duration = max(abs(horizontalAngle - finalAngle), 0.01) / rotationSpeed
+            posAnim += Animator.const(pos, duration)
+            angleAnim += Animator.smoothLerp(horizontalAngle, finalAngle, duration)
+
+
+
+        # start animations
+        self._sprite.enableRoation = True
+        self._sprite.bakeTransform(includeRotation=False) # remove prebaked rotation
+        self.animators = [ posAnim, angleAnim ]
+        self.animators[0].setHook(self.transform.setRelPosition)
+        self.animators[0].play()
+        self.animators[1].setHook(self.transform.setRelAngle)
+        self.animators[1].play()
+
+        # set end hook
+        def arriveCallback() -> None:
+            Ship.arrivedShips += 1
+            self._sprite.enableRoation = False
+            self._sprite.bakeTransform()
+
+        self.animators[0].setEndCallback(arriveCallback)
 
     
+    @staticmethod
+    def travelSquenceDone() -> bool:
+        return Ship.arrivedShips >= Ship.shipTotal
 
-class ShipManager(Component):
+class ShipPlacer(Component):
 
     
-    def __init__(self, ships : list[Ship], boardRect : pygame.Rect, boardSize : int):
+    def __init__(self, ships : list[Ship], startBtn : ImageButton, boardRect : pygame.Rect, boardSize : int):
         super().__init__(None)
-        print(boardRect)
 
         self.ships = ships
+        self.startBtn = startBtn
+        self.startBtn.disable()
+        self.startBtn.setOnClickEvent(self.startGame)
         self.selectedIndex = -1
         self.boardRect = boardRect
         self.boardSize = boardSize
         self.hoverOrientation = ShipShape.HORIZONTAL
         self.hoverSprite = None
+        self.placementDone = False
+        self.inGame = False
 
         self.placedShips = [ [ShipShape(s.getLength(), (-1, -1), -1), Ship(s.getLength(), transform=Transform(scale=Ship.SCALE))] for s in self.ships ]
 
@@ -93,18 +170,24 @@ class ShipManager(Component):
         self.placedShips[index][1].disable()
         self.ships[index].enable()
 
+        self.placementDone = False
+        self.startBtn.disable()
     
 
     def draw(self, screen: pygame.Surface) -> None:
         for ship in self.ships:
             ship.draw(screen)
         
-        for shipShape, ship in self.placedShips:
-            if shipShape.orientation != -1:
-                ship.draw(screen)
+        if not self.inGame:
+            for shipShape, ship in self.placedShips:
+                if shipShape.orientation != -1:
+                    ship.draw(screen)
         
         if self.selectedIndex > -1 and self.boardRect.collidepoint(pygame.mouse.get_pos()):
             self.hoverSprite.draw(screen)
+        
+        if self.placementDone:
+            self.startBtn.draw(screen)
 
     
     def update(self, dt: float) -> None:
@@ -129,6 +212,8 @@ class ShipManager(Component):
             
             elif isValidHoverPos and pygame.event.peek(pygame.MOUSEBUTTONUP):
                 self.placeShip(cell)
+        
+        print(Ship.travelSquenceDone())
 
                 
     def getPlacementCell(self, shipLength : int) -> tuple[int]:
@@ -158,3 +243,19 @@ class ShipManager(Component):
 
         self.ships[self.selectedIndex].disable()
         self.selectedIndex = -1
+
+        self.placementDone = all(s[0].orientation != -1 for s in self.placedShips)
+        if self.placementDone:
+            self.startBtn.enable()
+    
+    def startGame(self) -> None:
+        self.inGame = True
+
+        for (shipShape, placedShip), outsideShip in zip(self.placedShips, self.ships):
+            placedShip.disable()
+            outsideShip.disable()
+            outsideShip.deselect()
+
+            outsideShip.travelTo(shipShape, self.boardRect, self.boardSize)
+
+        

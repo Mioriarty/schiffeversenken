@@ -1,5 +1,6 @@
 from scenes.Scene import Scene, SceneManager
 from scenes.TestScene import TestScene
+from scenes.menu.MenuScene import MenuScene
 from utils import *
 
 class LogoScene(Scene):
@@ -17,7 +18,7 @@ class LogoScene(Scene):
 
         self.alphaAnimation = Animator.easeOut(0, 255., 1) + Animator.const(255, 4.3) + Animator.easeIn(255, 0, 1)
         self.alphaAnimation.setHook(self.logo.image.set_alpha)
-        self.alphaAnimation.setEndCallback(lambda : SceneManager.requestloadScene(TestScene))
+        self.alphaAnimation.setEndCallback(lambda : SceneManager.requestloadScene(MenuScene))
     
     def start(self) -> None:
         Sounds.playSoundEffect("intro")

@@ -42,9 +42,12 @@ class DifficultySelect(Component):
         
         self.leftButton = ImageButton(Sprite("buttons.left"), transform = Transform((-300, 0), scale=(0.2, 0.2), parent=self.transform))
         self.leftButton.setOnClickEvent(self.leftPress)
+        SceneManager.putInDrawLayer(self.leftButton, SceneManager.UI_MAIN_LAYER)
 
         self.rightButton = ImageButton(Sprite("buttons.right"), transform = Transform((300, 0), scale=(0.2, 0.2), parent=self.transform))
         self.rightButton.setOnClickEvent(self.rightPress)
+        SceneManager.putInDrawLayer(self.rightButton, SceneManager.UI_MAIN_LAYER)
+
 
     def rightPress(self):
         self.skipAnimations()
