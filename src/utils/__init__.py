@@ -4,3 +4,4 @@ from utils.Timer import Timer
 from utils.Transform import Transform
 from utils.Images import Images, Sprite
 from utils.Sounds import Sounds
+from utils.Input import Input

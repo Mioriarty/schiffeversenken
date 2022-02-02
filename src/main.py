@@ -6,6 +6,7 @@ from scenes.Scene import SceneManager
 from scenes.TestScene import TestScene
 from scenes.menu.MenuScene import MenuScene
 from utils.Animator import Animator
+from utils.Input import Input
 from utils.Timer import Timer
 from utils.Images import Images
 from utils.Sounds import Sounds
@@ -20,7 +21,7 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.DOUBLEBUF, 16)
     pygame.display.set_caption(WINDOW_TITLE)
-    pygame.event.set_allowed([ pygame.QUIT ])
+    # pygame.event.set_allowed([ pygame.QUIT ])
 
     clock = pygame.time.Clock()
 
@@ -48,9 +49,12 @@ def main():
         SceneManager.drawAll(screen)
 
         # catch events
+        Input.clearEvents()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 shouldRun = False
+            else:
+                Input.enterEvent(event)
 
         pygame.display.update()
     

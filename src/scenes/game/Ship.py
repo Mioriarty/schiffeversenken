@@ -4,6 +4,7 @@ from components.Component import Component
 from components.ui.ImageButton import ImageButton
 from utils.Animator import Animator
 from utils.Images import Sprite
+from utils.Input import Input
 from utils.Transform import Transform
 import pygame
 import functools
@@ -198,7 +199,7 @@ class ShipPlacer(Component):
                 if shipShape.orientation != -1:
                     ship.draw(screen)
         
-        if self.selectedIndex > -1 and self.boardRect.collidepoint(pygame.mouse.get_pos()):
+        if self.selectedIndex > -1 and self.boardRect.collidepoint(Input.getMousePos()):
             self.hoverSprite.draw(screen)
         
         if self.placementDone:
@@ -206,10 +207,11 @@ class ShipPlacer(Component):
 
     
     def update(self, dt: float) -> None:
-        if self.selectedIndex > -1 and self.boardRect.collidepoint(pygame.mouse.get_pos()):
+        if self.selectedIndex > -1 and self.boardRect.collidepoint(Input.getMousePos()):
             hoverLength = self.ships[self.selectedIndex].getLength()
 
-            if pygame.event.peek(pygame.MOUSEWHEEL):
+            mouseEvent = Input.getEvent(pygame.MOUSEBUTTONUP)
+            if mouseEvent is not None and (4 <= mouseEvent.button <= 5):
                 self.hoverOrientation = (self.hoverOrientation + 1) % 2
             
             cell = self.getPlacementCell(hoverLength)
@@ -221,19 +223,19 @@ class ShipPlacer(Component):
             self.hoverSprite.transform.setRelPosition(pos)
             self.hoverSprite.image.set_alpha(255 if isValidHoverPos else 100)
 
-            if pygame.event.peek(pygame.MOUSEWHEEL):
+            if mouseEvent is not None and (4 <= mouseEvent.button <= 5):
                 self.hoverSprite.transform.setRelAngle(angle)
                 self.hoverSprite.bakeTransform()
             
-            elif isValidHoverPos and pygame.event.peek(pygame.MOUSEBUTTONUP):
+            elif isValidHoverPos and mouseEvent is not None and mouseEvent.button == 1:
                 self.placeShip(cell)
         
         print(Ship.travelSquenceDone())
 
                 
     def getPlacementCell(self, shipLength : int) -> tuple[int]:
-        cell = ((pygame.mouse.get_pos()[0] - self.boardRect.x) * self.boardSize // self.boardRect.width,
-                (pygame.mouse.get_pos()[1] - self.boardRect.y) * self.boardSize // self.boardRect.height )
+        cell = ((Input.getMousePos()[0] - self.boardRect.x) * self.boardSize // self.boardRect.width,
+                (Input.getMousePos()[1] - self.boardRect.y) * self.boardSize // self.boardRect.height )
 
         if self.hoverOrientation == ShipShape.HORIZONTAL:
             # only modify xCoord

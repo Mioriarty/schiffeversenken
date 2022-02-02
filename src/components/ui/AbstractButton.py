@@ -4,6 +4,8 @@ from utils import Sounds, Transform
 import pygame
 import numpy as np
 
+from utils.Input import Input
+
 
 class AbstractButton(Component):
 
@@ -21,7 +23,7 @@ class AbstractButton(Component):
 
     def update(self, dt : float) -> None:
         if self.__enabled:
-            relativeMousePos = np.absolute(self.transform.applyInv(pygame.mouse.get_pos()))
+            relativeMousePos = np.absolute(self.transform.applyInv(Input.getMousePos()))
             hovering = 2 * relativeMousePos[0] <= self.width and 2 * relativeMousePos[1] <= self.height
             
             if hovering and not self.__hovering:
@@ -37,19 +39,22 @@ class AbstractButton(Component):
             self.__hovering = hovering
             
             if hovering:
-                pressed = pygame.mouse.get_pressed()[0]
+                clicked = Input.hasEvent(pygame.MOUSEBUTTONDOWN) and Input.getEvent(pygame.MOUSEBUTTONDOWN).button == 1
 
-                if pressed and not self.__pressed:
+                if clicked:
                     self.onMouseDown()
-                elif not pressed and self.__pressed:
-                    self.onMouseUp()
-                    # actually call the onclick event
-                    if self.__onClickEvent is not None:
-                        Sounds.playSoundEffect("click")
-                        self.__onClickEvent()
-                
-                self.__pressed = pressed
-                
+                    self.__pressed = True
+                elif self.__pressed:
+                    released = Input.hasEvent(pygame.MOUSEBUTTONUP) and Input.getEvent(pygame.MOUSEBUTTONUP).button == 1
+                    if released:
+                        self.onMouseUp()
+                        
+                        # actually call the onclick event
+                        if self.__onClickEvent is not None:
+                            Sounds.playSoundEffect("click")
+                            self.__onClickEvent()
+                        self.__pressed = False
+                    
     
     def setOnClickEvent(self, clickEvent : Callable[[], None]):
         self.__onClickEvent = clickEvent
