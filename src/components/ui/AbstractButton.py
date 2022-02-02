@@ -58,6 +58,16 @@ class AbstractButton(Component):
     
     def setOnClickEvent(self, clickEvent : Callable[[], None]):
         self.__onClickEvent = clickEvent
+
+    def addOnClickEvent(self, clickEvent : Callable[[], None]) -> None:
+        if self.__onClickEvent is None:
+            self.__onClickEvent = clickEvent
+        else:
+            oldEvent = self.__onClickEvent
+            def newEvent():
+                oldEvent()
+                clickEvent()
+            self.__onClickEvent = newEvent
     
     def enable(self) -> None:
         self.__enabled = True

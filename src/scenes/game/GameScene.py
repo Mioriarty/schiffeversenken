@@ -31,6 +31,9 @@ class GameScene(Scene):
         self.boardAppearAnim.addHook(self.board2.image.set_alpha)
         self.boardAppearAnim.play()
 
+        placementDoneBtn = ImageButton(Sprite("buttons.spielen"), transform = Transform.screenCenter(y=200., scale=(0.2, 0.2)))
+        placementDoneBtn.setOnClickEvent(self.__placementDoneCallback)
+
         self.shipManager = ShipPlacer([
             Ship(2, transform=Transform((310, 140), angle=-math.pi/2,  parent=self.landParent)),
             Ship(2, transform=Transform((375, 95), angle=-math.pi/2,  parent=self.landParent)),
@@ -45,10 +48,17 @@ class GameScene(Scene):
             Ship(4, transform=Transform((340, 120), angle=-math.pi/2, parent=self.landParent)),
 
             Ship(5, transform=Transform((170, 120), angle=-math.pi/2, parent=self.landParent))
-        ], ImageButton(Sprite("buttons.spielen"), transform = Transform.screenCenter(y=200., scale=(0.2, 0.2))), self.board1.image.get_rect(center=self.board1.transform.getPosition()), 11)
+        ], placementDoneBtn, self.board1.image.get_rect(center=self.board1.transform.getPosition()), 11)
         
         SceneManager.putInDrawLayer(self.shipManager, SceneManager.GAME_MAIN_LAYER)
 
         Ship.shipTotal = 10
+        Ship.travelDoneCallback = self.__startGame
 
-        
+    
+    def __placementDoneCallback(self):
+        print("Done")
+    
+
+    def __startGame(self):
+        print("Start Game")

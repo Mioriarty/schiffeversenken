@@ -1,4 +1,5 @@
 import random
+from typing import Callable
 from ai.StandartGameAI import ShipShape
 from components.Component import Component
 from components.ui.ImageButton import ImageButton
@@ -16,6 +17,7 @@ class Ship(ImageButton):
     SCALE = (0.38, 0.3)
     arrivedShips = 0
     shipTotal = 0
+    travelDoneCallback = lambda : ...
 
     MOVEMENT_SPEEDS = {
         2: 40,
@@ -135,9 +137,12 @@ class Ship(ImageButton):
 
         # set end hook
         def arriveCallback() -> None:
-            Ship.arrivedShips += 1
             self._sprite.enableRoation = False
             self._sprite.bakeTransform()
+
+            Ship.arrivedShips += 1
+            if Ship.travelSquenceDone():
+                Ship.travelDoneCallback()
 
         self.animators[0].setEndCallback(arriveCallback)
 
@@ -155,7 +160,7 @@ class ShipPlacer(Component):
         self.ships = ships
         self.startBtn = startBtn
         self.startBtn.disable()
-        self.startBtn.setOnClickEvent(self.startGame)
+        self.startBtn.addOnClickEvent(self.startGame)
         self.selectedIndex = -1
         self.boardRect = boardRect
         self.boardSize = boardSize
@@ -205,7 +210,7 @@ class ShipPlacer(Component):
         if self.selectedIndex > -1 and self.boardRect.collidepoint(Input.getMousePos()):
             self.hoverSprite.draw(screen)
         
-        if self.placementDone:
+        if self.placementDone and not self.inGame:
             self.startBtn.draw(screen)
 
     
@@ -233,7 +238,6 @@ class ShipPlacer(Component):
             elif isValidHoverPos and mouseEvent is not None and mouseEvent.button == 1:
                 self.placeShip(cell)
         
-        print(Ship.travelSquenceDone())
 
                 
     def getPlacementCell(self, shipLength : int) -> tuple[int]:
@@ -270,6 +274,7 @@ class ShipPlacer(Component):
     
     def startGame(self) -> None:
         self.inGame = True
+        self.startBtn.disable()
 
         for (shipShape, placedShip), outsideShip in zip(self.placedShips, self.ships):
             placedShip.disable()
