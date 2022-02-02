@@ -34,10 +34,13 @@ class Ship(ImageButton):
     }
     
 
-    def __init__(self, length : int, scaleFactor: float = 0.8, transform: Transform = None):
+    def __init__(self, length : int, scaleFactor: float = 0.8, onlyVisual : bool = False, transform: Transform = None):
         transform.setRelScale(Ship.SCALE)
         super().__init__(Sprite(f"game.ships.s{length}"), scaleFactor, transform)
         self.__length = length
+
+        if onlyVisual:
+            self.disable()
 
         self.animators = []
     
@@ -145,6 +148,44 @@ class Ship(ImageButton):
                 Ship.travelDoneCallback()
 
         self.animators[0].setEndCallback(arriveCallback)
+    
+    def doFakeTravel(self, boardRect : pygame.Rect):
+        rotationSpeed = Ship.ROTATION_SPEEDS[self.__length]
+        movementSpeed = Ship.MOVEMENT_SPEEDS[self.__length]
+
+        # Delay
+        delay = random.random() * 3.
+        posAnim = Animator.const(self.transform.getRelPosition(), delay)
+        angleAnim = Animator.const(self.transform.getRelAngle(), delay)
+        alphaAnim = Animator.const(255., delay)
+
+        # align vertically
+        verticalAngle = - 1/2 * np.pi
+
+        duration = max(abs(self.transform.getRelAngle() - verticalAngle), 0.01) / rotationSpeed
+        posAnim += Animator.const(self.transform.getRelPosition(), duration)
+        angleAnim += Animator.smoothLerp(self.transform.getRelAngle(), verticalAngle, duration)
+        alphaAnim += Animator.const(255., duration)
+
+        # move
+        endPos = np.array([self.transform.getRelPosition()[0], boardRect.y + boardRect.height / 2])
+
+        duration = max(abs(self.transform.getRelPosition()[1] - endPos[1]), 0.01) / movementSpeed
+        posAnim += Animator.smoothLerp(self.transform.getRelPosition(), endPos, duration)
+        angleAnim += Animator.const(verticalAngle, duration)
+        alphaAnim += Animator.const(255., duration / 4) + Animator.easeIn(255., 0., duration / 4)
+
+        # start animations
+        self._sprite.enableRoation = True
+        self._sprite.bakeTransform(includeRotation=False) # remove prebaked rotation
+        self.animators = [ posAnim, angleAnim, alphaAnim ]
+        self.animators[0].setHook(self.transform.setRelPosition)
+        self.animators[0].play()
+        self.animators[1].setHook(self.transform.setRelAngle)
+        self.animators[1].play()
+        self.animators[2].setHook(self._sprite.image.set_alpha)
+        self.animators[2].play()
+
 
     
     @staticmethod

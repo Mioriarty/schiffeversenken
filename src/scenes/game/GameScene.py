@@ -52,12 +52,20 @@ class GameScene(Scene):
         
         SceneManager.putInDrawLayer(self.shipManager, SceneManager.GAME_MAIN_LAYER)
 
+        self.oppositeShips = [
+            Ship(2, onlyVisual=True, transform=Transform((800, 140), angle=-math.pi/2,  parent=self.landParent)),
+            Ship(3, onlyVisual=True, transform=Transform((830, 160), angle=-math.pi/2,  parent=self.landParent))
+        ]
+        SceneManager.putInDrawLayer(self.oppositeShips, SceneManager.GAME_MAIN_LAYER)
+
+
         Ship.shipTotal = 10
         Ship.travelDoneCallback = self.__startGame
 
     
     def __placementDoneCallback(self):
-        print("Done")
+        for ship in self.oppositeShips:
+            ship.doFakeTravel(self.board1.image.get_rect(center=self.board1.transform.getPosition()))
     
 
     def __startGame(self):
