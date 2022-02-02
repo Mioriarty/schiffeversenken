@@ -16,6 +16,21 @@ class Ship(ImageButton):
     arrivedShips = 0
     shipTotal = 0
 
+    MOVEMENT_SPEEDS = {
+        2: 40,
+        3: 37,
+        4: 35,
+        5: 22
+    }
+
+    ROTATION_SPEEDS = {
+        2: 2.5,
+        3: 2.0,
+        4: 1.7,
+        5: 1.5
+    }
+    
+
     def __init__(self, length : int, scaleFactor: float = 0.8, transform: Transform = None):
         transform.setRelScale(Ship.SCALE)
         super().__init__(Sprite(f"game.ships.s{length}"), scaleFactor, transform)
@@ -61,8 +76,8 @@ class Ship(ImageButton):
     def travelTo(self, shape : ShipShape,  boardRect : pygame.Rect, boardSize : int):
         pos, _ = Ship.getPositionAndRotationFromShape(shape, boardRect, boardSize)
 
-        rotationSpeed = 2.
-        movementSpeed = 30.
+        rotationSpeed = Ship.ROTATION_SPEEDS[self.__length]
+        movementSpeed = Ship.MOVEMENT_SPEEDS[self.__length]
         
         # Delay
         delay = random.random() * 3.
