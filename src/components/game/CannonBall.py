@@ -26,13 +26,13 @@ class CannonBall(Sprite):
         self.splash = Diashow(
             [ "game.effects.splash1", "game.effects.splash2", "game.effects.splash3", "game.effects.splash4", "game.effects.splash5", "game.effects.splash6", "game.effects.splash7" ], 
             0.2, False, 
-            Transform(scale=(0.4, 0.4))
+            Transform(scale=(0.6, 0.6))
         )
 
         self.explosion = Diashow(
             [ "game.effects.explosion1", "game.effects.explosion2", "game.effects.explosion3", "game.effects.explosion4", "game.effects.explosion5", "game.effects.explosion6"],
             0.2, False,
-            Transform(scale=(0.4, 0.4))
+            Transform(scale=(0.8, 0.8))
         )
     
     def fire(self, start : tuple[float], dest : tuple[float], isMissedShot : bool) -> None:

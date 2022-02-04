@@ -1,4 +1,3 @@
-from turtle import update
 from components.ui.ImageButton import ImageButton
 from scenes.Scene import Scene, SceneManager
 from scenes.game.Ship import Ship, ShipPlacer
