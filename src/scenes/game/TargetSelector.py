@@ -29,7 +29,7 @@ class TargetSelector(Component):
         self.cross = Sprite("game.cross", transform=Transform(scale=(0.5, 0.5)), bakeNow=True)
         self.hitCells = []
         self.drawCross = False
-        self.cannonBall = CannonBall()
+        self.cannonBall = CannonBall(self.shotAnimationFinished)
         self.ownCannon = ownCannon
         self.oppositeCannon = oppositeCannon
 
@@ -76,7 +76,11 @@ class TargetSelector(Component):
         startPos = self.oppositeCannon if byAi else self.ownCannon
         endPos = self.getPosFromCell(cell, self.ownBoardRect if byAi else self.oppositeBoardRect)
 
-        self.cannonBall.fire(startPos, endPos)
+        self.cannonBall.fire(startPos, endPos, False)
+    
+    def shotAnimationFinished(self, pos : tuple[float]) -> None:
+        print("Finished")
+        print(pos)
 
     
     def draw(self, screen: pygame.Surface) -> None:
