@@ -56,6 +56,10 @@ class ShipShape:
     
     def fitsInShipPlacement(self, shipPlacement : list['ShipShape']) -> bool:
         return all(not self.interferesWith(ship) for ship in shipPlacement)
+    
+    @staticmethod
+    def cellInPlacement(cell : tuple[int], placement : list['ShipShape']) -> None:
+        return any((cell in ship.occupiedTiles()) for ship in placement)
 
 class StandartGameAI:
 

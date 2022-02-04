@@ -4,7 +4,8 @@ from ai.Difficulties import Difficulties
 from ai.StandartGameAI import ShipShape, StandartGameAI
 from components.Component import Component
 from components.game.CannonBall import CannonBall
-from utils.Animator import Animator
+from components.game.Fire import Fire
+from scenes.Scene import SceneManager
 from utils.Images import Sprite
 import random
 import numpy as np
@@ -30,23 +31,31 @@ class TargetSelector(Component):
         self.hitCells = []
         self.drawCross = False
         self.cannonBall = CannonBall(self.shotAnimationFinished)
+        self.fires = []
         self.ownCannon = ownCannon
         self.oppositeCannon = oppositeCannon
+        self.aiTurn = False
 
     def setOwnShipPlacement(self, shipPlacement : list[ShipShape]) -> None:
         self.ownShipPlacement = shipPlacement
     
     def start(self) -> None:
-        if random.random() >= 0.: # TODO: 0.5
+        if random.random() >= 0.5:
             self.doOwnShot()
         else:
             self.doOppositeShot()
 
     def doOwnShot(self) -> None:
+        self.aiTurn = False
         self.selecting = True
     
     def doOppositeShot(self) -> None:
-        pass
+        self.aiTurn = True
+        cell = self.ai.getNextShot()
+        cellState = StandartGameAI.SHIP if ShipShape.cellInPlacement(cell, self.ownShipPlacement) else StandartGameAI.CHECKED_NO_SHIP
+        self.ai.submitInfo(cell, cellState)
+
+        self.fireShot(cell)
 
     def getCellFromMousePos(self, boardRect : pygame.Rect) -> tuple[int]:
         return ((Input.getMousePos()[0] - boardRect.x) * self.boardSize // boardRect.width,
@@ -65,29 +74,40 @@ class TargetSelector(Component):
             
             if cell not in self.hitCells:
                 if Input.hasEvent(pygame.MOUSEBUTTONUP) and Input.getEvent(pygame.MOUSEBUTTONUP).button == 1:
-                    self.fireShot(cell, False)
+                    self.fireShot(cell)
                     self.hitCells.append(cell)
                     self.selecting = False
                 else:
                     self.drawCross = True
                     self.cross.transform.setRelPosition(self.getPosFromCell(cell, self.oppositeBoardRect))
  
-    def fireShot(self, cell : tuple[int], byAi : bool):
-        startPos = self.oppositeCannon if byAi else self.ownCannon
-        endPos = self.getPosFromCell(cell, self.ownBoardRect if byAi else self.oppositeBoardRect)
+    def fireShot(self, cell : tuple[int]):
+        startPos = self.oppositeCannon if self.aiTurn else self.ownCannon
+        endPos = self.getPosFromCell(cell, self.ownBoardRect if self.aiTurn else self.oppositeBoardRect)
+        hit = ShipShape.cellInPlacement(cell, self.ownShipPlacement if self.aiTurn else self.oppositeShipPlacement)
 
-        self.cannonBall.fire(startPos, endPos, False)
+        self.cannonBall.fire(startPos, endPos, hit)
     
-    def shotAnimationFinished(self, pos : tuple[float]) -> None:
-        print("Finished")
-        print(pos)
+    def shotAnimationFinished(self, pos : tuple[float], hit : bool) -> None:
+        if hit:
+            def createFire():
+                self.fires.append(Fire(transform=Transform(pos, scale=(0.4, 0.4))))
+            
+            SceneManager.requestComponent(createFire)
 
-    
+        if self.aiTurn:
+            self.doOwnShot()
+        else:
+            self.doOppositeShot()
+
     def draw(self, screen: pygame.Surface) -> None:
         if self.drawCross:
             self.cross.draw(screen)
         
         self.cannonBall.draw(screen)
+
+        for fire in self.fires:
+            fire.draw(screen)
 
     
 

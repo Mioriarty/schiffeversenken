@@ -1,3 +1,4 @@
+from typing import Callable
 from weakref import WeakSet
 from components.Component import Component
 import pygame
@@ -23,6 +24,8 @@ class SceneManager:
 
     __currentScene : Scene = None
     __requestedScene : type[Scene] = None
+
+    __componentCreators : list[Callable[[], Component]] = []
 
     __drawables : list[WeakSet[Component]] = [ WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet() ]
 
@@ -74,3 +77,14 @@ class SceneManager:
     @staticmethod
     def getClearColor() -> tuple[int]:
         return SceneManager.__currentScene.getClearColor()
+    
+    @staticmethod
+    def requestComponent(componentCreator : Callable[[], Component]) -> None:
+        SceneManager.__componentCreators.append(componentCreator)
+
+    @staticmethod
+    def createRequestedComponents() -> None:
+        for cr in SceneManager.__componentCreators:
+            cr()
+        
+        SceneManager.__componentCreators = []

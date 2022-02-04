@@ -11,16 +11,23 @@ class CannonBall(Sprite):
 
     ANIM_TIME = 2.
 
-    def __init__(self, animFinishedCallback : Callable[[tuple[float]], None]):
+    def __init__(self, animFinishedCallback : Callable[[tuple[float], bool], None]):
         super().__init__("game.cannon_ball", None, True, True, False)
 
         self.scaleAnim = Animator.easeOut(0.2, 0.5, CannonBall.ANIM_TIME / 2) + Animator.easeIn(0.5, 0.2, CannonBall.ANIM_TIME / 2)
         self.scaleAnim.setHook(lambda s : self.transform.setRelScale((s, s)))
+        self.scaleAnim.setRepeatMode(Animator.STOP)
+
         self.rotationAnim = Animator.lerp(0, 15, CannonBall.ANIM_TIME)
         self.rotationAnim.setHook(self.transform.setRelAngle)
         self.rotationAnim.setEndCallback(self.__flightFinished)
-        self.positionAnim = None
-        self.isMissedShot = True
+        self.rotationAnim.setRepeatMode(Animator.STOP)
+
+        self.positionAnim = Animator(None, CannonBall.ANIM_TIME)
+        self.positionAnim.setHook(self.transform.setRelPosition)
+        self.positionAnim.setRepeatMode(Animator.STOP)
+
+        self.isHittingShot = True
         self.animFinishedCallback = animFinishedCallback
 
         self.splash = Diashow(
@@ -28,22 +35,25 @@ class CannonBall(Sprite):
             0.2, False, 
             Transform(scale=(0.6, 0.6))
         )
+        self.splash.animation.setRepeatMode(Animator.STOP)
 
         self.explosion = Diashow(
             [ "game.effects.explosion1", "game.effects.explosion2", "game.effects.explosion3", "game.effects.explosion4", "game.effects.explosion5", "game.effects.explosion6"],
             0.2, False,
             Transform(scale=(0.8, 0.8))
         )
-    
-    def fire(self, start : tuple[float], dest : tuple[float], isMissedShot : bool) -> None:
-        self.isMissedShot = isMissedShot
+        self.explosion.animation.setRepeatMode(Animator.STOP)
 
-        if isMissedShot:
-            self.splash.transform.setRelPosition(dest)
-            self.splash.animation.setEndCallback(lambda : self.animFinishedCallback(dest))
-        else:
+    
+    def fire(self, start : tuple[float], dest : tuple[float], hits : bool) -> None:
+        self.isHittingShot = hits
+
+        if hits:
             self.explosion.transform.setRelPosition(dest)
-            self.explosion.animation.setEndCallback(lambda : self.animFinishedCallback(dest))
+            self.explosion.animation.setEndCallback(lambda : self.animFinishedCallback(dest, hits))
+        else:
+            self.splash.transform.setRelPosition(dest)
+            self.splash.animation.setEndCallback(lambda : self.animFinishedCallback(dest, hits))
 
         
         start = np.array(start)
@@ -55,18 +65,18 @@ class CannonBall(Sprite):
             relExtraHeight = -4 * (t - 0.5)**2 + 1 # just parabola with zeros at 0, 1 and max at 0.5
             return basePos + np.array((0, -relExtraHeight * 70))
 
-        self.positionAnim = Animator(animFun, CannonBall.ANIM_TIME)
-        self.positionAnim.setHook(self.transform.setRelPosition)
-
+        self.positionAnim.setEquation(animFun)
+        
         self.positionAnim.play()
         self.rotationAnim.play()
         self.scaleAnim.play()
     
     def __flightFinished(self) -> None:
-        if self.isMissedShot:
-            self.splash.animation.play()
-        else:
+        if self.isHittingShot:
             self.explosion.animation.play()
+        else:
+            self.splash.animation.play()
+            
     
     def draw(self, screen: pygame.Surface) -> None:
         if self.rotationAnim.isRunning():

@@ -86,6 +86,9 @@ class Animator(metaclass = InstanceRegistryMetaClass):
     
     def __add__(self, other : 'Animator') -> 'Animator':
         return self.concat(other)
+    
+    def setEquation(self, equation : Callable[[float], any]) -> None:
+        self.__equation = equation
 
     def setElapsedTime(self, time : float) -> None:
         self.__elapsedTime = time

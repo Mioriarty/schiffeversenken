@@ -48,6 +48,9 @@ def main():
         # draw
         SceneManager.drawAll(screen)
 
+        # load requested components
+        SceneManager.createRequestedComponents()
+
         # catch events
         Input.clearEvents()
         for event in pygame.event.get():
