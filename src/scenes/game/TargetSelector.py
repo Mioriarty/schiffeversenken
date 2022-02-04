@@ -14,7 +14,7 @@ from utils.Transform import Transform
 
 class TargetSelector(Component):
 
-    CANNON_BALL_ANIM_TIME = 3.
+    CANNON_BALL_ANIM_TIME = 2.
     
     def __init__(self, boardSize : int, ownBoardRect : pygame.Rect, oppositeBoardRect : pygame.Rect, ownCannon : tuple[float], oppositeCannon : tuple[float]):
         super().__init__(None)
@@ -34,7 +34,7 @@ class TargetSelector(Component):
         self.cannonBall.enableScaling = True
         self.cannonBallScaleAnim = Animator.easeOut(0.2, 0.5, TargetSelector.CANNON_BALL_ANIM_TIME / 2) + Animator.easeIn(0.5, 0.2, TargetSelector.CANNON_BALL_ANIM_TIME / 2)
         self.cannonBallScaleAnim.setHook(lambda s : self.cannonBall.transform.setRelScale((s, s)))
-        self.cannonBallRotationAnim = Animator.lerp(0, 75, TargetSelector.CANNON_BALL_ANIM_TIME)
+        self.cannonBallRotationAnim = Animator.lerp(0, 15, TargetSelector.CANNON_BALL_ANIM_TIME)
         self.cannonBallRotationAnim.setHook(self.cannonBall.transform.setRelAngle)
         self.cannonBallPositionAnim = None
         self.ownCannon = ownCannon
