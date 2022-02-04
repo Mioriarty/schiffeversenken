@@ -3,6 +3,7 @@ import pygame
 from ai.Difficulties import Difficulties
 from ai.StandartGameAI import ShipShape, StandartGameAI
 from components.Component import Component
+from components.game.CannonBall import CannonBall
 from utils.Animator import Animator
 from utils.Images import Sprite
 import random
@@ -28,15 +29,7 @@ class TargetSelector(Component):
         self.cross = Sprite("game.cross", transform=Transform(scale=(0.5, 0.5)), bakeNow=True)
         self.hitCells = []
         self.drawCross = False
-
-        self.cannonBall = Sprite("game.cannon_ball")
-        self.cannonBall.enableRoation = True
-        self.cannonBall.enableScaling = True
-        self.cannonBallScaleAnim = Animator.easeOut(0.2, 0.5, TargetSelector.CANNON_BALL_ANIM_TIME / 2) + Animator.easeIn(0.5, 0.2, TargetSelector.CANNON_BALL_ANIM_TIME / 2)
-        self.cannonBallScaleAnim.setHook(lambda s : self.cannonBall.transform.setRelScale((s, s)))
-        self.cannonBallRotationAnim = Animator.lerp(0, 15, TargetSelector.CANNON_BALL_ANIM_TIME)
-        self.cannonBallRotationAnim.setHook(self.cannonBall.transform.setRelAngle)
-        self.cannonBallPositionAnim = None
+        self.cannonBall = CannonBall()
         self.ownCannon = ownCannon
         self.oppositeCannon = oppositeCannon
 
@@ -80,30 +73,17 @@ class TargetSelector(Component):
                     self.cross.transform.setRelPosition(self.getPosFromCell(cell, self.oppositeBoardRect))
  
     def fireShot(self, cell : tuple[int], byAi : bool):
-        startPos = np.array(self.oppositeCannon if byAi else self.ownCannon)
-        endPos = np.array(self.getPosFromCell(cell, self.ownBoardRect if byAi else self.oppositeBoardRect))
+        startPos = self.oppositeCannon if byAi else self.ownCannon
+        endPos = self.getPosFromCell(cell, self.ownBoardRect if byAi else self.oppositeBoardRect)
 
-        def animFun(t : float):
-            t /= TargetSelector.CANNON_BALL_ANIM_TIME
-            basePos = endPos * t + startPos * (1 - t)
-            relExtraHeight = -4 * (t - 0.5)**2 + 1 # just parabola with zeros at 0, 1 and max at 0.5
-            return basePos + np.array((0, -relExtraHeight * 70))
-
-        self.cannonBallPositionAnim = Animator(animFun, TargetSelector.CANNON_BALL_ANIM_TIME)
-        self.cannonBallPositionAnim.setHook(self.cannonBall.transform.setRelPosition)
-
-        self.cannonBallPositionAnim.play()
-        self.cannonBallRotationAnim.play()
-        self.cannonBallScaleAnim.play()
-
+        self.cannonBall.fire(startPos, endPos)
 
     
     def draw(self, screen: pygame.Surface) -> None:
         if self.drawCross:
             self.cross.draw(screen)
         
-        if self.cannonBallPositionAnim is not None:
-            self.cannonBall.draw(screen)
+        self.cannonBall.draw(screen)
 
     
 
