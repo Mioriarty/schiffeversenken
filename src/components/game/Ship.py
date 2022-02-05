@@ -123,21 +123,27 @@ class Ship(ImageButton):
             posAnim += Animator.const(pos, duration)
             angleAnim += Animator.smoothLerp(horizontalAngle, finalAngle, duration)
 
-
+        # turn gray at the end
+        alphaAnim = Animator.const(255., posAnim.getDuration() - 0.5) + Animator.easeIn(255., 130., 0.5)
+        alphaAnim.setRepeatMode(Animator.PAUSE)
+        print(posAnim.getDuration())
 
         # start animations
         self._sprite.enableRoation = True
         self._sprite.bakeTransform(includeRotation=False) # remove prebaked rotation
-        self.animators = [ posAnim, angleAnim ]
+        self.animators = [ posAnim, angleAnim, alphaAnim ]
         self.animators[0].setHook(self.transform.setRelPosition)
         self.animators[0].play()
         self.animators[1].setHook(self.transform.setRelAngle)
         self.animators[1].play()
+        self.animators[2].setHook(self._sprite.image.set_alpha)
+        self.animators[2].play()
 
         # set end hook
         def arriveCallback() -> None:
             self._sprite.enableRoation = False
             self._sprite.bakeTransform()
+            self._sprite.image.set_alpha(self.animators[2].get())
 
             Ship.arrivedShips += 1
             if Ship.travelSquenceDone():

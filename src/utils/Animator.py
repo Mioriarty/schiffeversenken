@@ -9,7 +9,7 @@ class Animator(metaclass = InstanceRegistryMetaClass):
     RESTART = 2
     REVERSE = 3
 
-    def __init__(self, equation, duration : float):
+    def __init__(self, equation : Callable[[float], any], duration : float):
         self.__equation : Callable[[float], any] = equation
         self.__duration : float                  = duration
         self.__elapsedTime : float               = 0
@@ -129,6 +129,9 @@ class Animator(metaclass = InstanceRegistryMetaClass):
 
     def getRepeatMode(self):
         return self.__repeatMode
+    
+    def getDuration(self):
+        return self.__duration
     
     
     @classmethod

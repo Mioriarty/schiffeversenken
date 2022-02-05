@@ -140,7 +140,6 @@ class ShipPlacer(Component):
         for (shipShape, placedShip), outsideShip in zip(self.placedShips, self.ships):
             placedShip.disable()
             outsideShip.disable()
-            outsideShip.deselect()
 
             outsideShip.travelTo(shipShape, self.boardRect, self.boardSize)
     
