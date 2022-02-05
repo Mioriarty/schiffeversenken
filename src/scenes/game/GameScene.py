@@ -66,7 +66,8 @@ class GameScene(Scene):
             self.board1.image.get_rect(center=self.board1.transform.getPosition()),
             self.board2.image.get_rect(center=self.board2.transform.getPosition()),
             (100, 100),
-            (600, 100)
+            (600, 100),
+            self.__gameEnded
         )
         SceneManager.putInDrawLayer(self.targetSelector, SceneManager.GAME_MAIN_LAYER)
 
@@ -80,3 +81,6 @@ class GameScene(Scene):
     def __startGame(self):
         self.targetSelector.setOwnShipPlacement(self.shipManager.getCurrentShipPlacement())
         self.targetSelector.start()
+    
+    def __gameEnded(self, won : bool) -> None:
+        print(won)

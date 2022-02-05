@@ -59,6 +59,7 @@ class ShipShape:
     
     @staticmethod
     def cellInPlacement(cell : tuple[int], placement : list['ShipShape']) -> None:
+        cell = (cell[0], cell[1]) # in case it is a np.ndarray
         return any((cell in ship.occupiedTiles()) for ship in placement)
 
 class StandartGameAI:
@@ -208,8 +209,8 @@ class StandartGameAI:
                 elif len(shipTile) == 2:
                     # can only happen by accident when we have dicovered to side of the ship independently
                     # but maybe the ship is done so it has to be registered correctly
-                    corner1, length1 = self.countShipLength(shipTile[0])
-                    corner2, length2 = self.countShipLength(shipTile[1])
+                    length1, corner1 = self.countShipLength(shipTile[0])
+                    length2, corner2 = self.countShipLength(shipTile[1])
 
                     # first replace the corners so that ship likely tiles orthogonal to the ships direction cannot occur
                     self.replaceAdjacentCells(pos, StandartGameAI.SHIP_LIKELY, StandartGameAI.DEDUSED_NO_SHIP, True)

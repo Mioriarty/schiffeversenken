@@ -1,4 +1,5 @@
 import re
+from typing import Callable
 import pygame
 from ai.Difficulties import Difficulties
 from ai.StandartGameAI import ShipShape, StandartGameAI
@@ -16,9 +17,9 @@ from utils.Transform import Transform
 
 class TargetSelector(Component):
 
-    CANNON_BALL_ANIM_TIME = 2.
+    TOTAL_SHIP_TILES = 5 * 1 + 4 * 2 + 3 * 3 + 2 * 4
     
-    def __init__(self, boardSize : int, ownBoardRect : pygame.Rect, oppositeBoardRect : pygame.Rect, ownCannon : tuple[float], oppositeCannon : tuple[float]):
+    def __init__(self, boardSize : int, ownBoardRect : pygame.Rect, oppositeBoardRect : pygame.Rect, ownCannon : tuple[float], oppositeCannon : tuple[float], gameEndCallback : Callable[[bool], None]):
         super().__init__(None)
         self.boardSize = boardSize
         self.ownBoardRect = ownBoardRect
@@ -32,9 +33,13 @@ class TargetSelector(Component):
         self.drawCross = False
         self.cannonBall = CannonBall(self.shotAnimationFinished)
         self.fires = []
+        self.flags = []
         self.ownCannon = ownCannon
         self.oppositeCannon = oppositeCannon
         self.aiTurn = False
+        self.gameEndcallback = gameEndCallback
+        self.playerFoundShipTiles = 0
+        self.aiFoundShipTiles     = 0
 
     def setOwnShipPlacement(self, shipPlacement : list[ShipShape]) -> None:
         self.ownShipPlacement = shipPlacement
@@ -95,6 +100,25 @@ class TargetSelector(Component):
             
             SceneManager.requestComponent(createFire)
 
+            # check whether game ended
+            if self.aiTurn:
+                self.aiFoundShipTiles += 1
+                if self.aiFoundShipTiles == TargetSelector.TOTAL_SHIP_TILES:
+                    self.gameEndcallback(False)
+                    return
+            
+            else:
+                self.playerFoundShipTiles += 1
+                if self.playerFoundShipTiles == TargetSelector.TOTAL_SHIP_TILES:
+                    self.gameEndcallback(True)
+                    return
+        
+        else:
+            def createFlag():
+                self.flags.append(Sprite("game.flag", transform=Transform(pos, scale=(0.4, 0.4)), bakeNow=True))
+            
+            SceneManager.requestComponent(createFlag)
+
         if self.aiTurn:
             self.doOwnShot()
         else:
@@ -108,6 +132,9 @@ class TargetSelector(Component):
 
         for fire in self.fires:
             fire.draw(screen)
+        
+        for flag in self.flags:
+            flag.draw(screen)
 
     
 
