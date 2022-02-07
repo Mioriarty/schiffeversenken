@@ -5,6 +5,7 @@ import pygame
 import numpy as np
 
 from utils.Animator import Animator
+from utils.Sounds import Sounds
 from utils.Transform import Transform
 
 class CannonBall(Sprite):
@@ -47,6 +48,7 @@ class CannonBall(Sprite):
     
     def fire(self, start : tuple[float], dest : tuple[float], hits : bool) -> None:
         self.isHittingShot = hits
+        Sounds.playSoundEffect("cannon")
 
         if hits:
             self.explosion.transform.setRelPosition(dest)
@@ -73,8 +75,10 @@ class CannonBall(Sprite):
     
     def __flightFinished(self) -> None:
         if self.isHittingShot:
+            Sounds.playSoundEffect("explosion")
             self.explosion.animation.play()
         else:
+            Sounds.playSoundEffect("splash")
             self.splash.animation.play()
             
     
