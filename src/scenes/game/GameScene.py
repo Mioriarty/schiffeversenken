@@ -4,6 +4,7 @@ from scenes.game.ShipPlacer import Ship, ShipPlacer
 from scenes.game.TargetSelector import TargetSelector
 from utils.Animator import Animator
 from utils.Images import Sprite
+from utils.Sounds import Sounds
 from utils.Transform import Transform
 import math
 
@@ -74,6 +75,7 @@ class GameScene(Scene):
 
     
     def __placementDoneCallback(self):
+        Sounds.playSoundEffect("ship_horn")
         for ship in self.oppositeShips:
             ship.doFakeTravel(self.board1.image.get_rect(center=self.board1.transform.getPosition()))
     
