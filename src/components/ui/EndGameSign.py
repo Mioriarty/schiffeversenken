@@ -11,6 +11,8 @@ import pygame
 
 class EndGameSign(Component):
 
+    ANIM_OFFSET = 30
+
     def __init__(self, transform: Transform = None):
         super().__init__(transform)
 
@@ -25,7 +27,8 @@ class EndGameSign(Component):
         self.winSign.disable()
         self.loseSign.disable()
 
-        self.anim = Animator.easeOut(-200., self.winSign.transform.getRelPosition()[1], 2.)
+        goalY = self.transform.getRelPosition()[1]
+        self.anim = Animator.easeOut(-200., goalY + EndGameSign.ANIM_OFFSET, .5) + Animator.smoothLerp(goalY + EndGameSign.ANIM_OFFSET, goalY, .2)
      
 
     def draw(self, screen: pygame.Surface) -> None:
