@@ -36,3 +36,7 @@ class Difficulties:
     @staticmethod
     def getSelectedChanceOfMistake() -> float:
         return Difficulties.__chancesOfMistake[Difficulties.__selectedIndex]
+    
+    @staticmethod
+    def getSelectedIndex() -> int:
+        return Difficulties.__selectedIndex
