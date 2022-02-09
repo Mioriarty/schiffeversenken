@@ -30,8 +30,8 @@ class MenuScene(Scene):
         self.difficultySelect = DifficultySelect(Transform.screenCenter(y = 280., parent=self.parentTransform))
 
         self.islands = [
-            Diashow([ "ambient.island1", "ambient.island2" ], 0.5, Transform((100, 200), scale=(0.4, 0.4), parent=self.parentTransform)),
-            Diashow([ "ambient.island2", "ambient.island1" ], 0.5, Transform((800, 650), scale=(0.4, 0.4), parent=self.parentTransform)) 
+            Diashow([ "ambient.island1", "ambient.island2" ], 0.5, transform=Transform((100, 200), scale=(0.4, 0.4), parent=self.parentTransform)),
+            Diashow([ "ambient.island2", "ambient.island1" ], 0.5, transform=Transform((800, 650), scale=(0.4, 0.4), parent=self.parentTransform)) 
         ]
         SceneManager.putInDrawLayer(self.islands)
 

@@ -8,11 +8,10 @@ from utils.Transform import Transform
 class RandomAmbientEvent(Diashow):
 
     def __init__(self, images: list[str | pygame.Surface], imageDuration: float, appearanceRect : pygame.Rect, waitSpan : tuple[float], transform: Transform = None):
-        super().__init__(images, imageDuration, transform)
+        super().__init__(images, imageDuration, False, transform)
         self.animation.stop()
-        self.animation.setRepeatMode(Animator.STOP)
         self.animation.setEndCallback(self.startNextCycle)
-        self.__timer = Timer(0, self.animation.play)
+        self.__timer = Timer(0, self.animation.replay)
         self.__apppearanceRect = appearanceRect
         self.__waitSpan = waitSpan
 

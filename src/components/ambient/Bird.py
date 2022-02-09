@@ -7,7 +7,7 @@ import random
 class Bird(Diashow):
 
     def __init__(self, duration: float = 0.2, velocity : float = 45., transform: Transform = None):
-        super().__init__(["ambient.bird1", "ambient.bird2", "ambient.bird3", "ambient.bird2"], duration, transform)
+        super().__init__(["ambient.bird1", "ambient.bird2", "ambient.bird3", "ambient.bird2"], duration, True, transform)
         self.velocity = velocity
         self.velocityDirection = None
 
