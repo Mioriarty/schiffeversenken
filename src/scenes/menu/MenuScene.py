@@ -8,6 +8,7 @@ from scenes.Scene import Scene, SceneManager
 from scenes.menu.DifficultySelect import DifficultySelect
 from utils.Animator import Animator
 from utils.Images import Sprite
+from utils.Sounds import Sounds
 from utils.Transform import Transform
 import numpy as np
 
@@ -16,6 +17,8 @@ class MenuScene(Scene):
 
     def __init__(self):
         super().__init__((255, 255, 255))
+        Sounds.playMusic("aquaWaves")
+
         self.parentTransform = Transform()
         self.gameStartAnimation = Animator.easeIn(np.zeros(2), np.array((0, -800)), .8)
         self.gameStartAnimation.setHook(self.parentTransform.setRelPosition)
