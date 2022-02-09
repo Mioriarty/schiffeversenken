@@ -3,3 +3,6 @@ This program uses these sounds from freesound:
 - "splash" by InspectorJ (https://freesound.org/people/InspectorJ/sounds/352100/) licensed under Attribution 3.0 Unported (CC BY 3.0)
 - "cannon" by Kneeling  (https://freesound.org/people/Kneeling/sounds/448002/) licensed under CC0 1.0 Universal (CC0 1.0)
 - "ship_horn" by milo (https://freesound.org/people/milo/sounds/23722/) licensed under Attribution 3.0 Unported (CC BY 3.0) 
+
+This program also uses these sounds from pixabay
+- Waves in the background
