@@ -24,6 +24,11 @@ class InstanceRegistryMetaClass(type):
             cls._instances = weakref.WeakSet()
             cls.getInstances = lambda : list(cls._instances)
 
+            def clearInstances():
+                cls._instances = weakref.WeakSet()
+
+            cls.clearInstances = clearInstances
+
         cls.__registerInstance = lambda i : rootCls._instances.add(i)
 
 

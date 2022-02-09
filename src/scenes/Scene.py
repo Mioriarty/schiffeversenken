@@ -4,6 +4,9 @@ from components.Component import Component
 import pygame
 import gc
 
+from utils.Animator import Animator
+from utils.Timer import Timer
+
 class Scene:
 
     def __init__(self, clearColor : tuple[int] = (0, 0, 0)):
@@ -40,6 +43,7 @@ class SceneManager:
             if SceneManager.__currentScene != None:
                 SceneManager.__currentScene.destroy()
             
+            SceneManager.__clearAllInstances()
             
             SceneManager.__currentScene = SceneManager.__requestedScene()
             SceneManager.__currentScene.start()
@@ -48,6 +52,14 @@ class SceneManager:
 
             # garbage collect all unnecessary instances in regestries
             gc.collect()
+    
+    @staticmethod
+    def __clearAllInstances():
+        Component.clearInstances()
+        Animator.clearInstances()
+        Timer.clearInstances()
+
+        SceneManager.__drawables = [ WeakSet(), WeakSet(), WeakSet() ]
 
     
     @staticmethod
