@@ -18,7 +18,7 @@ class GameScene(Scene):
 
         self.landParent = Transform()
         self.land = Sprite("ambient.land", Transform.screenCenter(y = 75, scale=(0.5, 0.5), parent=self.landParent), bakeNow=True)
-        SceneManager.putInDrawLayer(self.land, SceneManager.GAME_MAIN_LAYER)
+        SceneManager.putInDrawLayer(self.land)
 
         self.landAppearAnim = Animator.easeOut(-250, 0, GameScene.START_ANIM_TIME)
         self.landAppearAnim.setHook(self.landParent.setRelYPos)
@@ -26,7 +26,7 @@ class GameScene(Scene):
 
         self.board1 = Sprite("game.board", Transform((250, 480), scale=(0.4, 0.4)), bakeNow=True)
         self.board2 = Sprite("game.board", Transform((770, 480), scale=(0.4, 0.4)), bakeNow=True)
-        SceneManager.putInDrawLayer([ self.board1, self.board2], SceneManager.GAME_BG_LAYER)
+        SceneManager.putInDrawLayer([ self.board1, self.board2])
 
         self.boardAppearAnim = Animator.smoothLerp(0., 150., GameScene.START_ANIM_TIME)
         self.boardAppearAnim.setHook(self.board1.image.set_alpha)
@@ -52,13 +52,13 @@ class GameScene(Scene):
             Ship(5, transform=Transform((170, 120), angle=-math.pi/2, parent=self.landParent))
         ], placementDoneBtn, self.board1.image.get_rect(center=self.board1.transform.getPosition()), 11)
         
-        SceneManager.putInDrawLayer(self.shipManager, SceneManager.GAME_MAIN_LAYER)
+        SceneManager.putInDrawLayer(self.shipManager)
 
         self.oppositeShips = [
             Ship(2, onlyVisual=True, transform=Transform((800, 140), angle=-math.pi/2,  parent=self.landParent)),
             Ship(3, onlyVisual=True, transform=Transform((830, 160), angle=-math.pi/2,  parent=self.landParent))
         ]
-        SceneManager.putInDrawLayer(self.oppositeShips, SceneManager.GAME_MAIN_LAYER)
+        SceneManager.putInDrawLayer(self.oppositeShips)
 
         Ship.shipTotal = 10
         Ship.travelDoneCallback = self.__startGame
@@ -71,10 +71,10 @@ class GameScene(Scene):
             (600, 100),
             self.__gameEnded
         )
-        SceneManager.putInDrawLayer(self.targetSelector, SceneManager.GAME_MAIN_LAYER)
+        SceneManager.putInDrawLayer(self.targetSelector)
 
         self.endGameSign = EndGameSign(transform=Transform.screenCenter())
-        SceneManager.putInDrawLayer(self.endGameSign, SceneManager.GAME_OVERLAY_LAYER)
+        SceneManager.putInDrawLayer(self.endGameSign, SceneManager.OVERLAY_LAYER)
 
         self.endGameSign.show(False)
 

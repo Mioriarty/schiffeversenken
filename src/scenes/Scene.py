@@ -27,17 +27,11 @@ class SceneManager:
 
     __componentCreators : list[Callable[[], Component]] = []
 
-    __drawables : list[WeakSet[Component]] = [ WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet(), WeakSet() ]
+    __drawables : list[WeakSet[Component]] = [ WeakSet(), WeakSet(), WeakSet() ]
 
-    UI_BG_LAYER = 5
-    UI_MAIN_LAYER = 6
-
-    GAME_BG_LAYER = 2
-    GAME_MAIN_LAYER = 3
-    GAME_OVERLAY_LAYER = 4
-
-    BG_MAIN_LAYER = 0
-    BG_OVERLAY_LAYER = 1
+    MAIN_LAYER = 0
+    OVERLAY_LAYER = 1
+    SEC_OVERLAY_LAYER = 2
 
 
     @staticmethod
@@ -62,7 +56,7 @@ class SceneManager:
 
     
     @staticmethod
-    def putInDrawLayer(c : Component | list[Component], layer : int) -> None:
+    def putInDrawLayer(c : Component | list[Component], layer : int = MAIN_LAYER) -> None:
         if isinstance(c, list):
             for x in c:
                 SceneManager.__drawables[layer].add(x)

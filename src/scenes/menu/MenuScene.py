@@ -22,7 +22,7 @@ class MenuScene(Scene):
         self.gameStartAnimation.setEndCallback(self.startGame)
 
         self.headingSprite = Sprite("texts.seeschlacht", Transform.screenCenter(y = 100., scale=(0.5, 0.5), parent=self.parentTransform), bakeNow=True)
-        SceneManager.putInDrawLayer(self.headingSprite, SceneManager.UI_MAIN_LAYER)
+        SceneManager.putInDrawLayer(self.headingSprite)
 
         # self.gengnerSprite = Sprite("texts.gegner", Transform.screenCenter(y=230., scale=(0.3, 0.3), parent=self.parentTransform), bakeNow=True)
         # SceneManager.putInDrawLayer(self.gengnerSprite, SceneManager.UI_MAIN_LAYER)
@@ -33,21 +33,21 @@ class MenuScene(Scene):
             Diashow([ "ambient.island1", "ambient.island2" ], 0.5, Transform((100, 200), scale=(0.4, 0.4), parent=self.parentTransform)),
             Diashow([ "ambient.island2", "ambient.island1" ], 0.5, Transform((800, 650), scale=(0.4, 0.4), parent=self.parentTransform)) 
         ]
-        SceneManager.putInDrawLayer(self.islands, SceneManager.UI_MAIN_LAYER)
+        SceneManager.putInDrawLayer(self.islands)
 
         self.playBtn = ImageButton(Sprite("buttons.spielen"), transform = Transform.screenCenter(y=600., scale=(0.3, 0.3), parent=self.parentTransform))
         self.playBtn.setOnClickEvent(self.gameStartAnimation.play)
-        SceneManager.putInDrawLayer(self.playBtn, SceneManager.UI_MAIN_LAYER)
+        SceneManager.putInDrawLayer(self.playBtn)
 
 
         self.birds = [
             Bird(velocity = 60., transform=Transform(scale=(0.25, 0.25), parent=self.parentTransform)),
             Bird(velocity = 45., transform=Transform(scale=(0.36, 0.36), parent=self.parentTransform))
         ]
-        SceneManager.putInDrawLayer(self.birds, SceneManager.UI_MAIN_LAYER)
+        SceneManager.putInDrawLayer(self.birds)
 
         self.shark = Shark(0.3, pygame.Rect(50, 350, 100, 300), (7., 15.), transform=Transform(scale=(0.3, 0.3), parent=self.parentTransform))
-        SceneManager.putInDrawLayer(self.shark, SceneManager.UI_MAIN_LAYER)
+        SceneManager.putInDrawLayer(self.shark)
 
     
     def startGame(self):

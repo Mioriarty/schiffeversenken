@@ -26,8 +26,8 @@ class DifficultySelect(Component):
         for i in range(1, len(self.nameImages)):
             self.nameImages[i].image.set_alpha(0)
             self.descitpionImages[i].image.set_alpha(0)
-        SceneManager.putInDrawLayer(self.nameImages, SceneManager.UI_MAIN_LAYER)
-        SceneManager.putInDrawLayer(self.descitpionImages, SceneManager.UI_MAIN_LAYER)
+        SceneManager.putInDrawLayer(self.nameImages)
+        SceneManager.putInDrawLayer(self.descitpionImages)
         
         self.appearLeftMove = Animator.easeOut(np.array((-250, 0)), np.zeros(2 ), DifficultySelect.MOVE_DURATION)
         self.appearRightMove = Animator.easeOut(np.array((250, 0)), np.zeros(2), DifficultySelect.MOVE_DURATION)
@@ -42,11 +42,11 @@ class DifficultySelect(Component):
         
         self.leftButton = ImageButton(Sprite("buttons.left"), transform = Transform((-300, 0), scale=(0.2, 0.2), parent=self.transform))
         self.leftButton.setOnClickEvent(self.leftPress)
-        SceneManager.putInDrawLayer(self.leftButton, SceneManager.UI_MAIN_LAYER)
+        SceneManager.putInDrawLayer(self.leftButton)
 
         self.rightButton = ImageButton(Sprite("buttons.right"), transform = Transform((300, 0), scale=(0.2, 0.2), parent=self.transform))
         self.rightButton.setOnClickEvent(self.rightPress)
-        SceneManager.putInDrawLayer(self.rightButton, SceneManager.UI_MAIN_LAYER)
+        SceneManager.putInDrawLayer(self.rightButton)
 
 
     def rightPress(self):
