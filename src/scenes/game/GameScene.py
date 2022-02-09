@@ -1,3 +1,4 @@
+from components.ui.EndGameSign import EndGameSign
 from components.ui.ImageButton import ImageButton
 from scenes.Scene import Scene, SceneManager
 from scenes.game.ShipPlacer import Ship, ShipPlacer
@@ -72,6 +73,11 @@ class GameScene(Scene):
         )
         SceneManager.putInDrawLayer(self.targetSelector, SceneManager.GAME_MAIN_LAYER)
 
+        self.endGameSign = EndGameSign(transform=Transform.screenCenter())
+        SceneManager.putInDrawLayer(self.endGameSign, SceneManager.GAME_OVERLAY_LAYER)
+
+        self.endGameSign.show(False)
+
 
     
     def __placementDoneCallback(self):
@@ -85,4 +91,4 @@ class GameScene(Scene):
         self.targetSelector.start()
     
     def __gameEnded(self, won : bool) -> None:
-        print(won)
+        self.endGameSign.show(won)

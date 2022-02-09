@@ -2,7 +2,7 @@
 from components.Component import Component
 from components.ui.ImageButton import ImageButton
 from scenes.Scene import SceneManager
-from scenes.menu.MenuScene import MenuScene
+import scenes.menu.MenuScene
 from utils.Animator import Animator
 from utils.Images import Sprite
 from utils.Transform import Transform
@@ -22,7 +22,10 @@ class EndGameSign(Component):
         self.winSign.setOnClickEvent(EndGameSign.__press)
         self.loseSign.setOnClickEvent(EndGameSign.__press)
 
-        self.anim = Animator.easeOut(-200., self.winSign.transform.getRelPosition[1], 2.)
+        self.winSign.disable()
+        self.loseSign.disable()
+
+        self.anim = Animator.easeOut(-200., self.winSign.transform.getRelPosition()[1], 2.)
      
 
     def draw(self, screen: pygame.Surface) -> None:
@@ -33,7 +36,7 @@ class EndGameSign(Component):
                 self.loseSign.draw(screen)
 
     def __press():
-        SceneManager.requestloadScene(MenuScene)
+        SceneManager.requestloadScene(scenes.menu.MenuScene.MenuScene)
     
     def show(self, won : bool):
         self.__show = True
@@ -41,7 +44,9 @@ class EndGameSign(Component):
 
         if won:
             self.anim.setHook(self.winSign.transform.setRelYPos)
+            self.winSign.enable()
         else:
             self.anim.setHook(self.loseSign.transform.setRelYPos)
+            self.loseSign.enable()
         
         self.anim.play()

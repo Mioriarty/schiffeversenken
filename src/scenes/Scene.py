@@ -54,6 +54,7 @@ class SceneManager:
 
             # garbage collect all unnecessary instances in regestries
             gc.collect()
+
     
     @staticmethod
     def requestloadScene(scene : type[Scene]) -> None:
