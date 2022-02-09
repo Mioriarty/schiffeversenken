@@ -76,8 +76,6 @@ class GameScene(Scene):
         self.endGameSign = EndGameSign(transform=Transform.screenCenter())
         SceneManager.putInDrawLayer(self.endGameSign, SceneManager.OVERLAY_LAYER)
 
-        self.endGameSign.show(False)
-
 
     
     def __placementDoneCallback(self):
