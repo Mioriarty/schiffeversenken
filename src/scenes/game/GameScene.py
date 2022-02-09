@@ -1,3 +1,4 @@
+from components.ambient.Bird import Bird
 from components.ui.EndGameSign import EndGameSign
 from components.ui.ImageButton import ImageButton
 from scenes.Scene import Scene, SceneManager
@@ -11,7 +12,7 @@ import math
 
 class GameScene(Scene):
 
-    START_ANIM_TIME = 0.01 # TODO: 3.5
+    START_ANIM_TIME = 3.5 # TODO: 3.5
     
     def __init__(self):
         super().__init__((255, 255, 255))
@@ -75,6 +76,14 @@ class GameScene(Scene):
 
         self.endGameSign = EndGameSign(transform=Transform.screenCenter())
         SceneManager.putInDrawLayer(self.endGameSign, SceneManager.OVERLAY_LAYER)
+
+
+        # amdient stuff
+        self.birds = [
+            Bird(velocity = 60., transform=Transform(scale=(0.25, 0.25))),
+            Bird(velocity = 45., transform=Transform(scale=(0.36, 0.36)))
+        ]
+        SceneManager.putInDrawLayer(self.birds, SceneManager.SEC_OVERLAY_LAYER)
 
 
     
