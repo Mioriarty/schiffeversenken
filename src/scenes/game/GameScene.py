@@ -1,4 +1,5 @@
 from components.ambient.Bird import Bird
+from components.game.Cannon import Cannon
 from components.ui.EndGameSign import EndGameSign
 from components.ui.ImageButton import ImageButton
 from scenes.Scene import Scene, SceneManager
@@ -68,8 +69,8 @@ class GameScene(Scene):
             11,
             self.board1.image.get_rect(center=self.board1.transform.getPosition()),
             self.board2.image.get_rect(center=self.board2.transform.getPosition()),
-            (100, 100),
-            (600, 100),
+            Cannon(transform=Transform((100, 100), scale=(0.5, 0.5), parent=self.landParent)),
+            Cannon(transform=Transform((600, 100), scale=(-0.5, 0.5), parent=self.landParent)),
             self.__gameEnded
         )
         SceneManager.putInDrawLayer(self.targetSelector)

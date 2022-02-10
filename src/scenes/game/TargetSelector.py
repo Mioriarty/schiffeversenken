@@ -4,6 +4,7 @@ import pygame
 from ai.Difficulties import Difficulties
 from ai.StandartGameAI import ShipShape, StandartGameAI
 from components.Component import Component
+from components.game.Cannon import Cannon
 from components.game.CannonBall import CannonBall
 from components.game.Fire import Fire
 from scenes.Scene import SceneManager
@@ -19,7 +20,7 @@ class TargetSelector(Component):
 
     TOTAL_SHIP_TILES = 5 * 1 + 4 * 2 + 3 * 3 + 2 * 4
     
-    def __init__(self, boardSize : int, ownBoardRect : pygame.Rect, oppositeBoardRect : pygame.Rect, ownCannon : tuple[float], oppositeCannon : tuple[float], gameEndCallback : Callable[[bool], None]):
+    def __init__(self, boardSize : int, ownBoardRect : pygame.Rect, oppositeBoardRect : pygame.Rect, ownCannon : Cannon, oppositeCannon : Cannon, gameEndCallback : Callable[[bool], None]):
         super().__init__(None)
         self.boardSize = boardSize
         self.ownBoardRect = ownBoardRect
@@ -87,9 +88,16 @@ class TargetSelector(Component):
                     self.cross.transform.setRelPosition(self.getPosFromCell(cell, self.oppositeBoardRect))
  
     def fireShot(self, cell : tuple[int]):
-        startPos = self.oppositeCannon if self.aiTurn else self.ownCannon
-        endPos = self.getPosFromCell(cell, self.ownBoardRect if self.aiTurn else self.oppositeBoardRect)
-        hit = ShipShape.cellInPlacement(cell, self.ownShipPlacement if self.aiTurn else self.oppositeShipPlacement)
+        if self.aiTurn:
+            startPos = self.oppositeCannon.getOpeningPos()
+            self.oppositeCannon.animation.play()
+            endPos = self.getPosFromCell(cell, self.ownBoardRect)
+            hit = ShipShape.cellInPlacement(cell, self.ownShipPlacement)
+        else:
+            startPos = self.ownCannon.getOpeningPos()
+            self.ownCannon.animation.play()
+            endPos = self.getPosFromCell(cell, self.oppositeBoardRect)
+            hit = ShipShape.cellInPlacement(cell, self.oppositeShipPlacement)
 
         self.cannonBall.fire(startPos, endPos, hit)
     
@@ -129,6 +137,8 @@ class TargetSelector(Component):
             self.cross.draw(screen)
         
         self.cannonBall.draw(screen)
+        self.ownCannon.draw(screen)
+        self.oppositeCannon.draw(screen)
 
         for fire in self.fires:
             fire.draw(screen)
