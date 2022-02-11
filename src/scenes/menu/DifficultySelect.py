@@ -19,7 +19,8 @@ class DifficultySelect(Component):
     def __init__(self, transform : Transform = None):
         super().__init__(transform)
 
-        self.selectedIndex = Difficulties.getSelectedIndex()
+        self.selectedIndex = 0
+        Difficulties.setSelectedIndex(0)
 
         self.nameImages = [ Sprite(img, Transform(scale=DifficultySelect.NAME_SCALE, parent=self.transform), bakeNow=True) for img in Difficulties.allNameImages() ]
         self.descitpionImages = [ Sprite(img, Transform((0, 100), scale=DifficultySelect.DESCRIPTION_SCALE, parent=self.transform), bakeNow=True) for img in Difficulties.allDescriptionIamges() ]
