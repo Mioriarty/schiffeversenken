@@ -76,7 +76,7 @@ class StandartGameAI:
         self.width = boardWidth
         self.height = boardHeight
         self.chanceOfMistake = chanceOfMistake
-        self.numShips = numShips
+        self.numShips = numShips.copy()
         self.parity = random.randint(0, 1)
     
     def getShipPlacement(self) -> list[ShipShape]:

@@ -19,7 +19,7 @@ class Ship(ImageButton):
         2: 40,
         3: 37,
         4: 35,
-        5: 22
+        5: 30
     }
 
     ROTATION_SPEEDS = {
@@ -126,7 +126,6 @@ class Ship(ImageButton):
         # turn gray at the end
         alphaAnim = Animator.const(255., posAnim.getDuration() - 0.5) + Animator.easeIn(255., 130., 0.5)
         alphaAnim.setRepeatMode(Animator.PAUSE)
-        print(posAnim.getDuration())
 
         # start animations
         self._sprite.enableRoation = True

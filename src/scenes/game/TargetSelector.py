@@ -2,7 +2,7 @@ import re
 from typing import Callable
 import pygame
 from ai.Difficulties import Difficulties
-from ai.StandartGameAI import ShipShape, StandartGameAI
+from ai.StandartGameAI import ShipShape, StandartGameAI, printBoard
 from components.Component import Component
 from components.game.Cannon import Cannon
 from components.game.CannonBall import CannonBall
@@ -93,6 +93,9 @@ class TargetSelector(Component):
             self.oppositeCannon.animation.play()
             endPos = self.getPosFromCell(cell, self.ownBoardRect)
             hit = ShipShape.cellInPlacement(cell, self.ownShipPlacement)
+            printBoard(self.ai.board, 11, 11)
+            print(self.ai.numShips)
+            print()
         else:
             startPos = self.ownCannon.getOpeningPos()
             self.ownCannon.animation.play()
