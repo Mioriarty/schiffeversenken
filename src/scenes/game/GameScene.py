@@ -57,8 +57,20 @@ class GameScene(Scene):
         SceneManager.putInDrawLayer(self.shipManager)
 
         self.oppositeShips = [
-            Ship(2, onlyVisual=True, transform=Transform((800, 140), angle=-math.pi/2,  parent=self.landParent)),
-            Ship(3, onlyVisual=True, transform=Transform((830, 160), angle=-math.pi/2,  parent=self.landParent))
+            Ship(2, onlyVisual=True, transform=Transform((795, 105), angle=-math.pi/2,  parent=self.landParent)),
+            Ship(2, onlyVisual=True, transform=Transform((850, 100), angle=-math.pi/2,  parent=self.landParent)),
+            Ship(2, onlyVisual=True, transform=Transform((955, 150), angle=-0.9,  parent=self.landParent)),
+            Ship(2, onlyVisual=True, transform=Transform((905, 70), angle=-math.pi/2,  parent=self.landParent)),
+
+            Ship(3, onlyVisual=True, transform=Transform((735, 135), angle=-math.pi/2,  parent=self.landParent)),
+            Ship(3, onlyVisual=True, transform=Transform((875, 80), angle=-math.pi/2,  parent=self.landParent)),
+            Ship(3, onlyVisual=True, transform=Transform((620, 80), angle=-2.56,  parent=self.landParent)),
+
+            Ship(4, onlyVisual=True, transform=Transform((765, 150), angle=-math.pi/2,  parent=self.landParent)),
+            Ship(4, onlyVisual=True, transform=Transform((823, 143), angle=-math.pi/2,  parent=self.landParent)),
+
+            Ship(5, onlyVisual=True, transform=Transform((700, 120), angle=-1.45,  parent=self.landParent))
+
         ]
         SceneManager.putInDrawLayer(self.oppositeShips)
 
