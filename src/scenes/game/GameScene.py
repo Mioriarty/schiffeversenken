@@ -13,21 +13,21 @@ import math
 
 class GameScene(Scene):
 
-    START_ANIM_TIME = 3.5 # TODO: 3.5
+    START_ANIM_TIME = 0.001 # TODO: 3.5
     
     def __init__(self):
         super().__init__((255, 255, 255))
 
         self.landParent = Transform()
-        self.land = Sprite("ambient.land", Transform.screenCenter(y = 75, scale=(0.5, 0.5), parent=self.landParent), bakeNow=True)
+        self.land = Sprite("ambient.land2", Transform.screenCenter(y = 87.5, scale=(0.5, 0.5), parent=self.landParent), bakeNow=True)
         SceneManager.putInDrawLayer(self.land)
 
         self.landAppearAnim = Animator.easeOut(-250, 0, GameScene.START_ANIM_TIME)
         self.landAppearAnim.setHook(self.landParent.setRelYPos)
         self.landAppearAnim.play()
 
-        self.board1 = Sprite("game.board", Transform((250, 480), scale=(0.4, 0.4)), bakeNow=True)
-        self.board2 = Sprite("game.board", Transform((770, 480), scale=(0.4, 0.4)), bakeNow=True)
+        self.board1 = Sprite("game.board", Transform((250, 520), scale=(0.4, 0.4)), bakeNow=True)
+        self.board2 = Sprite("game.board", Transform((770, 520), scale=(0.4, 0.4)), bakeNow=True)
         SceneManager.putInDrawLayer([ self.board1, self.board2])
 
         self.boardAppearAnim = Animator.smoothLerp(0., 150., GameScene.START_ANIM_TIME)
@@ -39,19 +39,19 @@ class GameScene(Scene):
         placementDoneBtn.setOnClickEvent(self.__placementDoneCallback)
 
         self.shipManager = ShipPlacer([
-            Ship(2, transform=Transform((310, 140), angle=-math.pi/2,  parent=self.landParent)),
-            Ship(2, transform=Transform((375, 95), angle=-math.pi/2,  parent=self.landParent)),
-            Ship(2, transform=Transform((110, 80), angle=-2.5,  parent=self.landParent)),
-            Ship(2, transform=Transform((70, 110), angle=-2.3,  parent=self.landParent)),
+            Ship(2, transform=Transform((302, 95), angle=-math.pi/2,  parent=self.landParent)),
+            Ship(2, transform=Transform((350, 60), angle=-0.5,  parent=self.landParent)),
+            Ship(2, transform=Transform((420, 100), angle=-0.5,  parent=self.landParent)),
+            Ship(2, transform=Transform((45, 120), angle=-2.3,  parent=self.landParent)),
 
-            Ship(3, transform=Transform((226, 160), angle=-math.pi/2,  parent=self.landParent)),
-            Ship(3, transform=Transform((254, 158), angle=-math.pi/2,  parent=self.landParent)),
-            Ship(3, transform=Transform((281, 155), angle=-math.pi/2,  parent=self.landParent)),
+            Ship(3, transform=Transform((150, 170), angle=-math.pi/2,  parent=self.landParent)),
+            Ship(3, transform=Transform((210, 163), angle=-math.pi/2,  parent=self.landParent)),
+            Ship(3, transform=Transform((240, 160), angle=-math.pi/2,  parent=self.landParent)),
 
-            Ship(4, transform=Transform((200, 180), angle=-math.pi/2, parent=self.landParent)),
-            Ship(4, transform=Transform((340, 120), angle=-math.pi/2, parent=self.landParent)),
+            Ship(4, transform=Transform((180, 187), angle=-math.pi/2, parent=self.landParent)),
+            Ship(4, transform=Transform((270, 180), angle=-math.pi/2, parent=self.landParent)),
 
-            Ship(5, transform=Transform((170, 120), angle=-math.pi/2, parent=self.landParent))
+            Ship(5, transform=Transform((115, 150), angle=-math.pi/2, parent=self.landParent))
         ], placementDoneBtn, self.board1.image.get_rect(center=self.board1.transform.getPosition()), 11)
         
         SceneManager.putInDrawLayer(self.shipManager)
@@ -69,8 +69,8 @@ class GameScene(Scene):
             11,
             self.board1.image.get_rect(center=self.board1.transform.getPosition()),
             self.board2.image.get_rect(center=self.board2.transform.getPosition()),
-            Cannon(transform=Transform((100, 100), scale=(0.5, 0.5), parent=self.landParent)),
-            Cannon(transform=Transform((600, 100), scale=(-0.5, 0.5), parent=self.landParent)),
+            Cannon(transform=Transform((50, 40), scale=(0.5, 0.5), parent=self.landParent)),
+            Cannon(transform=Transform((980, 100), scale=(-0.5, 0.5), parent=self.landParent)),
             self.__gameEnded
         )
         SceneManager.putInDrawLayer(self.targetSelector)

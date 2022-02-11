@@ -95,5 +95,5 @@ class Transform:
         return [ self.applyInv(v) for v in vectors ]
     
     @classmethod
-    def screenCenter(cls, x : float = None, y : float = None, angle : float = 0.0, scale : tuple | list | np.ndarray = (1.0, 1.0), parent : 'Transform' = None):
-        return cls((512. if x is None else x, 384. if y is None else y), angle, scale, parent)
+    def screenCenter(cls, x : float = 512., y : float = 399., angle : float = 0.0, scale : tuple | list | np.ndarray = (1.0, 1.0), parent : 'Transform' = None):
+        return cls((x, y), angle, scale, parent)

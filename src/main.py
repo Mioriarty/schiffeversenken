@@ -12,7 +12,7 @@ from utils.Images import Images
 from utils.Sounds import Sounds
 
 SCREEN_WIDTH = 1024
-SCREEN_HEIGHT = 768
+SCREEN_HEIGHT = 798
 WINDOW_TITLE = "Schiffe versenken"
 FRAME_RATE = 120
 
@@ -30,7 +30,7 @@ def main():
     Images.loadAll()
     Sounds.loadAll()
 
-    SceneManager.requestloadScene(MenuScene)
+    SceneManager.requestloadScene(GameScene)
 
     while shouldRun:
         # load new scene if it was requested
