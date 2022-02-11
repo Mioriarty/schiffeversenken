@@ -1,4 +1,5 @@
 from components.ambient.Bird import Bird
+from components.ambient.Diashow import Diashow
 from components.game.Cannon import Cannon
 from components.ui.EndGameSign import EndGameSign
 from components.ui.ImageButton import ImageButton
@@ -13,7 +14,7 @@ import math
 
 class GameScene(Scene):
 
-    START_ANIM_TIME = 0.001 # TODO: 3.5
+    START_ANIM_TIME = 4. # TODO: 3.5
     
     def __init__(self):
         super().__init__((255, 255, 255))
@@ -22,7 +23,7 @@ class GameScene(Scene):
         self.land = Sprite("ambient.land2", Transform.screenCenter(y = 87.5, scale=(0.5, 0.5), parent=self.landParent), bakeNow=True)
         SceneManager.putInDrawLayer(self.land)
 
-        self.landAppearAnim = Animator.easeOut(-250, 0, GameScene.START_ANIM_TIME)
+        self.landAppearAnim = Animator.easeOut(-280, 0, GameScene.START_ANIM_TIME)
         self.landAppearAnim.setHook(self.landParent.setRelYPos)
         self.landAppearAnim.play()
 
@@ -70,7 +71,6 @@ class GameScene(Scene):
             Ship(4, onlyVisual=True, transform=Transform((823, 143), angle=-math.pi/2,  parent=self.landParent)),
 
             Ship(5, onlyVisual=True, transform=Transform((700, 120), angle=-1.45,  parent=self.landParent))
-
         ]
         SceneManager.putInDrawLayer(self.oppositeShips)
 
@@ -97,6 +97,11 @@ class GameScene(Scene):
             Bird(velocity = 45., transform=Transform(scale=(0.36, 0.36)))
         ]
         SceneManager.putInDrawLayer(self.birds, SceneManager.SEC_OVERLAY_LAYER)
+
+        self.islands = [
+            Diashow([ "ambient.island1", "ambient.island2" ], 0.5, transform=Transform((530, 200), scale=(0.3, 0.3), parent=self.landParent)),
+        ]
+        SceneManager.putInDrawLayer(self.islands)
 
 
     
