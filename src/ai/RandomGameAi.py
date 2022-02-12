@@ -1,5 +1,5 @@
 
-from Board import Board
+from ai.Board import Board
 
 
 class RandomGameAi:

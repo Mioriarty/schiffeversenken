@@ -1,9 +1,11 @@
-from Board import Board
-from ClassicGameAi import ClassicGameAi
-from RandomGameAi import RandomGameAi
-from ShipPlacement import ShipPlacement
-from ShipShape import ShipShape
+from ai.Board import Board
+from ai.ClassicGameAi import ClassicGameAi
+from ai.RandomGameAi import RandomGameAi
+from ai.ShipPlacement import ShipPlacement
+from ai.ShipShape import ShipShape
 import random
+
+from ai.BruteForceGameAi import BruteForceGameAi
 
 class AiMaster:
 
@@ -34,11 +36,20 @@ if __name__ == "__main__":
     placement = ai.generateShipPlacement()
     placement.print(ai.board.width, ai.board.height)
 
+    bfAi = BruteForceGameAi()
+
     while True:
+        z = input()
+        if z == "now":
+            bfAi.start(ai.board, {2: 4, 3: 3, 4: 2, 5: 1})
+
+
         shot = ai.getNextShot()
         val = Board.SUBMIT_SHIP if placement.cellOccupied(shot) else Board.SUBMIT_NO_SHIP
         ai.submitInfo(shot, val)
 
         ai.board.print()
-        input()
+        
+
+        
         

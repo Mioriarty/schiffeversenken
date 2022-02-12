@@ -1,6 +1,7 @@
 import random
 from typing import Callable
-from ai.StandartGameAI import ShipShape
+from ai.ShipPlacement import ShipPlacement
+from ai.ShipShape import ShipShape
 from components.Component import Component
 from components.game.Ship import Ship
 from components.ui.ImageButton import ImageButton
@@ -86,7 +87,7 @@ class ShipPlacer(Component):
             cell = self.getPlacementCell(hoverLength)
 
             hoverShape = ShipShape(hoverLength, cell, self.hoverOrientation)
-            isValidHoverPos = hoverShape.fitsInShipPlacement([s[0] for s in self.placedShips])
+            isValidHoverPos = ShipPlacement(self.getCurrentShipPlacement()).fitsIn(hoverShape)
 
             pos, angle = Ship.getPositionAndRotationFromShape(hoverShape, self.boardRect, self.boardSize)
             self.hoverSprite.transform.setRelPosition(pos)

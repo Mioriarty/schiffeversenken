@@ -1,7 +1,7 @@
 from typing import Union
 import random
-from Board import Board
-from ShipShape import ShipShape
+from ai.Board import Board
+from ai.ShipShape import ShipShape
 
 
 class ShipPlacement:
@@ -24,6 +24,8 @@ class ShipPlacement:
         return any((cell in ship.occupiedTiles()) for ship in self.ships)
     
 
+    def occupiedCells(self) -> list[tuple[int]]:
+        return [ cell for ship in self.ships for cell in ship.occupiedTiles() ]
 
     # generate random playcement
     @classmethod

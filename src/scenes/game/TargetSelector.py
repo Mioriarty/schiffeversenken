@@ -1,8 +1,11 @@
 import re
 from typing import Callable
 import pygame
+from ai.AiMaster import AiMaster
+from ai.Board import Board
 from ai.Difficulties import Difficulties
-from ai.StandartGameAI import ShipShape, StandartGameAI, printBoard
+from ai.ShipPlacement import ShipPlacement
+from ai.ShipShape import ShipShape
 from components.Component import Component
 from components.game.Cannon import Cannon
 from components.game.CannonBall import CannonBall
@@ -26,8 +29,8 @@ class TargetSelector(Component):
         self.ownBoardRect = ownBoardRect
         self.oppositeBoardRect = oppositeBoardRect
         self.ownShipPlacement = []
-        self.ai = StandartGameAI(boardSize, boardSize, Difficulties.getSelectedChanceOfMistake())
-        self.oppositeShipPlacement = self.ai.getShipPlacement()
+        self.ai = AiMaster(boardSize, boardSize, Difficulties.getSelectedChanceOfMistake())
+        self.oppositeShipPlacement = self.ai.generateShipPlacement()
         self.selecting = False
         self.cross = Sprite("game.cross", transform=Transform(scale=(0.5, 0.5)), bakeNow=True)
         self.hitCells = []
@@ -43,7 +46,7 @@ class TargetSelector(Component):
         self.aiFoundShipTiles     = 0
 
     def setOwnShipPlacement(self, shipPlacement : list[ShipShape]) -> None:
-        self.ownShipPlacement = shipPlacement
+        self.ownShipPlacement = ShipPlacement(shipPlacement)
     
     def start(self) -> None:
         if random.random() >= 0.5:
@@ -58,7 +61,7 @@ class TargetSelector(Component):
     def doOppositeShot(self) -> None:
         self.aiTurn = True
         cell = self.ai.getNextShot()
-        cellState = StandartGameAI.SHIP if ShipShape.cellInPlacement(cell, self.ownShipPlacement) else StandartGameAI.CHECKED_NO_SHIP
+        cellState = Board.SHIP if self.ownShipPlacement.cellOccupied(cell) else Board.CHECKED_NO_SHIP
         self.ai.submitInfo(cell, cellState)
 
         self.fireShot(cell)
@@ -92,15 +95,15 @@ class TargetSelector(Component):
             startPos = self.oppositeCannon.getOpeningPos()
             self.oppositeCannon.animation.play()
             endPos = self.getPosFromCell(cell, self.ownBoardRect)
-            hit = ShipShape.cellInPlacement(cell, self.ownShipPlacement)
-            printBoard(self.ai.board, 11, 11)
-            print(self.ai.numShips)
+            hit = self.ownShipPlacement.cellOccupied(cell)
+            self.ai.board.print()
+            print(self.ai.classicAi.numShips)
             print()
         else:
             startPos = self.ownCannon.getOpeningPos()
             self.ownCannon.animation.play()
             endPos = self.getPosFromCell(cell, self.oppositeBoardRect)
-            hit = ShipShape.cellInPlacement(cell, self.oppositeShipPlacement)
+            hit = self.oppositeShipPlacement.cellOccupied(cell)
 
         self.cannonBall.fire(startPos, endPos, hit)
     

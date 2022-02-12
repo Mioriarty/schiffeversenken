@@ -1,7 +1,7 @@
 import random
 import pygame
 import numpy as np
-from ai.StandartGameAI import ShipShape
+from ai.ShipShape import ShipShape
 from components.ui.ImageButton import ImageButton
 from utils.Animator import Animator
 from utils.Images import Sprite

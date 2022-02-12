@@ -1,8 +1,8 @@
 import random
 from typing import Generator
 import numpy as np
-from ShipShape import ShipShape
-from Board import Board
+from ai.ShipShape import ShipShape
+from ai.Board import Board
 
 class ClassicGameAi:
 
