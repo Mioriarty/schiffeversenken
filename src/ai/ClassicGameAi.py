@@ -15,6 +15,10 @@ class ClassicGameAi:
         # find ship likely tiles with the greatest free space
         maxFreeSpace = -1
         bestShipLikelyTile = (0, 0)
+
+        # saves all results in case it is needed
+        freeSpaceByTile = {}
+
         for pos in board.shuffledIndex():
             if board.check(pos, Board.SHIP_LIKELY):
                 # count the free space
@@ -24,11 +28,14 @@ class ClassicGameAi:
                 shipTile = shipTile[0]
 
                 freeSpace = 0
-                pos = np.array(pos)
-                direction = pos - np.array(shipTile)
+                posArray = np.array(pos)
+                direction = posArray - np.array(shipTile)
 
-                while self.shipIsPossible(pos + freeSpace * direction, board):
+                while self.shipIsPossible(posArray + freeSpace * direction, board):
                     freeSpace += 1
+
+                # save result
+                freeSpaceByTile[pos] = freeSpace
 
                 # save only the max free space
                 if maxFreeSpace < freeSpace:
@@ -36,7 +43,26 @@ class ClassicGameAi:
                     bestShipLikelyTile = pos
         
         if maxFreeSpace > -1:
-            return bestShipLikelyTile
+            # now we found the one tile with most space but in the case that the orthogonal direction hasn't been checked yet this would be an even better choice
+            orthogonalTiles = self.findAdjacentTilesByState(bestShipLikelyTile, Board.SHIP_LIKELY, board, True)
+
+            if len(orthogonalTiles) != 2:
+                return bestShipLikelyTile
+            
+            # now check if maybe all 4 corners are left so the orthogonal direction isnt better
+            # get the middle tile
+            middle = (np.array(orthogonalTiles[0]) + np.array(orthogonalTiles[1])) / 2
+            middle = (int(middle[0]), int(middle[1]))
+            if len(self.findAdjacentTilesByState(middle, Board.SHIP_LIKELY, board)) == 4:
+                return bestShipLikelyTile
+            
+            # now the orthogonal direction is prefered
+            # choose the one with more free space
+            if freeSpaceByTile[orthogonalTiles[0]] >= freeSpaceByTile[orthogonalTiles[1]]:
+                return orthogonalTiles[0]
+            else:
+                return orthogonalTiles[1]
+
 
         # do random guess in checkerboard pattern
         for x, y in board.shuffledIndex():
