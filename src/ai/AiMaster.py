@@ -9,6 +9,8 @@ from ai.BruteForceGameAi import BruteForceGameAi
 
 class AiMaster:
 
+    BRUTE_FORCE_THRESHOLD = 60
+
     def __init__(self, boardWidth : int, boardHeight : int, chanceOfMistake : float, numShips : dict[int, int] = {2: 4, 3: 3, 4: 2, 5: 1}):
         self.board = Board(boardWidth, boardHeight)
         self.chanceOfMistake = chanceOfMistake
@@ -16,19 +18,45 @@ class AiMaster:
 
         self.randomAi  = RandomGameAi()
         self.classicAi = ClassicGameAi(numShips)
-    
+        self.bruteForceAi = BruteForceGameAi()
+
+        self.hasUsedBruteForce = False
 
     def getNextShot(self) -> tuple[int]:
         if random.random() < self.chanceOfMistake:
             return self.randomAi.getNextShot(self.board)
         
-        return self.classicAi.getNextShot(self.board)
+        if self.__shouldUseBruteForce():
+            return self.bruteForceAi.getNextShot(self.board)
+        else:
+            return self.classicAi.getNextShot(self.board)
     
     def submitInfo(self, pos : tuple[int], state : int):
         self.board = self.classicAi.submitInfo(pos, state, self.board)
 
     def generateShipPlacement(self) -> ShipPlacement:
         return ShipPlacement.generate(self.board.width, self.board.height, self.numShips)
+    
+    def __shouldUseBruteForce(self) -> bool:
+        # it will start using the brute force ai if t was already used or
+        # - a certain number of cell infos are known AND
+        # - no SHIP_LIKELY tile is on the board
+
+        if self.hasUsedBruteForce:
+            return True
+        
+        knownTilesCount = 0
+        for cell in self.board.orderedIndex():
+            if self.board.check(cell, Board.SHIP_LIKELY):
+                return False
+            
+            if not self.board.check(cell, Board.NO_INFO):
+                knownTilesCount += 1
+        
+        if knownTilesCount >= AiMaster.BRUTE_FORCE_THRESHOLD:
+            self.bruteForceAi.start(self.board, self.numShips)
+            self.hasUsedBruteForce = True
+            return True
 
 if __name__ == "__main__":
 

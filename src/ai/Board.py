@@ -28,7 +28,7 @@ class Board:
         self.data[cell[0]][cell[1]] = newVal
     
     def check(self, cell : tuple[int], value : int) -> bool:
-        return bool(self[cell] & value)
+        return self.isInBounds(cell) and bool(self[cell] & value)
     
     def isInBounds(self, cell : tuple[int]) -> bool:
         return cell[0] >= 0 and cell[1] >= 0 and cell[0] < self.width and cell[1] < self.height
@@ -36,6 +36,11 @@ class Board:
     def shuffledIndex(self) -> Generator[tuple[int], None, None]:
         for y in random.sample(list(range(self.height)), self.height):
             for x in random.sample(list(range(self.width)), self.width):
+                yield (x, y)
+    
+    def orderedIndex(self) -> Generator[tuple[int], None, None]:
+        for y in range(self.height):
+            for x in range(self.width):
                 yield (x, y)
 
     def print(self):
