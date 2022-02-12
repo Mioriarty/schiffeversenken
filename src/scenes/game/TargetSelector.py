@@ -96,9 +96,8 @@ class TargetSelector(Component):
             self.oppositeCannon.animation.play()
             endPos = self.getPosFromCell(cell, self.ownBoardRect)
             hit = self.ownShipPlacement.cellOccupied(cell)
-            self.ai.board.print()
-            print(self.ai.classicAi.numShips)
-            print()
+
+            self.ai.printState()
         else:
             startPos = self.ownCannon.getOpeningPos()
             self.ownCannon.animation.play()

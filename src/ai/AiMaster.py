@@ -55,12 +55,23 @@ class AiMaster:
             
             if not self.board.check(cell, Board.NO_INFO):
                 knownTilesCount += 1
-        print("Got " + str(knownTilesCount))
 
         if knownTilesCount >= AiMaster.BRUTE_FORCE_THRESHOLD:
             self.bruteForceAi.start(self.board, self.classicAi.numShips)
             self.bruteForceMode = True
             return True
+    
+    def printState(self) -> None:
+        if self.bruteForceMode:
+            print("Brute Force State")
+            print(self.bruteForceAi.cellPropabilities)
+            print("Possible Placaments: " + str(len(self.bruteForceAi.possiblePlacements)))
+        
+        else:
+            print("Classic State")
+            self.board.print()
+            print(self.classicAi.numShips)
+        print()
 
 if __name__ == "__main__":
 

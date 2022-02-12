@@ -17,16 +17,11 @@ class BruteForceGameAi:
 
         possibleShipLocations = self.__getAllPossibleShipLocations(board)
 
-        board.print()
-        print(possibleShipLocations)
-
         shipsToDo : list[int] = []
         for length, count in sorted(numShipsLeft.items(), reverse=True):
             shipsToDo += [ length ] * count
         
         self.__generatePossiblePlacements(shipsToDo, ShipPlacement(), possibleShipLocations, board)
-        
-        print(len(self.possiblePlacements))
 
         
 
@@ -69,9 +64,6 @@ class BruteForceGameAi:
                 self.cellPropabilities[cell] = 1
     
     def getNextShot(self):
-        print("Calc next shot")
-        print(self.cellPropabilities)
-        print("Possible Placements: " + str(len(self.possiblePlacements)))
         bestCell = (-1, -1)
         bestProp = -1
 
@@ -90,11 +82,12 @@ class BruteForceGameAi:
         for placement in toRemove:
             self.__removePossibleShipPlacement(placement)
         
-        # should be accessabel but not an option to shoot at
-        self.cellPropabilities[pos] = -2
+        # shouldnt be able to shoot it again
+        del self.cellPropabilities[pos]
 
     def __removePossibleShipPlacement(self, placement : ShipPlacement) -> None:
         for cell in placement.occupiedCells():
-            self.cellPropabilities[cell] -= 1
+            if cell in self.cellPropabilities:
+                self.cellPropabilities[cell] -= 1
         
         self.possiblePlacements.remove(placement)
