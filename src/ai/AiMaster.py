@@ -9,7 +9,7 @@ from ai.BruteForceGameAi import BruteForceGameAi
 
 class AiMaster:
 
-    BRUTE_FORCE_THRESHOLD = 60
+    BRUTE_FORCE_THRESHOLD = 85
 
     def __init__(self, boardWidth : int, boardHeight : int, chanceOfMistake : float, numShips : dict[int, int] = {2: 4, 3: 3, 4: 2, 5: 1}):
         self.board = Board(boardWidth, boardHeight)
@@ -20,19 +20,22 @@ class AiMaster:
         self.classicAi = ClassicGameAi(numShips)
         self.bruteForceAi = BruteForceGameAi()
 
-        self.hasUsedBruteForce = False
+        self.bruteForceMode = False
 
     def getNextShot(self) -> tuple[int]:
         if random.random() < self.chanceOfMistake:
             return self.randomAi.getNextShot(self.board)
         
         if self.__shouldUseBruteForce():
-            return self.bruteForceAi.getNextShot(self.board)
+            return self.bruteForceAi.getNextShot()
         else:
             return self.classicAi.getNextShot(self.board)
     
     def submitInfo(self, pos : tuple[int], state : int):
-        self.board = self.classicAi.submitInfo(pos, state, self.board)
+        if self.bruteForceMode:
+            self.bruteForceAi.submitInfo(pos, state)
+        else:
+            self.board = self.classicAi.submitInfo(pos, state, self.board)
 
     def generateShipPlacement(self) -> ShipPlacement:
         return ShipPlacement.generate(self.board.width, self.board.height, self.numShips)
@@ -42,7 +45,7 @@ class AiMaster:
         # - a certain number of cell infos are known AND
         # - no SHIP_LIKELY tile is on the board
 
-        if self.hasUsedBruteForce:
+        if self.bruteForceMode:
             return True
         
         knownTilesCount = 0
@@ -52,10 +55,11 @@ class AiMaster:
             
             if not self.board.check(cell, Board.NO_INFO):
                 knownTilesCount += 1
-        
+        print("Got " + str(knownTilesCount))
+
         if knownTilesCount >= AiMaster.BRUTE_FORCE_THRESHOLD:
-            self.bruteForceAi.start(self.board, self.numShips)
-            self.hasUsedBruteForce = True
+            self.bruteForceAi.start(self.board, self.classicAi.numShips)
+            self.bruteForceMode = True
             return True
 
 if __name__ == "__main__":

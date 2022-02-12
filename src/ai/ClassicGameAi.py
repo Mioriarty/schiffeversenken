@@ -79,11 +79,8 @@ class ClassicGameAi:
                     if length == 1:
                         # found the second tile
                         # remove orthogonal ship likely tiles
-                        board = self.replaceAdjacentCells(shipTile, Board.SHIP_LIKELY, Board.DEDUSED_NO_SHIP, board)
-                        # get tile on the other side of the ship tile
-                        otherSideTile = 2 * np.array(shipTile) - np.array(pos)
-                        if board.isInBounds(otherSideTile) and board.check(otherSideTile, Board.DEDUSED_NO_SHIP):
-                            board[otherSideTile] = Board.SHIP_LIKELY
+                        board = self.replaceAdjacentCells(pos, Board.SHIP_LIKELY, Board.DEDUSED_NO_SHIP, board, True)
+                        board[pos] = Board.SHIP
                     
                     if length + 1 == self.currentLongestShip():
                         # found longest ship and thus submit it
