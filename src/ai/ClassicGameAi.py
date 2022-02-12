@@ -153,7 +153,6 @@ class ClassicGameAi:
         else:
             raise ValueError("Illegal state submitted")
         
-        board[pos] = state
         return board
 
     def countShipLength(self, firstShipTile : tuple[int], board : Board):

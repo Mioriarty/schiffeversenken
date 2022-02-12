@@ -36,6 +36,8 @@ class AiMaster:
             self.bruteForceAi.submitInfo(pos, state)
         else:
             self.board = self.classicAi.submitInfo(pos, state, self.board)
+        
+        self.board[pos] = state
 
     def generateShipPlacement(self) -> ShipPlacement:
         return ShipPlacement.generate(self.board.width, self.board.height, self.numShips)
