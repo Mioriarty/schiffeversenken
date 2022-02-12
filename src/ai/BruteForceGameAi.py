@@ -1,8 +1,8 @@
-from numpy import place
 from ai.Board import Board
 from ai.ShipPlacement import ShipPlacement
 from ai.ShipShape import ShipShape
 import random
+from threading import Thread
 
 
 class BruteForceGameAi:
@@ -10,6 +10,7 @@ class BruteForceGameAi:
     def __init__(self):
         self.possiblePlacements : set[ShipPlacement] = None
         self.cellPropabilities = {}
+        self.generateThread = None
 
     
     def start(self, board : Board, numShipsLeft : dict[int, int]) -> None:
@@ -21,7 +22,10 @@ class BruteForceGameAi:
         for length, count in sorted(numShipsLeft.items(), reverse=True):
             shipsToDo += [ length ] * count
         
-        self.__generatePossiblePlacements(shipsToDo, ShipPlacement(), possibleShipLocations, board)
+        self.generateThread = Thread(target=self.__generatePossiblePlacements, args=(shipsToDo, ShipPlacement(), possibleShipLocations, board))
+        self.generateThread.daemon = True
+        print("Start generating values for the brute force ai")
+        self.generateThread.start()
 
         
 
@@ -64,6 +68,11 @@ class BruteForceGameAi:
                 self.cellPropabilities[cell] = 1
     
     def getNextShot(self):
+        if self.generateThread is None:
+            raise RuntimeError("The Brute Force Ai hasnt been started yet so it cannot advice a shot position")
+        
+        self.generateThread.join()
+
         bestCell = (-1, -1)
         bestProp = -1
 
