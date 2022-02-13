@@ -1,4 +1,7 @@
 
+from typing import Generator
+
+
 class ShipRect:
     
     def __init__(self, left : int, right : int, top : int, bottom : int):
@@ -36,28 +39,26 @@ class ShipShape:
             return ShipRect(self.cell[0] - 1, self.cell[0] + 1, self.cell[1] - 1, self.cell[1] + self.length)
 
 
-    def occupiedTiles(self) -> list[tuple[int]]:
-        tiles = []
+    def occupiedTiles(self) -> Generator[tuple[int], None, None]:
         if self.orientation == ShipShape.HORIZONTAL:
             for i in range(self.length):
-                tiles.append((self.cell[0] + i, self.cell[1]))
+                yield (self.cell[0] + i, self.cell[1])
         elif self.orientation == ShipShape.VERTICAL:
             for i in range(self.length):
-                tiles.append((self.cell[0], self.cell[1] + i))
-        return tiles
+                yield (self.cell[0], self.cell[1] + i)
     
-    def blockedTiles(self) -> list[tuple[int]]:
+    def blockedTiles(self) -> Generator[tuple[int], None, None]:
         tiles = []
         if self.orientation == ShipShape.HORIZONTAL:
             for i in range(-1, self.length + 1):
-                tiles.append((self.cell[0] + i, self.cell[1]))
-                tiles.append((self.cell[0] + i, self.cell[1] - 1))
-                tiles.append((self.cell[0] + i, self.cell[1] + 1))
+                yield (self.cell[0] + i, self.cell[1])
+                yield (self.cell[0] + i, self.cell[1] - 1)
+                yield (self.cell[0] + i, self.cell[1] + 1)
         elif self.orientation == ShipShape.VERTICAL:
             for i in range(-1, self.length + 1):
-                tiles.append((self.cell[0], self.cell[1] + i))
-                tiles.append((self.cell[0] - 1, self.cell[1] + i))
-                tiles.append((self.cell[0] + 1, self.cell[1] + i))
+                yield (self.cell[0], self.cell[1] + i)
+                yield (self.cell[0] - 1, self.cell[1] + i)
+                yield (self.cell[0] + 1, self.cell[1] + i)
         return tiles
     
     def interferesWith(self, other : 'ShipShape') -> bool:
