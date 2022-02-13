@@ -1,4 +1,3 @@
-from matplotlib.animation import Animation
 from components.ambient.Diashow import Diashow
 from utils.Animator import Animator
 from utils.Transform import Transform
