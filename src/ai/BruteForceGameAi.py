@@ -52,8 +52,10 @@ class BruteForceGameAi:
                 # check if it fits in the ship placement
                 if not crntPlacement.fitsIn(tempShip):
                     continue
-
-                self.__generatePossiblePlacements(shipsToDo.copy(), ShipPlacement(crntPlacement.ships + [ tempShip ]), possibleShipLocations, board)
+                
+                tempPlacement = crntPlacement.copy()
+                tempPlacement.add(tempShip)
+                self.__generatePossiblePlacements(shipsToDo.copy(), tempPlacement, possibleShipLocations, board)
 
     def __getAllPossibleShipLocations(self, board : Board) -> list[tuple[int]]:
         return [ (x, y) for x, y in board.orderedIndex() if board.check((x, y), Board.NO_INFO) and (board.check((x+1, y), Board.NO_INFO) or board.check((x, y+1), Board.NO_INFO)) ]

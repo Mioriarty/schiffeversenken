@@ -145,6 +145,6 @@ class ShipPlacer(Component):
             outsideShip.travelTo(shipShape, self.boardRect, self.boardSize)
     
     def getCurrentShipPlacement(self):
-        return [ s[0] for s in self.placedShips ]
+        return [ s[0] for s in self.placedShips if s[0].orientation != -1]
 
         

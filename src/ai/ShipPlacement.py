@@ -7,25 +7,27 @@ from ai.ShipShape import ShipShape
 class ShipPlacement:
 
     def __init__(self, ships : list[ShipShape] = []):
-        self.ships = ships.copy()
+        self.ships = set(ships)
 
     
     def fitsIn(self, ship : ShipShape) -> bool:
         return all(not ship.interferesWith(other) for other in self.ships)
     
     def add(self, ship : ShipShape) -> None:
-        if not self.fitsIn(ship):
-            raise ValueError("Ship doesnt fit in the ship placement")
-        
-        self.ships.append(ship)
+        self.ships.add(ship)
     
     def cellOccupied(self, cell : tuple[int]) -> bool:
         cell = (cell[0], cell[1]) # in case it is a np.ndarray
-        return any((cell in ship.occupiedTiles()) for ship in self.ships)
+        return any(ship.getOccupiedRect().includesPoint(cell) for ship in self.ships)
     
 
     def occupiedCells(self) -> list[tuple[int]]:
         return [ cell for ship in self.ships for cell in ship.occupiedTiles() ]
+    
+    def copy(self):
+        cpy = ShipPlacement()
+        cpy.ships = self.ships.copy()
+        return cpy
 
     # generate random playcement
     @classmethod
@@ -51,7 +53,9 @@ class ShipPlacement:
             for orientation in orientations:
                 tempShip = ShipShape(crntLength, pos, orientation)
                 if tempShip.isInBoardBounds(board.width, board.height) and crntPlacement.fitsIn(tempShip):
-                    finalPlacement = self.__generateInner(shipsToDo, ShipPlacement(crntPlacement.ships + [ tempShip ]), board)
+                    tempPlacement = crntPlacement.copy()
+                    tempPlacement.add(tempShip)
+                    finalPlacement = self.__generateInner(shipsToDo, tempPlacement, board)
                     if finalPlacement != None:
                         return finalPlacement
         return None
