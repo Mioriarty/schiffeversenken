@@ -9,7 +9,7 @@ from ai.BruteForceGameAi import BruteForceGameAi
 
 class AiMaster:
 
-    BRUTE_FORCE_THRESHOLD = 90
+    BRUTE_FORCE_THRESHOLD = 80
 
     def __init__(self, boardWidth : int, boardHeight : int, chanceOfMistake : float, numShips : dict[int, int] = {2: 4, 3: 3, 4: 2, 5: 1}):
         self.board = Board(boardWidth, boardHeight)
