@@ -9,7 +9,7 @@ from ai.BruteForceGameAi import BruteForceGameAi
 
 class AiMaster:
 
-    BRUTE_FORCE_THRESHOLD = 80
+    BRUTE_FORCE_THRESHOLD = 85
 
     def __init__(self, boardWidth : int, boardHeight : int, chanceOfMistake : float, numShips : dict[int, int] = {2: 4, 3: 3, 4: 2, 5: 1}):
         self.board = Board(boardWidth, boardHeight)
@@ -63,7 +63,7 @@ class AiMaster:
         if knownTilesCount >= AiMaster.BRUTE_FORCE_THRESHOLD:
             self.bruteForceAi.start(self.board, self.classicAi.numShips)
             self.bruteForceMode = True
-            return True
+            return False
     
     def printState(self) -> None:
         if self.bruteForceMode:

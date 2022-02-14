@@ -82,9 +82,8 @@ class BruteForceGameAi:
     def getNextShot(self):
         if self.generateThread is None:
             raise RuntimeError("The Brute Force Ai hasnt been started yet so it cannot advice a shot position")
-        
-        self.generateThread.join()
 
+        print("get next shot from brute force")
         bestCell = (-1, -1)
         bestProp = -1
 
@@ -108,7 +107,8 @@ class BruteForceGameAi:
                     self.__removePossibleShipPlacement(placement)
                 
                 # shouldnt be able to shoot it again
-                del self.cellPropabilities[pos]
+                if pos in self.cellPropabilities:
+                    del self.cellPropabilities[pos]
 
     def __removePossibleShipPlacement(self, placement : ShipPlacement) -> None:
         for cell in placement.occupiedCells():
