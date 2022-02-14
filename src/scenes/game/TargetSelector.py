@@ -29,8 +29,8 @@ class TargetSelector(Component):
         self.ownBoardRect = ownBoardRect
         self.oppositeBoardRect = oppositeBoardRect
         self.ownShipPlacement = []
-        self.ai = AiMaster(boardSize, boardSize, Difficulties.getSelectedChanceOfMistake())
-        self.oppositeShipPlacement = self.ai.generateShipPlacement()
+        self.ai = AiMaster(boardSize, boardSize, Difficulties.getSelectedChanceOfMistake(), Difficulties.getSelectedNumShipPlacementTries())
+        self.oppositeShipPlacement = None
         self.selecting = False
         self.cross = Sprite("game.cross", transform=Transform(scale=(0.5, 0.5)), bakeNow=True)
         self.hitCells = []
@@ -49,6 +49,7 @@ class TargetSelector(Component):
         self.ownShipPlacement = ShipPlacement(shipPlacement)
     
     def start(self) -> None:
+        self.oppositeShipPlacement = self.ai.generateShipPlacement()
         if random.random() >= 0.5:
             self.doOwnShot()
         else:

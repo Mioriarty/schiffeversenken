@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Generator, Union
 import random
 from ai.Board import Board
 from ai.ShipShape import ShipShape
@@ -19,10 +19,14 @@ class ShipPlacement:
     def cellOccupied(self, cell : tuple[int]) -> bool:
         cell = (cell[0], cell[1]) # in case it is a np.ndarray
         return any(ship.getOccupiedRect().includesPoint(cell) for ship in self.ships)
-    
 
-    def occupiedCells(self) -> list[tuple[int]]:
-        return [ cell for ship in self.ships for cell in ship.occupiedTiles() ]
+    def occupiedCells(self) -> Generator[tuple[int], None, None]:
+        for ship in self.ships:
+            yield from ship.occupiedTiles()
+    
+    def blockedCells(self) -> Generator[tuple[int], None, None]:
+        for ship in self.ships:
+            yield from ship.blockedTiles()
     
     def copy(self):
         cpy = ShipPlacement()

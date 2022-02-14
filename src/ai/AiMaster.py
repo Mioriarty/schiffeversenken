@@ -2,6 +2,7 @@ from ai.Board import Board
 from ai.ClassicGameAi import ClassicGameAi
 from ai.RandomGameAi import RandomGameAi
 from ai.ShipPlacement import ShipPlacement
+from ai.ShipPlacingAi import ShipPlacingAi
 from ai.ShipShape import ShipShape
 import random
 
@@ -11,14 +12,15 @@ class AiMaster:
 
     BRUTE_FORCE_THRESHOLD = 85
 
-    def __init__(self, boardWidth : int, boardHeight : int, chanceOfMistake : float, numShips : dict[int, int] = {2: 4, 3: 3, 4: 2, 5: 1}):
+    def __init__(self, boardWidth : int, boardHeight : int, chanceOfMistake : float, numShipPlacementTries : int, numShips : dict[int, int] = {2: 4, 3: 3, 4: 2, 5: 1}):
         self.board = Board(boardWidth, boardHeight)
         self.chanceOfMistake = chanceOfMistake
         self.numShips = numShips.copy()
 
-        self.randomAi  = RandomGameAi()
-        self.classicAi = ClassicGameAi(numShips)
-        self.bruteForceAi = BruteForceGameAi()
+        self.shipPlacingAi = ShipPlacingAi(numShipPlacementTries, self.board, numShips)
+        self.randomAi      = RandomGameAi()
+        self.classicAi     = ClassicGameAi(numShips)
+        self.bruteForceAi  = BruteForceGameAi()
 
         self.bruteForceMode = False
 
@@ -42,7 +44,7 @@ class AiMaster:
         self.board[pos] = state
 
     def generateShipPlacement(self) -> ShipPlacement:
-        return ShipPlacement.generate(self.board.width, self.board.height, self.numShips)
+        return self.shipPlacingAi.get()
     
     def __shouldUseBruteForce(self) -> bool:
         # it will start using the brute force ai if t was already used or

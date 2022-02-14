@@ -10,6 +10,7 @@ class Difficulties:
     __nameImages = [ 'texts.kaptnBlaubar', 'texts.captainHook', 'texts.dieWilde13', 'texts.jackSparrow' ]
     __descriptionImages = [ 'texts.kb_des', 'texts.ch_des', 'texts.w13_des', 'texts.js_des' ]
     __chancesOfMistake = [ 0.5, 0.25, 0.1, 0.0 ]
+    __numShipPlacementTries = [ 1, 3, 10, 150 ]
     __selectedIndex = 0
 
 
@@ -38,5 +39,5 @@ class Difficulties:
         return Difficulties.__chancesOfMistake[Difficulties.__selectedIndex]
     
     @staticmethod
-    def getSelectedIndex() -> int:
-        return Difficulties.__selectedIndex
+    def getSelectedNumShipPlacementTries() -> int:
+        return Difficulties.__numShipPlacementTries[Difficulties.__selectedIndex]
