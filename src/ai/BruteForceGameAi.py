@@ -2,7 +2,7 @@ from ai.Board import Board
 from ai.ShipPlacement import ShipPlacement
 from ai.ShipShape import ShipShape
 import random
-from threading import Thread
+from threading import Thread, Lock
 
 
 class BruteForceGameAi:
@@ -11,6 +11,9 @@ class BruteForceGameAi:
         self.possiblePlacements : set[ShipPlacement] = None
         self.cellPropabilities = {}
         self.generateThread = None
+
+        self.submitInfoQueue = set()
+        self.submitLock = Lock()
 
     
     def start(self, board : Board, numShipsLeft : dict[int, int]) -> None:
@@ -22,12 +25,19 @@ class BruteForceGameAi:
         for length, count in sorted(numShipsLeft.items(), reverse=True):
             shipsToDo += [ length ] * count
         
-        self.generateThread = Thread(target=self.__generatePossiblePlacements, args=(shipsToDo, ShipPlacement(), possibleShipLocations, board))
+        def threadFun():
+            print("Start generating values for the brute force ai")
+            self.__generatePossiblePlacements(shipsToDo, ShipPlacement(), possibleShipLocations, board)
+            for cell, state in self.submitInfoQueue:
+                self.submitInfo(cell, state, False)
+            print("Done generating values for the brute force ai")
+
+        self.generateThread = Thread(target=threadFun)
         self.generateThread.daemon = True
-        print("Start generating values for the brute force ai")
         self.generateThread.start()
 
-        
+    def generationDone(self) -> bool:
+        return self.generateThread is not None and not self.generateThread.is_alive()
 
     def __generatePossiblePlacements(self, shipsToDo : list[int], crntPlacement : ShipPlacement, possibleShipLocations : list[tuple[int]], board : Board):
         if len(shipsToDo) == 0:
@@ -86,15 +96,19 @@ class BruteForceGameAi:
         return bestCell
 
     
-    def submitInfo(self, pos : tuple[int], state : int) -> None:
-        isHit = state == Board.SHIP
-        toRemove = { placement for placement in self.possiblePlacements if placement.cellOccupied(pos) != isHit }
+    def submitInfo(self, pos : tuple[int], state : int, threadSavetyCheck : bool = True) -> None:
+        if threadSavetyCheck and not self.generationDone():
+            self.submitInfoQueue.add((pos, state))
+        else:
+            with self.submitLock:
+                isHit = state == Board.SHIP
+                toRemove = { placement for placement in self.possiblePlacements if placement.cellOccupied(pos) != isHit }
 
-        for placement in toRemove:
-            self.__removePossibleShipPlacement(placement)
-        
-        # shouldnt be able to shoot it again
-        del self.cellPropabilities[pos]
+                for placement in toRemove:
+                    self.__removePossibleShipPlacement(placement)
+                
+                # shouldnt be able to shoot it again
+                del self.cellPropabilities[pos]
 
     def __removePossibleShipPlacement(self, placement : ShipPlacement) -> None:
         for cell in placement.occupiedCells():

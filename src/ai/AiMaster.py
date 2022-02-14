@@ -34,6 +34,8 @@ class AiMaster:
     def submitInfo(self, pos : tuple[int], state : int):
         if self.bruteForceMode:
             self.bruteForceAi.submitInfo(pos, state)
+            if not self.bruteForceAi.generationDone():
+                self.board = self.classicAi.submitInfo(pos, state, self.board)
         else:
             self.board = self.classicAi.submitInfo(pos, state, self.board)
         
@@ -48,7 +50,7 @@ class AiMaster:
         # - no SHIP_LIKELY tile is on the board
 
         if self.bruteForceMode:
-            return True
+            return self.bruteForceAi.generationDone()
         
         knownTilesCount = 0
         for cell in self.board.orderedIndex():
