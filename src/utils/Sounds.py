@@ -57,4 +57,4 @@ class Sounds:
         Sounds.__soundsOn = value
 
         if not value:
-            pygame.mixer.pause()
+            pygame.mixer.stop()
