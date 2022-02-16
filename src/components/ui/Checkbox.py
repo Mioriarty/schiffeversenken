@@ -1,10 +1,10 @@
 
 from re import S
-from matplotlib.transforms import Transform
 import pygame
 from components.ui.AbstractButton import AbstractButton
 from components.ui.ImageButton import ImageButton
 from utils.Images import Sprite
+from utils.Transform import Transform
 
 
 class Checkbox(ImageButton):
