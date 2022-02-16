@@ -2,6 +2,7 @@ import random
 import pygame
 import numpy as np
 from ai.ShipShape import ShipShape
+from components.ui.AbstractButton import AbstractButton
 from components.ui.ImageButton import ImageButton
 from utils.Animator import Animator
 from utils.Images import Sprite
@@ -32,7 +33,7 @@ class Ship(ImageButton):
 
     def __init__(self, length : int, scaleFactor: float = 0.8, onlyVisual : bool = False, transform: Transform = None):
         transform.setRelScale(Ship.SCALE)
-        super().__init__(Sprite(f"game.ships.s{length}"), scaleFactor, transform)
+        super().__init__(Sprite(f"game.ships.s{length}"), scaleFactor, AbstractButton.GAME_LAYER, transform)
         self.__length = length
 
         if onlyVisual:

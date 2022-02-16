@@ -9,10 +9,16 @@ from utils.Input import Input
 
 class AbstractButton(Component):
 
-    def __init__(self, width : float, height : float, transform: Transform = None):
+    GAME_LAYER = 0
+    UI_LAYER = 1
+
+    __crntInputLayer = GAME_LAYER
+
+    def __init__(self, width : float, height : float, inputLayer : int, transform: Transform = None):
         super().__init__(transform)
         self.width = width
         self.height = height
+        self.inputLayer = inputLayer
 
         self.__enabled = True
         self.__hovering = False
@@ -22,7 +28,7 @@ class AbstractButton(Component):
         self.__onClickEvent : Callable[[], None] = None
 
     def update(self, dt : float) -> None:
-        if self.__enabled:
+        if self.__enabled and AbstractButton.__crntInputLayer == self.inputLayer:
             relativeMousePos = np.absolute(self.transform.applyInv(Input.getMousePos()))
             hovering = 2 * relativeMousePos[0] <= self.width and 2 * relativeMousePos[1] <= self.height
             
@@ -106,3 +112,7 @@ class AbstractButton(Component):
 
     def onDisable(self) -> None:
         pass
+
+    @staticmethod
+    def setInputLayer(inputLayer : int) -> None:
+        AbstractButton.__crntInputLayer = inputLayer
