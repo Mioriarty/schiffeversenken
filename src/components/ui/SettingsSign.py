@@ -10,10 +10,12 @@ from utils.Transform import Transform
 class SettingsSign(Component):
 
     def __init__(self):
-        super().__init__(Transform.screenCenter())
+        super().__init__(Transform.screenCenter(scale=(0.9, 0.9)))
         self.__show = False
 
-        self.sign = Sprite("signs.settings", Transform(parent=self.transform))
+        self.transform.translate((0, -50))
+
+        self.sign = Sprite("signs.settings", Transform(parent=self.transform), bakeNow=True)
         self.musicToggle = Checkbox(inputLayer=AbstractButton.SETTINGS_LAYER, transform=Transform((-235, -17), scale=(.7, .7), parent=self.transform))
         self.soundToggle = Checkbox(inputLayer=AbstractButton.SETTINGS_LAYER, transform=Transform((30, -20), scale=(.7, .7), parent=self.transform))
 
