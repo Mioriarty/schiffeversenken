@@ -4,6 +4,7 @@ from components.ui.AbstractButton import AbstractButton
 from components.ui.Checkbox import Checkbox
 from components.ui.ImageButton import ImageButton
 from utils.Images import Sprite
+from utils.Sounds import Sounds
 from utils.Transform import Transform
 
 
@@ -17,7 +18,13 @@ class SettingsSign(Component):
 
         self.sign = Sprite("signs.settings", Transform(parent=self.transform), bakeNow=True)
         self.musicToggle = Checkbox(inputLayer=AbstractButton.SETTINGS_LAYER, transform=Transform((-235, -17), scale=(.7, .7), parent=self.transform))
+        self.musicToggle.setActive(Sounds.isMusicOn())
+        self.musicToggle.setOnClickEvent(lambda : Sounds.setMusicOn(self.musicToggle.isActive()))
+        
         self.soundToggle = Checkbox(inputLayer=AbstractButton.SETTINGS_LAYER, transform=Transform((30, -20), scale=(.7, .7), parent=self.transform))
+        self.soundToggle.setActive(Sounds.areSoundsOn())
+        self.soundToggle.setOnClickEvent(lambda : Sounds.setSoundsOn(self.soundToggle.isActive()))
+
 
         self.backBtn = ImageButton("buttons.back", inputLayer=AbstractButton.SETTINGS_LAYER, transform=Transform((-10, 100), scale=(0.6, 0.6), parent=self.transform))
         self.backBtn.setOnClickEvent(self.hide)

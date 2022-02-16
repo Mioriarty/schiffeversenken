@@ -9,6 +9,9 @@ class Sounds:
 
     __soundEffects : dict[str, pygame.mixer.Sound] = {}
 
+    __musicOn  = True
+    __soundsOn = True
+
     @staticmethod
     def loadAll() -> None:
         for root, _, files in os.walk(Sounds.SOUND_EFFECT_FOLDER):
@@ -21,7 +24,8 @@ class Sounds:
     
     @staticmethod
     def playSoundEffect(name : str) -> None:
-        Sounds.__soundEffects[name].play()
+        if Sounds.__soundsOn:
+            Sounds.__soundEffects[name].play()
 
     
     @staticmethod
@@ -29,3 +33,28 @@ class Sounds:
         pygame.mixer.music.unload()
         pygame.mixer.music.load(Sounds.MUSIC_FOLDER + name + fileExt)
         pygame.mixer.music.play(-1)
+    
+    # MUTE CONTROL
+
+    @staticmethod
+    def isMusicOn() -> bool:
+        return Sounds.__musicOn
+    
+    @staticmethod
+    def areSoundsOn() -> bool:
+        return Sounds.__soundsOn
+    
+    @staticmethod
+    def setMusicOn(value : bool) -> None:
+        Sounds.__musicOn = value
+        if value:
+            pygame.mixer.music.set_volume(1)
+        else:
+            pygame.mixer.music.set_volume(0)
+    
+    @staticmethod
+    def setSoundsOn(value : bool) -> None:
+        Sounds.__soundsOn = value
+
+        if not value:
+            pygame.mixer.pause()

@@ -24,6 +24,10 @@ class Checkbox(ImageButton):
         self.__isActive = not self.__isActive
         self._sprite, self.__substituteSprite = self.__substituteSprite, self._sprite
     
+    def setActive(self, value : bool) -> None:
+        if value != self.__isActive:
+            self.toggle()
+    
     def onMouseUp(self) -> None:
         super().onMouseUp()
         self.toggle()
