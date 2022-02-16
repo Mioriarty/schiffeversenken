@@ -1,5 +1,7 @@
+import pygame
 from components.ambient.Bird import Bird
 from components.ambient.Diashow import Diashow
+from components.ambient.RandomAmbientEvent import Shark
 from components.game.Cannon import Cannon
 from components.ui.AbstractButton import AbstractButton
 from components.ui.EndGameSign import EndGameSign
@@ -115,6 +117,9 @@ class GameScene(Scene):
             Diashow([ "ambient.island1", "ambient.island2" ], 0.5, transform=Transform((530, 200), scale=(0.3, 0.3), parent=self.landParent)),
         ]
         SceneManager.putInDrawLayer(self.islands)
+
+        self.shark = Shark(0.3, pygame.Rect(500, 300, 24, 500), (7., 15.), transform=Transform(scale=(0.3, 0.3)))
+        SceneManager.putInDrawLayer(self.shark)
 
 
     
