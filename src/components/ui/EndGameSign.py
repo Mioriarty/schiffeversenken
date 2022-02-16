@@ -1,5 +1,6 @@
 
 from components.Component import Component
+from components.ui.AbstractButton import AbstractButton
 from components.ui.ImageButton import ImageButton
 from scenes.Scene import SceneManager
 import scenes.menu.MenuScene
@@ -16,16 +17,13 @@ class EndGameSign(Component):
     def __init__(self, transform: Transform = None):
         super().__init__(transform)
 
-        self.winSign = ImageButton(Sprite("signs.win"), scaleFactor=1., transform=self.transform)
-        self.loseSign = ImageButton(Sprite("signs.lose"), scaleFactor=1., transform=self.transform)
+        self.winSign = ImageButton(Sprite("signs.win"), scaleFactor=1., inputLayer=AbstractButton.UI_LAYER, transform=self.transform)
+        self.loseSign = ImageButton(Sprite("signs.lose"), scaleFactor=1., inputLayer=AbstractButton.UI_LAYER, transform=self.transform)
         self.__showWin = False
         self.__show = False
 
         self.winSign.setOnClickEvent(EndGameSign.__press)
         self.loseSign.setOnClickEvent(EndGameSign.__press)
-
-        self.winSign.disable()
-        self.loseSign.disable()
 
         goalY = self.transform.getRelPosition()[1]
         self.anim = Animator.easeOut(-200., goalY + EndGameSign.ANIM_OFFSET, .5) + Animator.smoothLerp(goalY + EndGameSign.ANIM_OFFSET, goalY, .2)
@@ -39,11 +37,14 @@ class EndGameSign(Component):
                 self.loseSign.draw(screen)
 
     def __press():
+        AbstractButton.setInputLayer(AbstractButton.GAME_LAYER)
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         SceneManager.requestloadScene(scenes.menu.MenuScene.MenuScene)
     
     def show(self, won : bool):
         self.__show = True
         self.__showWin = won
+        AbstractButton.setInputLayer(AbstractButton.UI_LAYER)
 
         if won:
             self.anim.setHook(self.winSign.transform.setRelYPos)
