@@ -23,6 +23,7 @@ class GameScene(Scene):
     def __init__(self):
         super().__init__((255, 255, 255))
         Ship.arrivedShips = 0
+        AbstractButton.setInputLayer(AbstractButton.GAME_LAYER)
 
         self.landParent = Transform()
         self.land = Sprite("ambient.land3", Transform.screenCenter(y = 87.5, scale=(0.5, 0.5), parent=self.landParent), bakeNow=True)
