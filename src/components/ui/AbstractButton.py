@@ -10,7 +10,8 @@ from utils.Input import Input
 class AbstractButton(Component):
 
     GAME_LAYER = 0
-    UI_LAYER = 1
+    ENDGAME_SIGN_LAYER = 1
+    SETTINGS_LAYER = 2
 
     __crntInputLayer = GAME_LAYER
 

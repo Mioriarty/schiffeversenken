@@ -4,6 +4,7 @@ from components.game.Cannon import Cannon
 from components.ui.AbstractButton import AbstractButton
 from components.ui.EndGameSign import EndGameSign
 from components.ui.ImageButton import ImageButton
+from components.ui.SettingsSign import SettingsSign
 from scenes.Scene import Scene, SceneManager
 from scenes.game.ShipPlacer import Ship, ShipPlacer
 from scenes.game.TargetSelector import TargetSelector
@@ -92,10 +93,14 @@ class GameScene(Scene):
         self.endGameSign = EndGameSign(transform=Transform.screenCenter())
         SceneManager.putInDrawLayer(self.endGameSign, SceneManager.OVERLAY_LAYER)
 
-        # pause menu stuff
-        self.pauseBtn = ImageButton("buttons.pause", transform=Transform((995, 20), scale=(0.7, 0.7)))
-        self.pauseBtn.setOnClickEvent(lambda : AbstractButton.setInputLayer(AbstractButton.UI_LAYER))
-        SceneManager.putInDrawLayer(self.pauseBtn, SceneManager.OVERLAY_LAYER)
+        # settings menu stuff
+        self.settingsBtn = ImageButton("buttons.settings", transform=Transform((995, 20), scale=(0.7, 0.7)))
+        SceneManager.putInDrawLayer(self.settingsBtn, SceneManager.OVERLAY_LAYER)
+
+        self.settings = SettingsSign()
+        SceneManager.putInDrawLayer(self.settings, SceneManager.OVERLAY_LAYER)
+        self.settingsBtn.setOnClickEvent(self.settings.show)
+
         
 
 

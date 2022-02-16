@@ -17,8 +17,8 @@ class EndGameSign(Component):
     def __init__(self, transform: Transform = None):
         super().__init__(transform)
 
-        self.winSign = ImageButton("signs.win", scaleFactor=1., inputLayer=AbstractButton.UI_LAYER, transform=self.transform)
-        self.loseSign = ImageButton("signs.lose", scaleFactor=1., inputLayer=AbstractButton.UI_LAYER, transform=self.transform)
+        self.winSign = ImageButton("signs.win", scaleFactor=1., inputLayer=AbstractButton.ENDGAME_SIGN_LAYER, transform=self.transform)
+        self.loseSign = ImageButton("signs.lose", scaleFactor=1., inputLayer=AbstractButton.ENDGAME_SIGN_LAYER, transform=self.transform)
         self.__showWin = False
         self.__show = False
 
@@ -43,7 +43,7 @@ class EndGameSign(Component):
     def show(self, won : bool):
         self.__show = True
         self.__showWin = won
-        AbstractButton.setInputLayer(AbstractButton.UI_LAYER)
+        AbstractButton.setInputLayer(AbstractButton.ENDGAME_SIGN_LAYER)
 
         if won:
             self.anim.setHook(self.winSign.transform.setRelYPos)
