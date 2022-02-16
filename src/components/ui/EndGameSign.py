@@ -17,8 +17,8 @@ class EndGameSign(Component):
     def __init__(self, transform: Transform = None):
         super().__init__(transform)
 
-        self.winSign = ImageButton(Sprite("signs.win"), scaleFactor=1., inputLayer=AbstractButton.UI_LAYER, transform=self.transform)
-        self.loseSign = ImageButton(Sprite("signs.lose"), scaleFactor=1., inputLayer=AbstractButton.UI_LAYER, transform=self.transform)
+        self.winSign = ImageButton("signs.win", scaleFactor=1., inputLayer=AbstractButton.UI_LAYER, transform=self.transform)
+        self.loseSign = ImageButton("signs.lose", scaleFactor=1., inputLayer=AbstractButton.UI_LAYER, transform=self.transform)
         self.__showWin = False
         self.__show = False
 
@@ -38,7 +38,6 @@ class EndGameSign(Component):
 
     def __press():
         AbstractButton.setInputLayer(AbstractButton.GAME_LAYER)
-        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         SceneManager.requestloadScene(scenes.menu.MenuScene.MenuScene)
     
     def show(self, won : bool):

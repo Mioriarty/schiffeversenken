@@ -38,7 +38,7 @@ class MenuScene(Scene):
         ]
         SceneManager.putInDrawLayer(self.islands)
 
-        self.playBtn = ImageButton(Sprite("buttons.spielen"), transform = Transform.screenCenter(y=600., scale=(0.3, 0.3), parent=self.parentTransform))
+        self.playBtn = ImageButton("buttons.spielen", transform = Transform.screenCenter(y=600., scale=(0.3, 0.3), parent=self.parentTransform))
         self.playBtn.setOnClickEvent(self.gameStartAnimation.play)
         SceneManager.putInDrawLayer(self.playBtn)
 

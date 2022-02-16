@@ -1,6 +1,7 @@
 from components.ambient.Bird import Bird
 from components.ambient.Diashow import Diashow
 from components.game.Cannon import Cannon
+from components.ui.AbstractButton import AbstractButton
 from components.ui.EndGameSign import EndGameSign
 from components.ui.ImageButton import ImageButton
 from scenes.Scene import Scene, SceneManager
@@ -37,7 +38,7 @@ class GameScene(Scene):
         self.boardAppearAnim.addHook(self.board2.image.set_alpha)
         self.boardAppearAnim.play()
 
-        placementDoneBtn = ImageButton(Sprite("buttons.spielen"), transform = Transform.screenCenter(y=200., scale=(0.2, 0.2)))
+        placementDoneBtn = ImageButton("buttons.spielen", transform = Transform.screenCenter(y=200., scale=(0.2, 0.2)))
         placementDoneBtn.setOnClickEvent(self.__placementDoneCallback)
 
         self.shipManager = ShipPlacer([
@@ -90,6 +91,12 @@ class GameScene(Scene):
 
         self.endGameSign = EndGameSign(transform=Transform.screenCenter())
         SceneManager.putInDrawLayer(self.endGameSign, SceneManager.OVERLAY_LAYER)
+
+        # pause menu stuff
+        self.pauseBtn = ImageButton("buttons.pause", transform=Transform((995, 20), scale=(0.7, 0.7)))
+        self.pauseBtn.setOnClickEvent(lambda : AbstractButton.setInputLayer(AbstractButton.UI_LAYER))
+        SceneManager.putInDrawLayer(self.pauseBtn, SceneManager.OVERLAY_LAYER)
+        
 
 
         # amdient stuff

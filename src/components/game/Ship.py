@@ -33,7 +33,7 @@ class Ship(ImageButton):
 
     def __init__(self, length : int, scaleFactor: float = 0.8, onlyVisual : bool = False, transform: Transform = None):
         transform.setRelScale(Ship.SCALE)
-        super().__init__(Sprite(f"game.ships.s{length}"), scaleFactor, AbstractButton.GAME_LAYER, transform)
+        super().__init__(f"game.ships.s{length}", scaleFactor, AbstractButton.GAME_LAYER, transform)
         self.__length = length
 
         if onlyVisual:
