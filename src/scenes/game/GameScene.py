@@ -23,7 +23,7 @@ class GameScene(Scene):
         Ship.arrivedShips = 0
 
         self.landParent = Transform()
-        self.land = Sprite("ambient.land2", Transform.screenCenter(y = 87.5, scale=(0.5, 0.5), parent=self.landParent), bakeNow=True)
+        self.land = Sprite("ambient.land3", Transform.screenCenter(y = 87.5, scale=(0.5, 0.5), parent=self.landParent), bakeNow=True)
         SceneManager.putInDrawLayer(self.land)
 
         self.landAppearAnim = Animator.easeOut(-280, 0, GameScene.START_ANIM_TIME)
@@ -63,8 +63,8 @@ class GameScene(Scene):
         self.oppositeShips = [
             Ship(2, onlyVisual=True, transform=Transform((795, 105), angle=-math.pi/2,  parent=self.landParent)),
             Ship(2, onlyVisual=True, transform=Transform((850, 100), angle=-math.pi/2,  parent=self.landParent)),
-            Ship(2, onlyVisual=True, transform=Transform((955, 150), angle=-0.9,  parent=self.landParent)),
-            Ship(2, onlyVisual=True, transform=Transform((905, 70), angle=-math.pi/2,  parent=self.landParent)),
+            Ship(2, onlyVisual=True, transform=Transform((955, 175), angle=-0.9,  parent=self.landParent)),
+            Ship(2, onlyVisual=True, transform=Transform((905, 60), angle=-math.pi/2,  parent=self.landParent)),
 
             Ship(3, onlyVisual=True, transform=Transform((735, 135), angle=-math.pi/2,  parent=self.landParent)),
             Ship(3, onlyVisual=True, transform=Transform((875, 80), angle=-math.pi/2,  parent=self.landParent)),
@@ -85,7 +85,7 @@ class GameScene(Scene):
             self.board1.image.get_rect(center=self.board1.transform.getPosition()),
             self.board2.image.get_rect(center=self.board2.transform.getPosition()),
             Cannon(transform=Transform((50, 40), scale=(0.5, 0.5), parent=self.landParent)),
-            Cannon(transform=Transform((980, 100), scale=(-0.5, 0.5), parent=self.landParent)),
+            Cannon(transform=Transform((980, 120), scale=(-0.5, 0.5), parent=self.landParent)),
             self.__gameEnded
         )
         SceneManager.putInDrawLayer(self.targetSelector)
