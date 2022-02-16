@@ -3,6 +3,7 @@ from components.ambient.Bird import Bird
 from components.ambient.Diashow import Diashow
 from components.ambient.RandomAmbientEvent import Shark
 from components.ui.ImageButton import ImageButton
+from components.ui.SettingsSign import SettingsSign
 import scenes.game.GameScene
 from scenes.Scene import Scene, SceneManager
 from scenes.menu.DifficultySelect import DifficultySelect
@@ -51,6 +52,15 @@ class MenuScene(Scene):
 
         self.shark = Shark(0.3, pygame.Rect(50, 350, 100, 300), (7., 15.), transform=Transform(scale=(0.3, 0.3), parent=self.parentTransform))
         SceneManager.putInDrawLayer(self.shark)
+
+        # settings menu stuff
+        self.settingsBtn = ImageButton("buttons.settings", transform=Transform((980, 40), scale=(0.7, 0.7)))
+        SceneManager.putInDrawLayer(self.settingsBtn, SceneManager.OVERLAY_LAYER)
+
+        self.settings = SettingsSign()
+        SceneManager.putInDrawLayer(self.settings, SceneManager.OVERLAY_LAYER)
+        self.settingsBtn.setOnClickEvent(self.settings.show)
+
 
     
     def startGame(self):
