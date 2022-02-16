@@ -31,7 +31,7 @@ class ShipPlacer(Component):
         self.placementDone = False
         self.inGame = False
 
-        self.placedShips = [ [ShipShape(s.getLength(), (-1, -1), -1), Ship(s.getLength(), transform=Transform(scale=Ship.SCALE))] for s in self.ships ]
+        self.placedShips = [ [ShipShape(s.getLength(), (-1, -1), -1), Ship(s.getLength(), transform=Transform(scale=Ship.SCALE), onlyVisual=True)] for s in self.ships ]
 
         for i in range(len(ships)):
             self.ships[i].setOnClickEvent(functools.partial(self.__clickOnShip, i))

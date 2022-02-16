@@ -114,5 +114,7 @@ class AbstractButton(Component):
         pass
 
     @staticmethod
-    def setInputLayer(inputLayer : int) -> None:
+    def setInputLayer(inputLayer : int, resetCursor : bool = True) -> None:
         AbstractButton.__crntInputLayer = inputLayer
+        if resetCursor:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)

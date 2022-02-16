@@ -41,11 +41,11 @@ class DifficultySelect(Component):
         self.desAppear   = Animator.const(0, DifficultySelect.MOVE_DURATION / 2) + Animator.lerp(0., 255., DifficultySelect.MOVE_DURATION / 2)
         self.desDisppear = Animator.lerp(255., 0., DifficultySelect.MOVE_DURATION / 2)
         
-        self.leftButton = ImageButton(Sprite("buttons.left"), transform = Transform((-300, 0), scale=(0.2, 0.2), parent=self.transform))
+        self.leftButton = ImageButton("buttons.left", transform = Transform((-300, 0), scale=(0.2, 0.2), parent=self.transform))
         self.leftButton.setOnClickEvent(self.leftPress)
         SceneManager.putInDrawLayer(self.leftButton)
 
-        self.rightButton = ImageButton(Sprite("buttons.right"), transform = Transform((300, 0), scale=(0.2, 0.2), parent=self.transform))
+        self.rightButton = ImageButton("buttons.right", transform = Transform((300, 0), scale=(0.2, 0.2), parent=self.transform))
         self.rightButton.setOnClickEvent(self.rightPress)
         SceneManager.putInDrawLayer(self.rightButton)
 
