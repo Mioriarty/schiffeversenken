@@ -94,7 +94,7 @@ class GameScene(Scene):
         SceneManager.putInDrawLayer(self.endGameSign, SceneManager.OVERLAY_LAYER)
 
         # settings menu stuff
-        self.settingsBtn = ImageButton("buttons.settings", transform=Transform((995, 20), scale=(0.7, 0.7)))
+        self.settingsBtn = ImageButton("buttons.settings", transform=Transform((980, 40), scale=(0.7, 0.7)))
         SceneManager.putInDrawLayer(self.settingsBtn, SceneManager.OVERLAY_LAYER)
 
         self.settings = SettingsSign()
