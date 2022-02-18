@@ -29,7 +29,7 @@ class TargetSelector(Component):
         self.ownBoardRect = ownBoardRect
         self.oppositeBoardRect = oppositeBoardRect
         self.ownShipPlacement = []
-        self.ai = AiMaster(boardSize, boardSize, Difficulties.getSelectedChanceOfMistake(), Difficulties.getSelectedNumShipPlacementTries())
+        self.ai = AiMaster(boardSize, boardSize, Difficulties.getSelectedChanceOfMistake(), Difficulties.getSelectedNumShipPlacementTries(), Difficulties.doesSelecteduseProAi())
         self.oppositeShipPlacement = None
         self.selecting = False
         self.cross = Sprite("game.cross", transform=Transform(scale=(0.5, 0.5)), bakeNow=True)

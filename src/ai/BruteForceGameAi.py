@@ -28,8 +28,9 @@ class BruteForceGameAi:
         def threadFun():
             print("Start generating values for the brute force ai")
             self.__generatePossiblePlacements(shipsToDo, ShipPlacement(), possibleShipLocations, board)
-            for cell, state in self.submitInfoQueue:
-                self.submitInfo(cell, state, False)
+            with self.submitLock:
+                for cell, state in self.submitInfoQueue:
+                    self.__submitInfoInternal(cell, state)
             print("Done generating values for the brute force ai")
 
         self.generateThread = Thread(target=threadFun)
@@ -95,20 +96,23 @@ class BruteForceGameAi:
         return bestCell
 
     
-    def submitInfo(self, pos : tuple[int], state : int, threadSavetyCheck : bool = True) -> None:
-        if threadSavetyCheck and not self.generationDone():
-            self.submitInfoQueue.add((pos, state))
-        else:
-            with self.submitLock:
-                isHit = state == Board.SHIP
-                toRemove = { placement for placement in self.possiblePlacements if placement.cellOccupied(pos) != isHit }
+    def submitInfo(self, pos : tuple[int], state : int) -> None:
+        with self.submitLock:
+            if not self.generationDone():
+                self.submitInfoQueue.add((pos, state))
+            else:
+                    self.__submitInfoInternal(pos, state)
+    
+    def __submitInfoInternal(self, pos : tuple[int], state : int) -> None:
+        isHit = state == Board.SHIP
+        toRemove = { placement for placement in self.possiblePlacements if placement.cellOccupied(pos) != isHit }
 
-                for placement in toRemove:
-                    self.__removePossibleShipPlacement(placement)
-                
-                # shouldnt be able to shoot it again
-                if pos in self.cellPropabilities:
-                    del self.cellPropabilities[pos]
+        for placement in toRemove:
+            self.__removePossibleShipPlacement(placement)
+        
+        # shouldnt be able to shoot it again
+        if pos in self.cellPropabilities:
+            del self.cellPropabilities[pos]
 
     def __removePossibleShipPlacement(self, placement : ShipPlacement) -> None:
         for cell in placement.occupiedCells():
@@ -116,3 +120,5 @@ class BruteForceGameAi:
                 self.cellPropabilities[cell] -= 1
         
         self.possiblePlacements.remove(placement)
+
+

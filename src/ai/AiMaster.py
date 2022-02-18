@@ -1,5 +1,6 @@
 from ai.Board import Board
 from ai.ClassicGameAi import ClassicGameAi
+from ai.ProAi import ProAi
 from ai.RandomGameAi import RandomGameAi
 from ai.ShipPlacement import ShipPlacement
 from ai.ShipPlacingAi import ShipPlacingAi
@@ -10,9 +11,9 @@ from ai.BruteForceGameAi import BruteForceGameAi
 
 class AiMaster:
 
-    BRUTE_FORCE_THRESHOLD = 85
+    BRUTE_FORCE_THRESHOLD = 90
 
-    def __init__(self, boardWidth : int, boardHeight : int, chanceOfMistake : float, numShipPlacementTries : int, numShips : dict[int, int] = {2: 4, 3: 3, 4: 2, 5: 1}):
+    def __init__(self, boardWidth : int, boardHeight : int, chanceOfMistake : float, numShipPlacementTries : int, useProAi : bool, numShips : dict[int, int] = {2: 4, 3: 3, 4: 2, 5: 1}):
         self.board = Board(boardWidth, boardHeight)
         self.chanceOfMistake = chanceOfMistake
         self.numShips = numShips.copy()
@@ -20,6 +21,7 @@ class AiMaster:
         self.shipPlacingAi = ShipPlacingAi(numShipPlacementTries, self.board, numShips)
         self.randomAi      = RandomGameAi()
         self.classicAi     = ClassicGameAi(numShips)
+        self.proAi         = ProAi() if useProAi else None
         self.bruteForceAi  = BruteForceGameAi()
 
         self.bruteForceMode = False
@@ -31,16 +33,20 @@ class AiMaster:
         if self.__shouldUseBruteForce():
             return self.bruteForceAi.getNextShot()
         else:
-            return self.classicAi.getNextShot(self.board)
+            # only do pro ai if no SHIP_LIKELY tiles are on screen
+            if self.proAi is not None and not any(self.board.check(cell, Board.SHIP_LIKELY) for cell in self.board.orderedIndex()):
+                return self.proAi.getNextShot(self.board, self.classicAi.numShips)
+            else:
+                return self.classicAi.getNextShot(self.board)
     
-    def submitInfo(self, pos : tuple[int], state : int):
+    def submitInfo(self, pos : tuple[int], state : int) -> None:
         if self.bruteForceMode:
             self.bruteForceAi.submitInfo(pos, state)
             if not self.bruteForceAi.generationDone():
                 self.board = self.classicAi.submitInfo(pos, state, self.board)
         else:
             self.board = self.classicAi.submitInfo(pos, state, self.board)
-        
+
         self.board[pos] = state
 
     def generateShipPlacement(self) -> ShipPlacement:
