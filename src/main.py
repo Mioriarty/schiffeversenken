@@ -30,7 +30,7 @@ def main():
     Images.loadAll()
     Sounds.loadAll()
 
-    SceneManager.requestloadScene(MenuScene)
+    SceneManager.requestloadScene(LogoScene)
 
     while shouldRun:
         # load new scene if it was requested
