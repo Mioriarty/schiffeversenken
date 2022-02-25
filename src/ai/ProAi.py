@@ -51,7 +51,7 @@ class ProAi:
         
         # normalize everything to 1
         for (x, y) in board.orderedIndex():
-            props[x][y] = props[x][y] / placementCount
+            props[x][y] = (props[x][y] / placementCount)**2
         
         return props
 
