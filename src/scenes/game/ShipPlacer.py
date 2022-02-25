@@ -77,10 +77,19 @@ class ShipPlacer(Component):
 
     
     def update(self, dt: float) -> None:
-        if self.selectedIndex > -1 and self.boardRect.collidepoint(Input.getMousePos()):
+        if not Input.checkInputLayer(Input.GAME_LAYER):
+            return
+
+        mouseEvent = Input.getEvent(pygame.MOUSEBUTTONUP)
+        if mouseEvent is not None and mouseEvent.button == 3:
+            # cancel ship placement on left click
+            if self.selectedIndex > -1:
+                self.ships[self.selectedIndex].deselect()
+                self.selectedIndex = -1
+
+        elif self.selectedIndex > -1 and self.boardRect.collidepoint(Input.getMousePos()):
             hoverLength = self.ships[self.selectedIndex].getLength()
 
-            mouseEvent = Input.getEvent(pygame.MOUSEBUTTONUP)
             if mouseEvent is not None and (4 <= mouseEvent.button <= 5):
                 self.hoverOrientation = (self.hoverOrientation + 1) % 2
             

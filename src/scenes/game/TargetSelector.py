@@ -79,6 +79,9 @@ class TargetSelector(Component):
     def update(self, dt: float) -> None:
         self.drawCross = False
 
+        if not Input.checkInputLayer(Input.GAME_LAYER):
+            return
+
         if self.selecting and self.oppositeBoardRect.collidepoint(Input.getMousePos()):
             cell = self.getCellFromMousePos(self.oppositeBoardRect)
             
