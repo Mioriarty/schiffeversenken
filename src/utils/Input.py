@@ -10,10 +10,11 @@ class Input:
     SETTINGS_LAYER = 2
 
     __crntInputLayer = GAME_LAYER
+    __requestedInputLayer = GAME_LAYER
 
     @staticmethod
     def setInputLayer(inputLayer : int, resetCursor : bool = True) -> None:
-        Input.__crntInputLayer = inputLayer
+        Input.__requestedInputLayer = inputLayer
         if resetCursor:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
     
@@ -25,6 +26,7 @@ class Input:
     # handled by main
     @staticmethod
     def clearEvents() -> None:
+        Input.__crntInputLayer = Input.__requestedInputLayer
         Input.__currentEvents = {}
     
     @staticmethod
