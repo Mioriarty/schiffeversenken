@@ -4,12 +4,13 @@ import pygame
 from components.ui.AbstractButton import AbstractButton
 from components.ui.ImageButton import ImageButton
 from utils.Images import Sprite
+from utils.Input import Input
 from utils.Transform import Transform
 
 
 class Checkbox(ImageButton):
 
-    def __init__(self, scaleFactor : float = 0.8, inputLayer : int = AbstractButton.GAME_LAYER, transform : Transform = None):
+    def __init__(self, scaleFactor : float = 0.8, inputLayer : int = Input.GAME_LAYER, transform : Transform = None):
         self.__substituteSprite = Sprite("buttons.checkbox_active")
         self.__isActive = False
         super().__init__("buttons.checkbox_idle", scaleFactor, inputLayer, transform)

@@ -4,6 +4,7 @@ from components.ui.AbstractButton import AbstractButton
 from components.ui.Checkbox import Checkbox
 from components.ui.ImageButton import ImageButton
 from utils.Images import Sprite
+from utils.Input import Input
 from utils.Sounds import Sounds
 from utils.Transform import Transform
 
@@ -17,16 +18,16 @@ class SettingsSign(Component):
         self.transform.translate((0, -50))
 
         self.sign = Sprite("signs.settings", Transform(parent=self.transform), bakeNow=True)
-        self.musicToggle = Checkbox(inputLayer=AbstractButton.SETTINGS_LAYER, transform=Transform((-235, -17), scale=(.7, .7), parent=self.transform))
+        self.musicToggle = Checkbox(inputLayer=Input.SETTINGS_LAYER, transform=Transform((-235, -17), scale=(.7, .7), parent=self.transform))
         self.musicToggle.setActive(Sounds.isMusicOn())
         self.musicToggle.setOnClickEvent(lambda : Sounds.setMusicOn(self.musicToggle.isActive()))
         
-        self.soundToggle = Checkbox(inputLayer=AbstractButton.SETTINGS_LAYER, transform=Transform((30, -20), scale=(.7, .7), parent=self.transform))
+        self.soundToggle = Checkbox(inputLayer=Input.SETTINGS_LAYER, transform=Transform((30, -20), scale=(.7, .7), parent=self.transform))
         self.soundToggle.setActive(Sounds.areSoundsOn())
         self.soundToggle.setOnClickEvent(lambda : Sounds.setSoundsOn(self.soundToggle.isActive()))
 
 
-        self.backBtn = ImageButton("buttons.back", inputLayer=AbstractButton.SETTINGS_LAYER, transform=Transform((-10, 100), scale=(0.6, 0.6), parent=self.transform))
+        self.backBtn = ImageButton("buttons.back", inputLayer=Input.SETTINGS_LAYER, transform=Transform((-10, 100), scale=(0.6, 0.6), parent=self.transform))
         self.backBtn.setOnClickEvent(self.hide)
 
     def draw(self, screen: pygame.Surface) -> None:
@@ -38,9 +39,9 @@ class SettingsSign(Component):
     
     def show(self) -> None:
         self.__show = True
-        AbstractButton.setInputLayer(AbstractButton.SETTINGS_LAYER)
+        Input.setInputLayer(Input.SETTINGS_LAYER)
 
     
     def hide(self) -> None:
         self.__show = False
-        AbstractButton.setInputLayer(AbstractButton.GAME_LAYER)
+        Input.setInputLayer(Input.GAME_LAYER)

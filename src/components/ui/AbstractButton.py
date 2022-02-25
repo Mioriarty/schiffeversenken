@@ -9,12 +9,6 @@ from utils.Input import Input
 
 class AbstractButton(Component):
 
-    GAME_LAYER = 0
-    ENDGAME_SIGN_LAYER = 1
-    SETTINGS_LAYER = 2
-
-    __crntInputLayer = GAME_LAYER
-
     def __init__(self, width : float, height : float, inputLayer : int, transform: Transform = None):
         super().__init__(transform)
         self.width = width
@@ -29,7 +23,7 @@ class AbstractButton(Component):
         self.__onClickEvent : Callable[[], None] = None
 
     def update(self, dt : float) -> None:
-        if self.__enabled and AbstractButton.__crntInputLayer == self.inputLayer:
+        if self.__enabled and Input.checkInputLayer(self.inputLayer):
             relativeMousePos = np.absolute(self.transform.applyInv(Input.getMousePos()))
             hovering = 2 * relativeMousePos[0] <= self.width and 2 * relativeMousePos[1] <= self.height
             
@@ -113,9 +107,3 @@ class AbstractButton(Component):
 
     def onDisable(self) -> None:
         pass
-
-    @staticmethod
-    def setInputLayer(inputLayer : int, resetCursor : bool = True) -> None:
-        AbstractButton.__crntInputLayer = inputLayer
-        if resetCursor:
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)

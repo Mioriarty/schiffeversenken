@@ -6,6 +6,7 @@ from scenes.Scene import SceneManager
 import scenes.menu.MenuScene
 from utils.Animator import Animator
 from utils.Images import Sprite
+from utils.Input import Input
 from utils.Transform import Transform
 import pygame
 
@@ -17,8 +18,8 @@ class EndGameSign(Component):
     def __init__(self, transform: Transform = None):
         super().__init__(transform)
 
-        self.winSign = ImageButton("signs.win", scaleFactor=1., inputLayer=AbstractButton.ENDGAME_SIGN_LAYER, transform=self.transform)
-        self.loseSign = ImageButton("signs.lose", scaleFactor=1., inputLayer=AbstractButton.ENDGAME_SIGN_LAYER, transform=self.transform)
+        self.winSign = ImageButton("signs.win", scaleFactor=1., inputLayer=Input.ENDGAME_SIGN_LAYER, transform=self.transform)
+        self.loseSign = ImageButton("signs.lose", scaleFactor=1., inputLayer=Input.ENDGAME_SIGN_LAYER, transform=self.transform)
         self.__showWin = False
         self.__show = False
 
@@ -37,13 +38,13 @@ class EndGameSign(Component):
                 self.loseSign.draw(screen)
 
     def __press():
-        AbstractButton.setInputLayer(AbstractButton.GAME_LAYER)
+        Input.setInputLayer(Input.GAME_LAYER)
         SceneManager.requestloadScene(scenes.menu.MenuScene.MenuScene)
     
     def show(self, won : bool):
         self.__show = True
         self.__showWin = won
-        AbstractButton.setInputLayer(AbstractButton.ENDGAME_SIGN_LAYER)
+        Input.setInputLayer(Input.ENDGAME_SIGN_LAYER)
 
         if won:
             self.anim.setHook(self.winSign.transform.setRelYPos)

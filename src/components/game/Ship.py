@@ -6,6 +6,7 @@ from components.ui.AbstractButton import AbstractButton
 from components.ui.ImageButton import ImageButton
 from utils.Animator import Animator
 from utils.Images import Sprite
+from utils.Input import Input
 from utils.Transform import Transform
 
 
@@ -33,7 +34,7 @@ class Ship(ImageButton):
 
     def __init__(self, length : int, scaleFactor: float = 0.8, onlyVisual : bool = False, transform: Transform = None):
         transform.setRelScale(Ship.SCALE)
-        super().__init__(f"game.ships.s{length}", scaleFactor, AbstractButton.GAME_LAYER, transform)
+        super().__init__(f"game.ships.s{length}", scaleFactor, Input.GAME_LAYER, transform)
         self.__length = length
 
         if onlyVisual:

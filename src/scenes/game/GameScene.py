@@ -12,6 +12,7 @@ from scenes.game.ShipPlacer import Ship, ShipPlacer
 from scenes.game.TargetSelector import TargetSelector
 from utils.Animator import Animator
 from utils.Images import Sprite
+from utils.Input import Input
 from utils.Sounds import Sounds
 from utils.Transform import Transform
 import math
@@ -23,7 +24,7 @@ class GameScene(Scene):
     def __init__(self):
         super().__init__((255, 255, 255))
         Ship.arrivedShips = 0
-        AbstractButton.setInputLayer(AbstractButton.GAME_LAYER)
+        Input.setInputLayer(Input.GAME_LAYER)
 
         self.landParent = Transform()
         self.land = Sprite("ambient.land3", Transform.screenCenter(y = 87.5, scale=(0.5, 0.5), parent=self.landParent), bakeNow=True)
