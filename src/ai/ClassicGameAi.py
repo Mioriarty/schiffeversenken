@@ -5,13 +5,39 @@ from ai.ShipShape import ShipShape
 from ai.Board import Board
 
 class ClassicGameAi:
+    """
+    Sets shots as a human would do.
+
+    It shoots randomly in a checkerboard pattern im no ship is found.
+    If one is found, it will try to inish it as qickly as possible.
+
+    Attributes:
+        numShips (dict[int, int]): How many ships of which length are left. The key is the length of the ships and values is the number of that kind of ships.
+        parity (int): Is 0 or 1 randomly and specifies which of the 2 checkerboard patterns to use.
+    """
 
     def __init__(self, numShips : dict[int, int]):
+        """
+        The constructor of the ClassicGameai class.
+
+        Args:
+            numShips (dict[int, int]):  How many ships of which length shell be found. The key is the length of the ships and values is the number of that kind of ships.
+        """
         self.numShips = numShips.copy()
         self.parity = random.randint(0, 1)
 
 
     def getNextShot(self, board : Board) -> tuple[int]:
+        """
+        Calculates the next shot. 
+
+        Args:
+            board (Board): The current board state on which it shoots.
+
+        Returns:
+            tuple[int]: Next shot position / tile.
+        """
+
         # find ship likely tiles with the greatest free space
         maxFreeSpace = -1
         bestShipLikelyTile = (0, 0)
@@ -73,6 +99,17 @@ class ClassicGameAi:
 
     
     def submitInfo(self, pos : tuple[int], state : int, board : Board) -> Board:
+        """
+        Submits and interpretes a new cell information.
+
+        Args:
+            pos (tuple[int]): The x and y coordinate of the cell in question.
+            state (int): The found state. Either Board.SUBMIT_SHIP or Board.SUBMIT_NO_SHIP
+            board (Board): The current board state.
+
+        Returns:
+            Board: The new board state.
+        """
         boardState = board[pos]
 
         if state == Board.CHECKED_NO_SHIP:
@@ -155,7 +192,18 @@ class ClassicGameAi:
         
         return board
 
-    def countShipLength(self, firstShipTile : tuple[int], board : Board):
+    def countShipLength(self, firstShipTile : tuple[int], board : Board) -> tuple[int, tuple[int]]:
+        """
+        Counts all ship tiles connected to the firstShipTile.
+
+        Args:
+            firstShipTile (tuple[int]): The first know ship tile position.
+            board (Board): The current board state.
+
+        Returns:
+            int: The length of the current ship.
+            tuple[int]: The last ship tile.
+        """
         nextTiles = self.findAdjacentTilesByState(firstShipTile, Board.SHIP, board)
         if len(nextTiles) == 0:
             return 1, firstShipTile
@@ -170,6 +218,18 @@ class ClassicGameAi:
 
     
     def findAdjacentTilesByState(self, pos : tuple[int], state : int, board : Board, includeCorners : bool = False) -> list[tuple[int]]:
+        """
+        Find all adjacent tiles if a certain state.
+
+        Args:
+            pos (tuple[int]): Coordinates of the center tile.
+            state (int): State to look for.
+            board (Board): Current board state. 
+            includeCorners (bool, optional): Should the corners be included in the search. Defaults to False.
+
+        Returns:
+            list[tuple[int]]: All tiles that meet the creteria.
+        """
         positionsToCheck = [ (pos[0], pos[1]-1), (pos[0], pos[1]+1), (pos[0]-1, pos[1]), (pos[0]+1, pos[1]) ]
 
         if includeCorners:
@@ -180,18 +240,49 @@ class ClassicGameAi:
         random.shuffle(result)
         return result
     
-    def replaceAdjacentCells(self, pos : tuple[int], searchState : int, replaceState : int, board : Board, includeCorners : bool = False) -> None:
+    def replaceAdjacentCells(self, pos : tuple[int], searchState : int, replaceState : int, board : Board, includeCorners : bool = False) -> Board:
+        """
+        Replaces all adjacent tiles if a certain state.
+
+        Args:
+            pos (tuple[int]): Coordinates of the center tile.
+            searchState (int): State to look for.
+            replaceState (int): new state of found tiles.
+            board (Board): Current board state. 
+            includeCorners (bool, optional): Should the corners be included in the search. Defaults to False.
+
+        Returns:
+            Board: New board state.
+        """
         pos = self.findAdjacentTilesByState(pos, searchState, board, includeCorners)
         for p in pos:
             board[p] = replaceState
         return board
         
     def currentLongestShip(self) -> int:
+        """
+        Returns the length of the longest ship that has not been found yet.
+
+        Returns:
+            int: The length of the longest ship that has not been found yet.
+        """
         crntMax = max(self.numShips.keys())
         while crntMax not in self.numShips or self.numShips[crntMax] == 0 or crntMax == 1:
             crntMax -= 1
         return crntMax
     
     def shipIsPossible(self, pos : tuple[int], board : Board) -> bool:
+        """
+        Checks whether on the position can be a ship tile or not.
+
+        It can be forbidden, because the tile might not be on the vboard or the state is in a conflicting state.
+
+        Args:
+            pos (tuple[int]): Position to check.
+            board (Board): Current board state. 
+
+        Returns:
+            bool: If on the position can be a ship tile or not.
+        """
         return board.isInBounds(pos) and board.check(pos, Board.NO_INFO | Board.SHIP_LIKELY | Board.SHIP)
 

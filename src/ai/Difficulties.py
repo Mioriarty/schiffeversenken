@@ -6,6 +6,9 @@
 
 
 class Difficulties:
+    """
+    Static class to hold the selected difficultie and its properties.
+    """
 
     __nameImages = [ 'texts.kaptnBlaubar', 'texts.captainHook', 'texts.dieWilde13', 'texts.jackSparrow' ]
     __descriptionImages = [ 'texts.kb_des', 'texts.ch_des', 'texts.w13_des', 'texts.js_des' ]
