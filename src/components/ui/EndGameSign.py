@@ -7,6 +7,7 @@ import scenes.menu.MenuScene
 from utils.Animator import Animator
 from utils.Images import Sprite
 from utils.Input import Input
+from utils.Sounds import Sounds
 from utils.Transform import Transform
 import pygame
 
@@ -54,3 +55,7 @@ class EndGameSign(Component):
             self.loseSign.enable()
         
         self.anim.play()
+
+        Sounds.stopAllSoundEffects()
+        Sounds.stopMusic()
+        Sounds.playSoundEffect("win" if won else "lose")

@@ -34,6 +34,14 @@ class Sounds:
         pygame.mixer.music.load(Sounds.MUSIC_FOLDER + name + fileExt)
         pygame.mixer.music.play(-1)
     
+    @staticmethod
+    def stopMusic() -> None:
+        pygame.mixer.music.stop()
+    
+    @staticmethod
+    def stopAllSoundEffects() -> None:
+        pygame.mixer.stop()
+    
     # MUTE CONTROL
 
     @staticmethod
@@ -57,4 +65,4 @@ class Sounds:
         Sounds.__soundsOn = value
 
         if not value:
-            pygame.mixer.stop()
+            Sounds.stopAllSoundEffects()
