@@ -11,7 +11,7 @@ from ai.BruteForceGameAi import BruteForceGameAi
 
 class AiMaster:
 
-    BRUTE_FORCE_THRESHOLD = 90
+    BRUTE_FORCE_SHIP_THRESHOLD = 3
 
     def __init__(self, boardWidth : int, boardHeight : int, chanceOfMistake : float, numShipPlacementTries : int, useProAi : bool, numShips : dict[int, int] = {2: 4, 3: 3, 4: 2, 5: 1}):
         self.board = Board(boardWidth, boardHeight)
@@ -42,8 +42,6 @@ class AiMaster:
     def submitInfo(self, pos : tuple[int], state : int) -> None:
         if self.bruteForceMode:
             self.bruteForceAi.submitInfo(pos, state)
-            if not self.bruteForceAi.generationDone():
-                self.board = self.classicAi.submitInfo(pos, state, self.board)
         else:
             self.board = self.classicAi.submitInfo(pos, state, self.board)
 
@@ -54,24 +52,24 @@ class AiMaster:
     
     def __shouldUseBruteForce(self) -> bool:
         # it will start using the brute force ai if t was already used or
-        # - a certain number of cell infos are known AND
+        # - only a certain numbers of unknown ships left AND
         # - no SHIP_LIKELY tile is on the board
 
         if self.bruteForceMode:
-            return self.bruteForceAi.generationDone()
-        
-        knownTilesCount = 0
-        for cell in self.board.orderedIndex():
-            if self.board.check(cell, Board.SHIP_LIKELY):
-                return False
-            
-            if not self.board.check(cell, Board.NO_INFO):
-                knownTilesCount += 1
+            return True
 
-        if knownTilesCount >= AiMaster.BRUTE_FORCE_THRESHOLD:
-            self.bruteForceAi.start(self.board, self.classicAi.numShips)
-            self.bruteForceMode = True
+        # ship count too big
+        if sum(count for (_, count) in self.classicAi.numShips.items()) > AiMaster.BRUTE_FORCE_SHIP_THRESHOLD:
             return False
+        
+        # ship likely tile is on the board
+        if any(self.board.check(cell, Board.SHIP_LIKELY) for cell in self.board.orderedIndex()):
+            return False
+
+        self.bruteForceAi.kickOffGeneration(self.board, self.classicAi.numShips)
+        self.bruteForceMode = True
+        
+        return False
     
     def printState(self) -> None:
         if self.bruteForceMode:
@@ -96,7 +94,7 @@ if __name__ == "__main__":
     while True:
         z = input()
         if z == "now":
-            bfAi.start(ai.board, {2: 4, 3: 3, 4: 2, 5: 1})
+            bfAi.kickOffGeneration(ai.board, {2: 4, 3: 3, 4: 2, 5: 1})
 
 
         shot = ai.getNextShot()

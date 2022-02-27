@@ -10,7 +10,7 @@ from utils.Transform import Transform
 
 class CannonBall(Sprite):
 
-    ANIM_TIME = 1.5 # TODO 2.
+    ANIM_TIME = .0001 # TODO 1.5
 
     def __init__(self, animFinishedCallback : Callable[[tuple[float], bool], None]):
         super().__init__("game.cannon_ball", None, True, True, False)

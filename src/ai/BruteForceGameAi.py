@@ -2,7 +2,7 @@ from ai.Board import Board
 from ai.ShipPlacement import ShipPlacement
 from ai.ShipShape import ShipShape
 import random
-from threading import Thread, Lock
+from threading import Thread
 
 
 class BruteForceGameAi:
@@ -13,10 +13,9 @@ class BruteForceGameAi:
         self.generateThread = None
 
         self.submitInfoQueue = set()
-        self.submitLock = Lock()
 
     
-    def start(self, board : Board, numShipsLeft : dict[int, int]) -> None:
+    def kickOffGeneration(self, board : Board, numShipsLeft : dict[int, int]) -> None:
         self.possiblePlacements = set()
 
         possibleShipLocations = self.__getAllPossibleShipLocations(board)
@@ -28,9 +27,6 @@ class BruteForceGameAi:
         def threadFun():
             print("Start generating values for the brute force ai")
             self.__generatePossiblePlacements(shipsToDo, ShipPlacement(), possibleShipLocations, board)
-            with self.submitLock:
-                for cell, state in self.submitInfoQueue:
-                    self.__submitInfoInternal(cell, state)
             print("Done generating values for the brute force ai")
 
         self.generateThread = Thread(target=threadFun)
@@ -97,13 +93,9 @@ class BruteForceGameAi:
 
     
     def submitInfo(self, pos : tuple[int], state : int) -> None:
-        with self.submitLock:
-            if not self.generationDone():
-                self.submitInfoQueue.add((pos, state))
-            else:
-                    self.__submitInfoInternal(pos, state)
-    
-    def __submitInfoInternal(self, pos : tuple[int], state : int) -> None:
+        if self.generateThread is not None:
+            self.generateThread.join()
+
         isHit = state == Board.SHIP
         toRemove = { placement for placement in self.possiblePlacements if placement.cellOccupied(pos) != isHit }
 
