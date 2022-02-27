@@ -66,8 +66,7 @@ class AiMaster:
         if any(self.board.check(cell, Board.SHIP_LIKELY) for cell in self.board.orderedIndex()):
             return False
 
-        self.bruteForceAi.kickOffGeneration(self.board, self.classicAi.numShips)
-        self.bruteForceMode = True
+        self.bruteForceMode = self.bruteForceAi.kickOffGeneration(self.board, self.classicAi.numShips)
         
         return False
     

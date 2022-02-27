@@ -7,6 +7,8 @@ from threading import Thread
 
 class BruteForceGameAi:
 
+    MAX_POSSIBLE_SHIP_LOCATIONS = 16
+
     def __init__(self):
         self.possiblePlacements : set[ShipPlacement] = None
         self.cellPropabilities = {}
@@ -15,10 +17,14 @@ class BruteForceGameAi:
         self.submitInfoQueue = set()
 
     
-    def kickOffGeneration(self, board : Board, numShipsLeft : dict[int, int]) -> None:
+    def kickOffGeneration(self, board : Board, numShipsLeft : dict[int, int]) -> bool:
         self.possiblePlacements = set()
 
         possibleShipLocations = self.__getAllPossibleShipLocations(board)
+        print(f"Possible Ship Locations: {len(possibleShipLocations)}")
+
+        if len(possibleShipLocations) > BruteForceGameAi.MAX_POSSIBLE_SHIP_LOCATIONS:
+            return False
 
         shipsToDo : list[int] = []
         for length, count in sorted(numShipsLeft.items(), reverse=True):
@@ -32,6 +38,8 @@ class BruteForceGameAi:
         self.generateThread = Thread(target=threadFun)
         self.generateThread.daemon = True
         self.generateThread.start()
+
+        return True
 
     def generationDone(self) -> bool:
         return self.generateThread is not None and not self.generateThread.is_alive()
