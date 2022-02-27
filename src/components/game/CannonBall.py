@@ -9,10 +9,19 @@ from utils.Sounds import Sounds
 from utils.Transform import Transform
 
 class CannonBall(Sprite):
+    """
+    Represents a CannonBall that flies over the screen.
+    """
 
     ANIM_TIME = .0001 # TODO 1.5
 
     def __init__(self, animFinishedCallback : Callable[[tuple[float], bool], None]):
+        """
+        Construcor of the CannonBall class.
+
+        Args:
+            animFinishedCallback (Callable[[tuple[float], bool], None]): Callbeck that will be run when the cannon finished all animations.
+        """
         super().__init__("game.cannon_ball", None, True, True, False)
 
         self.scaleAnim = Animator.easeOut(0.2, 0.5, CannonBall.ANIM_TIME / 2) + Animator.easeIn(0.5, 0.2, CannonBall.ANIM_TIME / 2)
@@ -47,6 +56,16 @@ class CannonBall(Sprite):
 
     
     def fire(self, start : tuple[float], dest : tuple[float], hits : bool) -> None:
+        """
+        Lets the cannonball fly over the screen.
+
+        This will also play the explosion or splash animation and sound effects.
+
+        Args:
+            start (tuple[float]): Starting position.
+            dest (tuple[float]): Destination position.
+            hits (bool): Determines if the shot hit a ship.
+        """
         self.isHittingShot = hits
         Sounds.playSoundEffect("cannon")
 
@@ -74,6 +93,9 @@ class CannonBall(Sprite):
         self.scaleAnim.play()
     
     def __flightFinished(self) -> None:
+        """
+        Plays the corresponding animatiomns at the end of the flight.
+        """
         if self.isHittingShot:
             Sounds.playSoundEffect("explosion")
             self.explosion.animation.play()

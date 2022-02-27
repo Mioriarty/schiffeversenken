@@ -6,7 +6,18 @@ import random
 
 
 class Fire(Diashow):
+    """
+    Represents a fire on a ship.
+    """
+
     def __init__(self, duration : float = 0.2, transform: Transform = None):
+        """
+        Constructor of fire class.
+
+        Args:
+            duration (float, optional): Duration of one image. Defaults to 0.2.
+            transform (Transform, optional): Transform of the component. Defaults to None.
+        """
         fireType = random.sample(list(range(2)), 1)[0]
         images = []
 
