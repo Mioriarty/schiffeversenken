@@ -14,9 +14,21 @@ import functools
 import numpy as np
 
 class ShipPlacer(Component):
+    """
+    Represents the first phase of the game. Here the ship placing happens.
+    """
 
     
     def __init__(self, ships : list[Ship], startBtn : ImageButton, boardRect : pygame.Rect, boardSize : int):
+        """
+        Constructor of the ShipPlacer class.
+
+        Args:
+            ships (list[Ship]): How many ships of which length are in the game. The key is the length of the ships and values is the number of that kind of ships.
+            startBtn (ImageButton): ImageButton that appears when the placment is done. When clicked this game phase stops.
+            boardRect (pygame.Rect): Rect of the own board.
+            boardSize (int): How many rows and columns does the board have.
+        """
         super().__init__(None)
 
         self.ships = ships
@@ -41,6 +53,12 @@ class ShipPlacer(Component):
     
 
     def __clickOnShip(self, index : int) -> None:
+        """
+        Gets called when a ship on the side is selected.
+
+        Args:
+            index (int): Index in the self.ships list in which the clicked ship is.
+        """
         if self.selectedIndex > -1:
             self.ships[self.selectedIndex].deselect()
         
@@ -51,6 +69,12 @@ class ShipPlacer(Component):
         self.hoverSprite = Sprite(f"game.ships.s{length}", transform=Transform(scale=Ship.SCALE), bakeNow=True)
     
     def __removeShip(self, index : int) -> None:
+        """
+        Gets called when a ship in the board is clicked. It will be removed.
+
+        Args:
+            index (int): Index in the self.placedShips list in which the clicked ship is.
+        """
         length = self.placedShips[index][0].length
         self.placedShips[index][0] = ShipShape(length, (-1, -1), -1)
         self.placedShips[index][1].disable()
@@ -112,6 +136,15 @@ class ShipPlacer(Component):
 
                 
     def getPlacementCell(self, shipLength : int) -> tuple[int]:
+        """
+        Calculates based on the mouseposition and the ship length which should be the ships position
+
+        Args:
+            shipLength (int): The length of the currently selected ship.
+
+        Returns:
+            tuple[int]: The position of that ship.
+        """
         cell = ((Input.getMousePos()[0] - self.boardRect.x) * self.boardSize // self.boardRect.width,
                 (Input.getMousePos()[1] - self.boardRect.y) * self.boardSize // self.boardRect.height )
 
@@ -129,6 +162,12 @@ class ShipPlacer(Component):
         
 
     def placeShip(self, cell : tuple[int]) -> None:
+        """
+        Places the selected ship at a certain position.
+
+        Args:
+            cell (tuple[int]): At what position the selected ship should be placed.-
+        """
         length = self.ships[self.selectedIndex].getLength()
         shape = ShipShape(length, cell, self.hoverOrientation)
 
@@ -144,6 +183,11 @@ class ShipPlacer(Component):
             self.startBtn.enable()
     
     def startGame(self) -> None:
+        """
+        Gets called when the Button to start playing is pressed.
+
+        It will kick off the ship travels of the own ships.
+        """
         self.inGame = True
         self.startBtn.disable()
 
@@ -153,7 +197,13 @@ class ShipPlacer(Component):
 
             outsideShip.travelTo(shipShape, self.boardRect, self.boardSize)
     
-    def getCurrentShipPlacement(self):
+    def getCurrentShipPlacement(self) -> list[Ship]:
+        """
+        Returns the placement containing all currently placed ships.
+
+        Returns:
+            list[Ship]: The placement containing all currently placed ships.
+        """
         return [ s[0] for s in self.placedShips if s[0].orientation != -1]
 
         

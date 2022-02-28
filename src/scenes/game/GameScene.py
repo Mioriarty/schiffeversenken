@@ -18,10 +18,18 @@ from utils.Transform import Transform
 import math
 
 class GameScene(Scene):
+    """
+    This is the game scene. Here all the fun stuff hapens.
+    """
 
     START_ANIM_TIME = 4. # TODO: 3.5
     
     def __init__(self):
+        """
+        Constructor of the GameScene class.
+
+        It creates all component used in the secene.
+        """
         super().__init__((255, 255, 255))
         Ship.arrivedShips = 0
         Input.setInputLayer(Input.GAME_LAYER)
@@ -126,14 +134,28 @@ class GameScene(Scene):
 
     
     def __placementDoneCallback(self):
+        """
+        Gets called when the SPIELEN-button is pressed when the placement is done.
+
+        Kicks off the opposite ship travels.
+        """
         Sounds.playSoundEffect("ship_horn")
         for ship in self.oppositeShips:
             ship.doFakeTravel(self.board1.image.get_rect(center=self.board1.transform.getPosition()))
     
 
     def __startGame(self):
+        """
+        Gets called when the ship tarvels are finished. Now the actual game starts
+        """
         self.targetSelector.setOwnShipPlacement(self.shipManager.getCurrentShipPlacement())
         self.targetSelector.start()
     
     def __gameEnded(self, won : bool) -> None:
+        """
+        Gets called when the last ship of either side was found.
+
+        Args:
+            won (bool): If the player has won.
+        """
         self.endGameSign.show(won)
