@@ -11,6 +11,11 @@ from utils.Transform import Transform
 
 
 class Ship(ImageButton):
+    """
+    Represents one ship on the board.
+    
+    Can be clickable or not.
+    """
 
     SCALE = (0.38, 0.3)
     arrivedShips = 0
@@ -33,6 +38,15 @@ class Ship(ImageButton):
     
 
     def __init__(self, length : int, scaleFactor: float = 0.8, onlyVisual : bool = False, transform: Transform = None):
+        """
+        Constructor of the ship class.
+
+        Args:
+            length (int): The length of the ship. [2, 5] is supported.
+            scaleFactor (float, optional): How much scales the ship when pressed. Defaults to 0.8.
+            onlyVisual (bool, optional): Clickable or not. Defaults to False.
+            transform (Transform, optional): The Transform of the component. Defaults to None.
+        """
         transform.setRelScale(Ship.SCALE)
         super().__init__(f"game.ships.s{length}", scaleFactor, Input.GAME_LAYER, transform)
         self.__length = length
@@ -43,18 +57,39 @@ class Ship(ImageButton):
         self.animators = []
     
     def select(self) -> None:
+        """
+        Should be called when the Ship gets selected.
+        """
         self._sprite.image.set_alpha(100)
     
     def deselect(self) -> None:
+        """
+        Should be called when the another Ship gets selected or the selection process is canceled.
+        """
         self._sprite.image.set_alpha(255)
     
     def onEnable(self) -> None:
         self._sprite.image.set_alpha(255)
 
     def getLength(self) -> int:
+        """
+        Returns the length of the ship.
+
+        Returns:
+            int: The length of the ship.
+        """
         return self.__length
     
     def moveToFitShape(self, shape : ShipShape, boardRect : pygame.Rect, boardSize : int, excludeRotation : bool = False) -> None:
+        """
+        Updates its transform to fit a ShipShape
+
+        Args:
+            shape (ShipShape): The shape the ship's position should match.
+            boardRect (pygame.Rect): Board width and height.
+            boardSize (int): How many rows and cols are on the board.
+            excludeRotation (bool, optional): The orientation of the shape should not be included. Defaults to False.
+        """
         pos, angle = Ship.getPositionAndRotationFromShape(shape, boardRect, boardSize)
             
         self.transform.setRelPosition(pos)
@@ -64,7 +99,18 @@ class Ship(ImageButton):
             self._sprite.bakeTransform()
         
     @staticmethod
-    def getPositionAndRotationFromShape(shape : ShipShape, boardRect : pygame.Rect, boardSize : int):
+    def getPositionAndRotationFromShape(shape : ShipShape, boardRect : pygame.Rect, boardSize : int) -> tuple[tuple[int], float]:
+        """
+        Calculates a disired ship's Transform (position and rotation) to match a shape.
+
+        Args:
+            shape (ShipShape): The shape the ship's position and roation should match.
+            boardRect (pygame.Rect): Board width and height.
+            boardSize (int): How many rows and cols are on the board.
+
+        Returns:
+            tuple[tuple[int], float]: New position and rotation.
+        """
         if shape.orientation == ShipShape.HORIZONTAL:
             y = (shape.cell[1] + 1/2) / boardSize * boardRect.height + boardRect.y
             x = (shape.cell[0] + shape.length / 2) / boardSize * boardRect.width  + boardRect.x
@@ -77,7 +123,17 @@ class Ship(ImageButton):
 
         return (x, y), angle
     
-    def travelTo(self, shape : ShipShape,  boardRect : pygame.Rect, boardSize : int):
+    def travelTo(self, shape : ShipShape,  boardRect : pygame.Rect, boardSize : int) -> None:
+        """
+        Starts the ship's travel to a certain shape.
+
+        Happens in the beginning of the game.
+
+        Args:
+            shape (ShipShape): Shape where the travel ends.
+            boardRect (pygame.Rect):  Board width and height.
+            boardSize (int): How many rows and cols are on the board.
+        """
         pos, _ = Ship.getPositionAndRotationFromShape(shape, boardRect, boardSize)
 
         rotationSpeed = Ship.ROTATION_SPEEDS[self.__length]
@@ -152,7 +208,15 @@ class Ship(ImageButton):
 
         self.animators[0].setEndCallback(arriveCallback)
     
-    def doFakeTravel(self, boardRect : pygame.Rect):
+    def doFakeTravel(self, boardRect : pygame.Rect) -> None:
+        """
+        Starts the ship's travel to the center of the board. Additionaly the ship disappears while traveling.
+
+        Happens in the beginning of the game for opposite ships.
+
+        Args:
+            boardRect (pygame.Rect):  Board width and height.
+        """
         rotationSpeed = Ship.ROTATION_SPEEDS[self.__length]
         movementSpeed = Ship.MOVEMENT_SPEEDS[self.__length]
 
@@ -193,4 +257,10 @@ class Ship(ImageButton):
     
     @staticmethod
     def travelSquenceDone() -> bool:
+        """
+        Returns whether all ships have arrived.
+
+        Returns:
+            bool: If all ships have arrived.
+        """
         return Ship.arrivedShips >= Ship.shipTotal

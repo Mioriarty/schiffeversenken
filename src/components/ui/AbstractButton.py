@@ -8,8 +8,22 @@ from utils.Input import Input
 
 
 class AbstractButton(Component):
+    """
+    Represents a rect with an arbetrary Transform, that can be clicked.
+
+    For behavoir, derive from it and overwrite the on-... methods.
+    """
 
     def __init__(self, width : float, height : float, inputLayer : int, transform: Transform = None):
+        """
+        Constructor of the AbstractButton class.
+
+        Args:
+            width (float): Width of the clickable area.
+            height (float): Height of the clickable area.
+            inputLayer (int): The input layer of the AbstractButton. If that layer doesn't match the current input layer (see Input class), the button won't be clickable.
+            transform (Transform, optional): The Transform of the component. Defaults to None.
+        """
         super().__init__(transform)
         self.width = width
         self.height = height
@@ -57,10 +71,24 @@ class AbstractButton(Component):
                         self.__pressed = False
                     
     
-    def setOnClickEvent(self, clickEvent : Callable[[], None]):
+    def setOnClickEvent(self, clickEvent : Callable[[], None]) -> None:
+        """
+        Sets a callback function that gets called when the button is pressed.
+
+        Args:
+            clickEvent (Callable[[], None]): The callback function that gets called when the button is pressed.
+        """
         self.__onClickEvent = clickEvent
 
     def addOnClickEvent(self, clickEvent : Callable[[], None]) -> None:
+        """
+        Adds another callback function that gets called when the button is pressed.
+
+        Can also be called without having called setOnClickEvent before.
+
+        Args:
+            clickEvent (Callable[[], None]): The new callback function that gets called when the button is pressed.
+        """
         if self.__onClickEvent is None:
             self.__onClickEvent = clickEvent
         else:
@@ -71,11 +99,21 @@ class AbstractButton(Component):
             self.__onClickEvent = newEvent
     
     def enable(self) -> None:
+        """
+        Enables the button.
+
+        The button will be clickable again if the current input layer (see Input class) matches its input layer.
+        """
         self.__enabled = True
 
         self.onEnable()
     
     def disable(self) -> None:
+        """
+        Disables the button.
+
+        The button won't be clickable anymore.
+        """
         if self.__hovering:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         
@@ -88,22 +126,47 @@ class AbstractButton(Component):
 
 
     def onMouseEnter(self) -> None:
+        """
+        Gets called when the mouse enters the area of the abstract button.
+
+        It will also be called when the mouse button is hold when that happens.
+        """
         pass
 
     def onMouseExit(self) -> None:
+        """
+        Gets called when the mouse exits the area of the abtract button.
+
+        It won't be called when the mouse button is hold when that happens.
+        """
         pass
 
     def onMouseDown(self) -> None:
+        """
+        Gets called when the mouse button gets pressed down while the curser is in the area of the abstract button.
+        """
         pass
 
     def onMouseUp(self) -> None:
+        """
+        Gets called when the mouse button is released while the curser is in the area of the abstract button.
+        """
         pass
 
     def onPressCancel(self) -> None:
+        """
+        Gets called when the mouse button is hold down and the curser exits the area of the abstract button.
+        """
         pass
 
     def onEnable(self) -> None:
+        """
+        Gets called when enable() is called.
+        """
         pass
 
     def onDisable(self) -> None:
+        """
+        Gets called when disable() is called.
+        """
         pass

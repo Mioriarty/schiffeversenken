@@ -13,10 +13,19 @@ import pygame
 
 
 class EndGameSign(Component):
+    """
+    Represents the sign at the end of the game.
+    """
 
     ANIM_OFFSET = 30
 
     def __init__(self, transform: Transform = None):
+        """
+        Construcor of the EndGameSign class.
+
+        Args:
+            transform (Transform, optional): The Transform of the component. Defaults to None.
+        """
         super().__init__(transform)
 
         self.winSign = ImageButton("signs.win", scaleFactor=1., inputLayer=Input.ENDGAME_SIGN_LAYER, transform=self.transform)
@@ -39,10 +48,21 @@ class EndGameSign(Component):
                 self.loseSign.draw(screen)
 
     def __press():
+        """
+        Gets called when the sign is clicked.
+        """
         Input.setInputLayer(Input.GAME_LAYER)
         SceneManager.requestloadScene(scenes.menu.MenuScene.MenuScene)
     
     def show(self, won : bool):
+        """
+        Kicks of the animations and shows the sign.
+
+        It also changes the current input layer and plays the corresponding sound effect.
+
+        Args:
+            won (bool): Whether teh player won the game. 
+        """
         self.__show = True
         self.__showWin = won
         Input.setInputLayer(Input.ENDGAME_SIGN_LAYER)

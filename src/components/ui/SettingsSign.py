@@ -10,8 +10,14 @@ from utils.Transform import Transform
 
 
 class SettingsSign(Component):
+    """
+    Represents the Sign that shows the basic settings.
+    """
 
     def __init__(self):
+        """
+        Constructor of the SettingsSign class.
+        """
         super().__init__(Transform.screenCenter(scale=(0.9, 0.9)))
         self.__show = False
 
@@ -38,10 +44,20 @@ class SettingsSign(Component):
             self.backBtn.draw(screen)
     
     def show(self) -> None:
+        """
+        Shows the sign.
+
+        It also changes the input layer.
+        """
         self.__show = True
         Input.setInputLayer(Input.SETTINGS_LAYER)
 
     
     def hide(self) -> None:
+        """
+        Hides the sign.
+
+        It also changes the input layer to Input.GAME_LAYER.
+        """
         self.__show = False
         Input.setInputLayer(Input.GAME_LAYER)
