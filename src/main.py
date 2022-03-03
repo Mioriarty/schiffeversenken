@@ -1,3 +1,8 @@
+# version check
+import sys
+if sys.version_info.major < 3 or sys.version_info.minor < 10:
+    raise Exception("Must be using Python 3.10 or higher")
+
 import pygame
 from components.Component import Component
 from scenes.game.GameScene import GameScene
