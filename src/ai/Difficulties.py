@@ -12,7 +12,7 @@ class Difficulties:
 
     __nameImages = [ 'texts.kaptnBlaubar', 'texts.captainHook', 'texts.dieWilde13', 'texts.jackSparrow' ]
     __descriptionImages = [ 'texts.kb_des', 'texts.ch_des', 'texts.w13_des', 'texts.js_des' ]
-    __chancesOfMistake = [ 0.3, 0.15, 0.0, 0.0 ]
+    __chancesOfMistake = [ 0.4, 0.2, 0.01, 0.0 ]
     __useProAi = [ False, False, False, True ]
     __numShipPlacementTries = [ 1, 1, 2, 4 ]
     __selectedIndex = 0
