@@ -7,18 +7,19 @@ from utils.Transform import Transform
 
 class Images:
 
-    ROOT_FOLDER = "./res/img/"
+    ROOT_FOLDER = "../../res/img/"
     EXTENTIONS = [ ".png", ".jpg" ]
 
     __images : dict[str, pygame.Surface]= {}
 
     @staticmethod
     def loadAll() -> None:
-        for root, _, files in os.walk(Images.ROOT_FOLDER):
+        path = os.path.join(os.path.dirname(__file__), Images.ROOT_FOLDER)
+        for root, _, files in os.walk(path):
             for file in files:
                 [ filename, extention ] = os.path.splitext(file)
                 if extention in Images.EXTENTIONS:
-                    key = root[len(Images.ROOT_FOLDER):].replace("\\", ".").replace("/", ".") + "." + filename
+                    key = root[len(path):].replace("\\", ".").replace("/", ".") + "." + filename
                     Images.__images[key] = pygame.image.load(os.path.join(root, file)).convert_alpha()
     
     @staticmethod

@@ -3,8 +3,8 @@ import pygame
 
 class Sounds:
 
-    SOUND_EFFECT_FOLDER = "./res/music/sounds/"
-    MUSIC_FOLDER = "./res/music/music/"
+    SOUND_EFFECT_FOLDER = "../../res/music/sounds/"
+    MUSIC_FOLDER = "../../res/music/music/"
     EXTENTIONS = [ ".wav" ]
 
     __soundEffects : dict[str, pygame.mixer.Sound] = {}
@@ -14,7 +14,8 @@ class Sounds:
 
     @staticmethod
     def loadAll() -> None:
-        for root, _, files in os.walk(Sounds.SOUND_EFFECT_FOLDER):
+        path = os.path.join(os.path.dirname(__file__), Sounds.SOUND_EFFECT_FOLDER)
+        for root, _, files in os.walk(path):
             for file in files:
                 [ filename, extention ] = os.path.splitext(file)
                 if extention in Sounds.EXTENTIONS:
@@ -30,8 +31,10 @@ class Sounds:
     
     @staticmethod
     def playMusic(name : str, fileExt : str = ".wav") -> None:
+        path = os.path.join(os.path.dirname(__file__), Sounds.MUSIC_FOLDER)
+        
         pygame.mixer.music.unload()
-        pygame.mixer.music.load(Sounds.MUSIC_FOLDER + name + fileExt)
+        pygame.mixer.music.load(path + name + fileExt)
         pygame.mixer.music.play(-1)
     
     @staticmethod
