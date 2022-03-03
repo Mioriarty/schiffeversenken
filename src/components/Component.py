@@ -11,6 +11,8 @@ class Component(metaclass = utils.InstanceRegistryMetaClass):
         
         The update method will be called automatically by the Registry. For the draw method to be called, it has to by registered in the SceneManager using putInDrawLayer.
 
+        Within a scene's update or draw method you should not simply create a component as that will crash the game. Instead you have to use SceneManager.requestComponent(). 
+        
         Attributes:
             transform (Transform): The position, rotation and scale of the Component. In some curcumstances this might be not necessary. In this case just use None as the Transform. This will create an identity TRansform for the Component.
     """
@@ -42,7 +44,7 @@ class Component(metaclass = utils.InstanceRegistryMetaClass):
         For it to be called, it has to by registered in the SceneManager using putInDrawLayer
 
         Args:
-            screen (pygame.Surface): The screen surface oh which you should draw using pygame.
+            screen (pygame.Surface): The screen surface on which you should draw using pygame.
         """
         pass
 

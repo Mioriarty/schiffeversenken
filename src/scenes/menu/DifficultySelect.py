@@ -11,12 +11,23 @@ from utils.Transform import Transform
 
 
 class DifficultySelect(Component):
+    """
+    Represents the DifficultySelect in the main menu.
+    
+    It playes all the animations and sets the correct index in the Difficulties class.
+    """
 
     NAME_SCALE = (0.5, 0.5)
     DESCRIPTION_SCALE = (0.4, 0.4)
     MOVE_DURATION = 0.2
 
     def __init__(self, transform : Transform = None):
+        """
+        The constructor of the DifficulySelect class.
+
+        Args:
+            transform (Transform, optional): The transform of the component. Defaults to None.
+        """
         super().__init__(transform)
 
         self.selectedIndex = 0
@@ -51,6 +62,11 @@ class DifficultySelect(Component):
 
 
     def rightPress(self):
+        """
+        Callback that gets called when the right button was pressed. 
+
+        It plays all the animations (maybe cancel ongoing ones) and updates the index in the Difficulties class.
+        """
         self.skipAnimations()
 
         self.disappearLeftMove.setHook(self.nameImages[self.selectedIndex].transform.setRelPosition)
@@ -74,6 +90,11 @@ class DifficultySelect(Component):
         
 
     def leftPress(self):
+        """
+        Callback that gets called when the left button was pressed. 
+
+        It plays all the animations (maybe cancel ongoing ones) and updates the index in the Difficulties class.
+        """
         self.skipAnimations()
 
         self.disappearRightMove.setHook(self.nameImages[self.selectedIndex].transform.setRelPosition)
@@ -96,6 +117,9 @@ class DifficultySelect(Component):
         Difficulties.setSelectedIndex(self.selectedIndex)
     
     def skipAnimations(self):
+        """
+        Skips angoing animations.
+        """
         if self.disappearLeftMove.isRunning():
             self.disappearLeftMove.skipToEnd()
             self.appearRightMove.skipToEnd()

@@ -15,8 +15,16 @@ import numpy as np
 
 
 class MenuScene(Scene):
+    """
+    This is the manu scene. Here you can select the difficulty of your game.
+    """
 
     def __init__(self):
+        """
+        Constructor of the GameScene class.
+
+        It creates all component used in the secene.
+        """
         super().__init__((255, 255, 255))
         Sounds.playMusic("aquaWaves")
 
@@ -64,5 +72,10 @@ class MenuScene(Scene):
 
     
     def startGame(self):
+        """
+        Callback that gets called when the game starting animation finished.
+
+        It loads the game scene.
+        """
         SceneManager.requestloadScene(scenes.game.GameScene.GameScene)
     

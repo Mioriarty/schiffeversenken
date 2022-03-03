@@ -3,8 +3,16 @@ from scenes.menu.MenuScene import MenuScene
 from utils import *
 
 class LogoScene(Scene):
+    """
+    This is the awesome LogoScene. Hier the Mo entertainment logo is presented as a fake loading screen.
+    """
 
     def __init__(self) -> None:
+        """
+        Constructor of the LogoScene class.
+
+        It creates all component used in the secene.
+        """
         super().__init__()
         self.logo = Sprite("logos.mo", Transform.screenCenter())
         self.logo.transform.translate((0., -50.0))
