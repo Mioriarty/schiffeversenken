@@ -17,20 +17,23 @@ FRAME_RATE = 120
 
 
 def main():
+    # Initiate pygame
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.DOUBLEBUF, 16)
     pygame.display.set_caption(WINDOW_TITLE)
-    # pygame.event.set_allowed([ pygame.QUIT ])
 
     clock = pygame.time.Clock()
 
     shouldRun = True
 
+    # Load recources
     Images.loadAll()
     Sounds.loadAll()
 
+    # load first scene
     SceneManager.requestloadScene(LogoScene)
 
+    # main game loop
     while shouldRun:
         # load new scene if it was requested
         SceneManager.loadNewSceneIfRequested()
@@ -38,7 +41,6 @@ def main():
         dt = clock.tick(FRAME_RATE) / 1000
         screen.fill(SceneManager.getClearColor())
 
-        
         # updates
         Timer.updateAll(dt)
         Animator.updateAll(dt)
