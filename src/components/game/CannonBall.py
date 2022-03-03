@@ -13,7 +13,8 @@ class CannonBall(Sprite):
     Represents a CannonBall that flies over the screen.
     """
 
-    ANIM_TIME = .0001 # TODO 1.5
+    ANIM_TIME = 1.5
+    MAX_Y_OFFSET = 150.
 
     def __init__(self, animFinishedCallback : Callable[[tuple[float], bool], None]):
         """
@@ -84,7 +85,7 @@ class CannonBall(Sprite):
             t /= CannonBall.ANIM_TIME
             basePos = dest * t + start * (1 - t)
             relExtraHeight = -4 * (t - 0.5)**2 + 1 # just parabola with zeros at 0, 1 and max at 0.5
-            return basePos + np.array((0, -relExtraHeight * 70))
+            return basePos + np.array((0, -relExtraHeight * CannonBall.MAX_Y_OFFSET))
 
         self.positionAnim.setEquation(animFun)
         

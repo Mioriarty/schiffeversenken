@@ -55,8 +55,6 @@ class ShipPlacingAi:
             if blockedCellsCount < bestBlockedCellsCount:
                 bestPlacement = placement
                 bestBlockedCellsCount = blockedCellsCount
-
-        print(f"Placement Generation Done ({bestBlockedCellsCount})")
         
         self.placement = bestPlacement
 

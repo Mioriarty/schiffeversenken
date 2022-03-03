@@ -55,6 +55,7 @@ class AiMaster:
             tuple[int]: Next shot position / tile.
         """
         if random.random() < self.chanceOfMistake:
+            print("MISTAKE!")
             return self.randomAi.getNextShot(self.board)
         
         if self.__shouldUseBruteForce():
