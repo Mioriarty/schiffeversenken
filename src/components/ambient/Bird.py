@@ -5,15 +5,31 @@ import random
 
 
 class Bird(Diashow):
+    """
+    Represents a bird flying over the screen.
+    """
 
     def __init__(self, duration: float = 0.2, velocity : float = 45., transform: Transform = None):
+        """
+        The construxtor of the Bird class.
+
+        Args:
+            duration (float, optional): Duration of one animation frame. Defaults to 0.2.
+            velocity (float, optional): Movement speed of the bird. Defaults to 45.
+            transform (Transform, optional): The Transform of the component. Defaults to None.
+        """
         super().__init__(["ambient.bird1", "ambient.bird2", "ambient.bird3", "ambient.bird2"], duration, True, transform)
         self.velocity = velocity
         self.velocityDirection = None
 
         self.restart()
 
-    def restart(self) -> np.ndarray:
+    def restart(self) -> None:
+        """
+        Restarts the movement. 
+
+        The bird will be put to another side of the screen.
+        """
         angle = random.random() * 2 * np.pi
         self.velocityDirection =  np.array(( np.cos(angle), np.sin(angle))) * self.velocity
         
