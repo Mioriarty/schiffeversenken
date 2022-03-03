@@ -1,4 +1,3 @@
-from doctest import ELLIPSIS_MARKER
 import numpy as np
 
 class Transform:

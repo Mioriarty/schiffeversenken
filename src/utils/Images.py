@@ -1,7 +1,6 @@
 import os
 import pygame
 import numpy as np
-from pygame import transform
 
 from utils.Transform import Transform
 

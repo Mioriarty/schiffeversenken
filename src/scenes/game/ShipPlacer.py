@@ -1,17 +1,13 @@
-import random
-from typing import Callable
 from ai.ShipPlacement import ShipPlacement
 from ai.ShipShape import ShipShape
 from components.Component import Component
 from components.game.Ship import Ship
 from components.ui.ImageButton import ImageButton
-from utils.Animator import Animator
 from utils.Images import Sprite
 from utils.Input import Input
 from utils.Transform import Transform
 import pygame
 import functools
-import numpy as np
 
 class ShipPlacer(Component):
     """

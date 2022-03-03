@@ -1,6 +1,5 @@
 import pygame
 from components.Component import Component
-from components.ui.AbstractButton import AbstractButton
 from components.ui.Checkbox import Checkbox
 from components.ui.ImageButton import ImageButton
 from utils.Images import Sprite

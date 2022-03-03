@@ -3,7 +3,6 @@ from components.ambient.Bird import Bird
 from components.ambient.Diashow import Diashow
 from components.ambient.RandomAmbientEvent import Shark
 from components.game.Cannon import Cannon
-from components.ui.AbstractButton import AbstractButton
 from components.ui.EndGameSign import EndGameSign
 from components.ui.ImageButton import ImageButton
 from components.ui.SettingsSign import SettingsSign

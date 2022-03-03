@@ -1,4 +1,3 @@
-import re
 from typing import Callable
 import pygame
 from ai.AiMaster import AiMaster
@@ -13,7 +12,6 @@ from components.game.Fire import Fire
 from scenes.Scene import SceneManager
 from utils.Images import Sprite
 import random
-import numpy as np
 from utils.Input import Input
 
 from utils.Transform import Transform

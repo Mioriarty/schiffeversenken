@@ -1,4 +1,3 @@
-
 from ai.Board import Board
 
 

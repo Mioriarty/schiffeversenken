@@ -1,6 +1,5 @@
 import pygame, random
 from components.ambient.Diashow import Diashow
-from utils.Animator import Animator
 from utils.Timer import Timer
 from utils.Transform import Transform
 

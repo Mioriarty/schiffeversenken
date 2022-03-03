@@ -5,10 +5,8 @@ if sys.version_info.major < 3 or sys.version_info.minor < 10:
 
 import pygame
 from components.Component import Component
-from scenes.game.GameScene import GameScene
 from scenes.LogoScene import LogoScene
 from scenes.Scene import SceneManager
-from scenes.menu.MenuScene import MenuScene
 from utils.Animator import Animator
 from utils.Input import Input
 from utils.Timer import Timer

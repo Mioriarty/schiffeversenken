@@ -1,5 +1,3 @@
-
-
 from components.ambient.Diashow import Diashow
 from utils.Transform import Transform
 import random 

@@ -1,6 +1,5 @@
 from components.ui.AbstractButton import AbstractButton
-from scenes.Scene import SceneManager
-from utils.Images import Images, Sprite
+from utils.Images import Sprite
 from utils.Input import Input
 from utils.Transform import Transform
 import pygame

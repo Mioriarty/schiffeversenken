@@ -1,7 +1,6 @@
 import utils
 import pygame
 
-
 class Component(metaclass = utils.InstanceRegistryMetaClass):
     """
         Represents a plain component with a certain Transform.

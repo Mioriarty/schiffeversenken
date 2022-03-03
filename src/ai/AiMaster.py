@@ -4,7 +4,6 @@ from ai.ProAi import ProAi
 from ai.RandomGameAi import RandomGameAi
 from ai.ShipPlacement import ShipPlacement
 from ai.ShipPlacingAi import ShipPlacingAi
-from ai.ShipShape import ShipShape
 import random
 
 from ai.BruteForceGameAi import BruteForceGameAi
