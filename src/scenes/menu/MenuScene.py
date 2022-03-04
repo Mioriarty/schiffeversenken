@@ -26,6 +26,7 @@ class MenuScene(Scene):
         It creates all component used in the secene.
         """
         super().__init__((255, 255, 255))
+        Sounds.stopAllSoundEffects()
         Sounds.playMusic("aquaWaves")
 
         self.parentTransform = Transform()
