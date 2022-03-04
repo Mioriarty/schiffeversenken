@@ -12,8 +12,8 @@ The "click" sound was made by PHILIIPUS Shakespeare. I have personal permission 
 This program also uses self-written music and sounds created with Bosca Ceoil (https://boscaceoil.net/):
 - "aqua" (aka background music)
 - "intro"
-- "win" based on the "Valhalla" leitmotif from "Das Rehingold" (1853) by Richard Wagner (1813 - 1883)
-- "lose" based on the "Giant" leitmotif from "Das Rehingold" (1853) by Richard Wagner (1813 - 1883)
+- "win" based on the "Valhalla" leitmotif from "Das Rheingold" (1853) by Richard Wagner (1813 - 1883)
+- "lose" based on the "Giant" leitmotif from "Das Rheingold" (1853) by Richard Wagner (1813 - 1883)
 
 Fun fact:
 leitmotif is a real english word
