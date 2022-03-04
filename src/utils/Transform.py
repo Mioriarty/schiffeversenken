@@ -263,7 +263,7 @@ class Transform:
         Returns:
             np.ndarray: The new transformed vector.
         """
-        return np.matmul(Transform.__calcRotationMatrix(-self.getAngle()), np.array(vector) - self.getPosition()) / self.getScale()
+        return np.matmul(Transform.__calcRotationMatrix(np.pi+self.getAngle()), np.array(vector) - self.getPosition()) / self.getScale()
     
     def applyInvMultiple(self, vectors : tuple[np.ndarray] | list[np.ndarray]) -> list[np.ndarray]:
         """
