@@ -7,8 +7,11 @@ This program uses these sounds from freesound:
 This program also uses these sounds from pixabay (https://pixabay.com/):
 - Waves in the background of the music
 
+The "click" sound was made by PHILIIPUS Shakespeare. I have personal permission to use that sound.
+
 This program also uses self-written music and sounds created with Bosca Ceoil (https://boscaceoil.net/):
 - "aqua" (aka background music)
+- "intro"
 - "win" based on the "Valhalla" leitmotif from "Das Rehingold" (1853) by Richard Wagner (1813 - 1883)
 - "lose" based on the "Giant" leitmotif from "Das Rehingold" (1853) by Richard Wagner (1813 - 1883)
 
