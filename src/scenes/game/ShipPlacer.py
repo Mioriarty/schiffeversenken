@@ -5,6 +5,7 @@ from components.game.Ship import Ship
 from components.ui.ImageButton import ImageButton
 from utils.Images import Sprite
 from utils.Input import Input
+from utils.Sounds import Sounds
 from utils.Transform import Transform
 import pygame
 import functools
@@ -175,6 +176,9 @@ class ShipPlacer(Component):
         self.selectedIndex = -1
 
         self.placementDone = all(s[0].orientation != -1 for s in self.placedShips)
+
+        Sounds.playSoundEffect("click")
+
         if self.placementDone:
             self.startBtn.enable()
     
