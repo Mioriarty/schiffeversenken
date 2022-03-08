@@ -1,8 +1,8 @@
-# Name              Fehlerwkt.     Beschreibung  
-# Käpt'n Blaubär    0.8            Erzählt nur Seemannsgarn und hat folglich auch hier wohl Blaubeeren auf den Augen.
-# Caipten Hook      0.5            Sein Haken behindert ihm beim Zielen. Trotzdem ist er stets bemüht.
-# Die Wilde 13      0.2            Alleine alaphabet. Als Team könnnen sie locker eine ganze Flotte besiegen.
-# Jack Sparrow      0.0            Unberechenbar und heimtückisch. Lässt jeden über die Planke gehen. Vorsicht!
+# Name              Beschreibung  
+# Käpt'n Blaubär    Erzählt nur Seemannsgarn und hat folglich auch hier wohl Blaubeeren auf den Augen.
+# Caipten Hook      Sein Haken behindert ihm beim Zielen. Trotzdem ist er stets bemüht.
+# Die Wilde 13      Alleine alaphabet. Als Team könnnen sie locker eine ganze Flotte besiegen.
+# Jack Sparrow      Unberechenbar und heimtückisch. Lässt jeden über die Planke gehen. Vorsicht!
 
 
 class Difficulties:
